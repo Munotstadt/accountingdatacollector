@@ -98,7 +98,9 @@
   .rank-body{ flex: 1; min-width: 0; }
   .rank-top{ display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; gap: 8px; }
   .rank-name{ font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rank-amounts{ display: flex; align-items: baseline; gap: 8px; flex-shrink: 0; }
   .rank-amt{ font-family: 'IBM Plex Mono', monospace; color: var(--text); white-space: nowrap; }
+  .rank-avg{ font-family: 'IBM Plex Mono', monospace; color: var(--muted); font-size: 11px; white-space: nowrap; }
   .rank-track{ height: 6px; background: var(--panel); border-radius: 3px; overflow: hidden; }
   .rank-fill{ height: 100%; background: var(--accent); border-radius: 3px; }
 
@@ -132,9 +134,38 @@
     padding-top: 16px; border-top: 1px solid var(--line);
   }
 
+  .custom-range{
+    display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; margin-top: 14px;
+  }
+  .custom-range label{
+    display: flex; flex-direction: column; gap: 4px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .custom-range input[type="date"]{
+    font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text);
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 6px 10px;
+  }
+  .custom-range button{
+    background: none; border: 1px solid var(--line); color: var(--text);
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 7px 14px;
+    border-radius: var(--radius); cursor: pointer;
+  }
+  .custom-range button:hover{ border-color: var(--accent); color: var(--accent); }
+
+  .history-title .hint{
+    text-transform: none; letter-spacing: 0; color: var(--muted); font-family: 'Inter', sans-serif;
+  }
+
+  .legend{ display: flex; flex-wrap: wrap; gap: 12px; margin: 10px 0 0; }
+  .legend-item{ display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .legend-swatch{ width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
   @media (max-width: 560px){
     .stat-value{ font-size: 18px; }
-    #txTable thead th:nth-child(4), #txTable tbody td:nth-child(4) { display: none; }
+    #txTable thead th:nth-child(3), #txTable tbody td:nth-child(3),
+    #txTable thead th:nth-child(5), #txTable tbody td:nth-child(5) { display: none; }
   }
 </style>
 </head>
@@ -166,30 +197,42 @@
   </div>
 
   <div class="range-selector" id="rangeSelector">
-    <button type="button" class="range-btn active" data-range="60D">60 Tage</button>
-    <button type="button" class="range-btn" data-range="30D">30 Tage</button>
+    <button type="button" class="range-btn" data-range="WEEK">Aktuelle Woche</button>
     <button type="button" class="range-btn" data-range="10D">10 Tage</button>
+    <button type="button" class="range-btn" data-range="30D">30 Tage</button>
+    <button type="button" class="range-btn active" data-range="60D">60 Tage</button>
     <button type="button" class="range-btn" data-range="CM">Aktueller Monat</button>
   </div>
 
-  <div class="history-title">Nach Kategorie (Debit Account)</div>
-  <div class="rank-list" id="rankList"><div class="chart-empty">Loading…</div></div>
+  <div class="custom-range">
+    <label>Von <input type="date" id="customFrom"></label>
+    <label>Bis <input type="date" id="customTo"></label>
+    <button type="button" id="applyCustomRange">Anwenden</button>
+  </div>
 
-  <div class="history-title">Täglicher Verlauf (AmtCHF pro Tag)</div>
+  <div class="history-title">Nach Kategorie (Debit Account) <span class="hint">Total · Ø/Tag</span></div>
+  <div class="rank-list" id="rankListDebit"><div class="chart-empty">Loading…</div></div>
+
+  <div class="history-title">Täglicher Verlauf (AmtCHF pro Tag, nach Kategorie)</div>
   <div class="chart-wrap" id="chartDaily"><div class="chart-empty">Loading chart…</div></div>
+  <div class="legend" id="chartLegend"></div>
 
-  <div class="history-title">Letzte Buchungen</div>
+  <div class="history-title">Nach Zahlungsquelle (Credit Account) <span class="hint">Total · Ø/Tag</span></div>
+  <div class="rank-list" id="rankListCredit"><div class="chart-empty">Loading…</div></div>
+
+  <div class="history-title">Letzte Buchungen <span class="hint">(letzte 30 Tage)</span></div>
   <table id="txTable">
     <thead>
       <tr>
         <th>Datum</th>
         <th>Kategorie</th>
+        <th>Comment</th>
         <th>Party</th>
-        <th>Ledger</th>
+        <th>Location</th>
         <th class="num">CHF</th>
       </tr>
     </thead>
-    <tbody id="txBody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+    <tbody id="txBody"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
   </table>
 
   <div class="footer">
@@ -243,88 +286,159 @@ function parseDDMMYYYY(s){
   return new Date(yyyy, mm - 1, dd);
 }
 
-function filterByRange(txs, range, now){
-  let cutoff;
-  if (range === '60D'){ cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 60); }
-  else if (range === '30D'){ cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 30); }
-  else if (range === '10D'){ cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 10); }
-  else if (range === 'CM'){ cutoff = new Date(now.getFullYear(), now.getMonth(), 1); }
-  else { cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 60); }
-  return txs.filter(t => t.date >= cutoff);
+function getMonday(d){
+  const date = new Date(d);
+  const day = date.getDay(); // 0 = Sunday
+  const diff = (day === 0) ? -6 : 1 - day;
+  date.setDate(date.getDate() + diff);
+  date.setHours(0,0,0,0);
+  return date;
 }
 
-function renderRankList(container, txs){
+function filterByRange(txs, range, now, custom){
+  let start, end;
+  if (range === 'WEEK'){
+    start = getMonday(now);
+    end = new Date(start); end.setDate(end.getDate() + 7); // exclusive: Mon 00:00 .. next Mon 00:00
+  } else if (range === '10D'){
+    start = new Date(now); start.setDate(start.getDate() - 10); end = new Date(now); end.setDate(end.getDate()+1);
+  } else if (range === '30D'){
+    start = new Date(now); start.setDate(start.getDate() - 30); end = new Date(now); end.setDate(end.getDate()+1);
+  } else if (range === '60D'){
+    start = new Date(now); start.setDate(start.getDate() - 60); end = new Date(now); end.setDate(end.getDate()+1);
+  } else if (range === 'CM'){
+    start = new Date(now.getFullYear(), now.getMonth(), 1); end = new Date(now); end.setDate(end.getDate()+1);
+  } else if (range === 'CUSTOM' && custom && custom.from && custom.to){
+    start = custom.from; end = new Date(custom.to); end.setDate(end.getDate()+1); // inclusive of "to" day
+  } else {
+    start = new Date(now); start.setDate(start.getDate() - 60); end = new Date(now); end.setDate(end.getDate()+1);
+  }
+  return txs.filter(t => t.date >= start && t.date < end);
+}
+
+function lastNDays(txs, now, days){
+  const start = new Date(now); start.setDate(start.getDate() - days);
+  const end = new Date(now); end.setDate(end.getDate() + 1);
+  return txs.filter(t => t.date >= start && t.date < end);
+}
+
+function getPeriodDays(range, now, custom){
+  if (range === 'WEEK') return 7;
+  if (range === '10D') return 10;
+  if (range === '30D') return 30;
+  if (range === '60D') return 60;
+  if (range === 'CM') return now.getDate(); // days elapsed this month, including today
+  if (range === 'CUSTOM' && custom && custom.from && custom.to){
+    const ms = custom.to - custom.from;
+    return Math.max(1, Math.round(ms / 86400000) + 1);
+  }
+  return 60;
+}
+
+function renderRankList(container, txs, periodDays, field){
   const byCategory = {};
-  txs.forEach(t => { byCategory[t.debit] = (byCategory[t.debit] || 0) + t.amt; });
+  txs.forEach(t => { const k = t[field]; byCategory[k] = (byCategory[k] || 0) + t.amt; });
   const entries = Object.entries(byCategory).sort((a,b) => b[1] - a[1]);
   if (entries.length === 0){
     container.innerHTML = '<div class="chart-empty">Keine Daten im gewählten Zeitraum.</div>';
     return;
   }
   const max = entries[0][1];
+  const days = Math.max(1, periodDays);
   container.innerHTML = entries.slice(0, 12).map((entry, i) => {
     const [name, amt] = entry;
     const pct = Math.max(2, (amt / max) * 100);
+    const perDay = amt / days;
     return `<div class="rank-row">
       <div class="rank-num">${i+1}</div>
       <div class="rank-body">
-        <div class="rank-top"><span class="rank-name">${name}</span><span class="rank-amt">${fmtCHF(amt)}</span></div>
+        <div class="rank-top">
+          <span class="rank-name">${name}</span>
+          <span class="rank-amounts"><span class="rank-amt">${fmtCHF(amt)}</span><span class="rank-avg">Ø ${fmtCHF(perDay)}/Tag</span></span>
+        </div>
         <div class="rank-track"><div class="rank-fill" style="width:${pct.toFixed(1)}%"></div></div>
       </div>
     </div>`;
   }).join('');
 }
 
-function drawDailyBarChart(container, txs){
-  const width = 800, height = 220, pad = { top: 14, right: 14, bottom: 26, left: 46 };
+const CATEGORY_COLORS = ['#1F6FA8', '#C08A00', '#1F8A6E', '#8A5CC0', '#C0293D', '#767E8A'];
+
+function drawDailyBarChart(container, legendEl, txs){
+  const width = 800, height = 240, pad = { top: 14, right: 14, bottom: 26, left: 46 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
 
-  const byDay = {};
-  txs.forEach(t => {
-    const key = fmtDateShort(t.date); // dd.mm.yyyy
-    byDay[key] = (byDay[key] || 0) + t.amt;
-  });
-  // build a continuous day axis so gaps (no spending that day) show as zero, not skipped
-  const dayKeys = Object.keys(byDay);
-  if (dayKeys.length < 1){
+  if (txs.length === 0){
     container.innerHTML = '<div class="chart-empty">Keine Daten im gewählten Zeitraum.</div>';
+    legendEl.innerHTML = '';
     return;
   }
+
+  // Top categories by total spend in range; everything else bucketed as "Andere"
+  const totalsByCat = {};
+  txs.forEach(t => { totalsByCat[t.debit] = (totalsByCat[t.debit] || 0) + t.amt; });
+  const rankedCats = Object.entries(totalsByCat).sort((a,b) => b[1]-a[1]).map(e => e[0]);
+  const topN = 5;
+  const topCats = rankedCats.slice(0, topN);
+  const hasOther = rankedCats.length > topN;
+  const categories = hasOther ? topCats.concat(['Andere']) : topCats;
+  const colorFor = {};
+  categories.forEach((c,i) => colorFor[c] = CATEGORY_COLORS[i % CATEGORY_COLORS.length]);
+
+  function catFor(debit){
+    return topCats.includes(debit) ? debit : 'Andere';
+  }
+
+  // continuous day axis so days without spending show as zero, not skipped
   const allDates = txs.map(t => t.date).sort((a,b) => a - b);
   const first = allDates[0], last = allDates[allDates.length - 1];
-  const points = [];
+  const days = [];
   for (let d = new Date(first); d <= last; d.setDate(d.getDate() + 1)){
-    const key = fmtDateShort(d);
-    points.push({ key, v: byDay[key] || 0 });
+    days.push({ key: fmtDateShort(new Date(d)), byCat: {} });
   }
+  const dayIndexByKey = {};
+  days.forEach((d,i) => dayIndexByKey[d.key] = i);
 
-  if (points.length < 1){
-    container.innerHTML = '<div class="chart-empty">Nicht genug Datenpunkte.</div>';
+  txs.forEach(t => {
+    const key = fmtDateShort(t.date);
+    const di = dayIndexByKey[key];
+    if (di == null) return;
+    const cat = catFor(t.debit);
+    days[di].byCat[cat] = (days[di].byCat[cat] || 0) + t.amt;
+  });
+
+  if (days.length === 1){
+    const d = days[0];
+    const line = categories.map(c => `${c}: ${fmtCHF(d.byCat[c]||0)}`).join(' · ');
+    container.innerHTML = `<div class="chart-empty">${d.key}: ${line}</div>`;
+    renderLegend(legendEl, categories, colorFor);
     return;
   }
-  if (points.length === 1){
-    container.innerHTML = `<div class="chart-empty">${points[0].key}: ${fmtCHF(points[0].v)}</div>`;
-    return;
-  }
 
-  const vals = points.map(p => p.v);
-  const minY = 0, maxY = Math.max.apply(null, vals);
+  const dayTotals = days.map(d => categories.reduce((s,c) => s + (d.byCat[c]||0), 0));
+  const maxY = Math.max.apply(null, dayTotals);
   const yPad = maxY * 0.1 || 1;
-  const yMin = minY, yMax = maxY + yPad;
+  const yMin = 0, yMax = maxY + yPad;
 
-  function xScale(i){ return pad.left + (i / (points.length - 1)) * innerW; }
+  function xScale(i){ return pad.left + (i / (days.length - 1)) * innerW; }
   function yScale(v){ return pad.top + innerH - ((v - yMin) / (yMax - yMin || 1)) * innerH; }
 
-  const barColor = '#1F6FA8';
-  const barW = Math.max(3, Math.min(20, (innerW / points.length) * 0.65));
+  const barW = Math.max(3, Math.min(20, (innerW / days.length) * 0.65));
   const baseline = yScale(0);
 
-  const bars = points.map((p, i) => {
+  const bars = days.map((d, i) => {
     const x = xScale(i);
-    const y = yScale(p.v);
-    const barH = Math.max(p.v > 0 ? 1 : 0, baseline - y);
-    return `<rect x="${(x - barW/2).toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" fill="${barColor}" opacity="0.8" />`;
+    let cumulative = 0;
+    return categories.map(c => {
+      const v = d.byCat[c] || 0;
+      if (v <= 0) return '';
+      const yTop = yScale(cumulative + v);
+      const yBottom = yScale(cumulative);
+      const h = Math.max(1, yBottom - yTop);
+      cumulative += v;
+      return `<rect x="${(x-barW/2).toFixed(1)}" y="${yTop.toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" fill="${colorFor[c]}" opacity="0.85" />`;
+    }).join('');
   }).join('');
 
   let gridLines = '';
@@ -336,28 +450,36 @@ function drawDailyBarChart(container, txs){
     gridLines += `<text x="${pad.left-8}" y="${(y+3).toFixed(1)}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="#767E8A">${Math.round(v)}</text>`;
   }
 
-  const labelEvery = Math.max(1, Math.ceil(points.length / 8));
-  const xLabels = points.map((p, i) => {
-    if (i % labelEvery !== 0 && i !== points.length - 1) return '';
+  const labelEvery = Math.max(1, Math.ceil(days.length / 8));
+  const xLabels = days.map((d, i) => {
+    if (i % labelEvery !== 0 && i !== days.length - 1) return '';
     const x = xScale(i);
-    const short = p.key.slice(0,5); // dd.mm
+    const short = d.key.slice(0,5); // dd.mm
     return `<text x="${x.toFixed(1)}" y="${height-8}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#767E8A">${short}</text>`;
   }).join('');
 
-  container.innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Täglicher Verlauf">${gridLines}${bars}${xLabels}</svg>`;
+  container.innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Täglicher Verlauf nach Kategorie">${gridLines}${bars}${xLabels}</svg>`;
+  renderLegend(legendEl, categories, colorFor);
+}
+
+function renderLegend(legendEl, categories, colorFor){
+  legendEl.innerHTML = categories.map(c =>
+    `<span class="legend-item"><span class="legend-swatch" style="background:${colorFor[c]}"></span>${c}</span>`
+  ).join('');
 }
 
 function renderTable(tbody, txs){
-  const sorted = txs.slice().sort((a,b) => b.date - a.date).slice(0, 25);
+  const sorted = txs.slice().sort((a,b) => b.date - a.date);
   if (sorted.length === 0){
-    tbody.innerHTML = '<tr><td colspan="5" class="empty">Keine Buchungen im gewählten Zeitraum.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="empty">Keine Buchungen in den letzten 30 Tagen.</td></tr>';
     return;
   }
   tbody.innerHTML = sorted.map(t => `<tr>
     <td class="time">${fmtDateShort(t.date)}</td>
     <td>${t.debit}</td>
+    <td>${t.comment || '—'}</td>
     <td>${t.party || '—'}</td>
-    <td><span class="tag">${t.ledger || 'PG'}</span></td>
+    <td>${t.location || '—'}</td>
     <td class="amt">${fmtCHF(t.amt)}</td>
   </tr>`).join('');
 }
@@ -381,6 +503,7 @@ async function init(){
       debit: header.indexOf('DebitAccount'),
       credit: header.indexOf('CreditAccount'),
       ledger: header.indexOf('Ledger'),
+      comment: header.indexOf('Comment'),
       party: header.indexOf('Party'),
       location: header.indexOf('Location')
     };
@@ -401,6 +524,7 @@ async function init(){
         debit: cols[idx.debit] || '',
         credit: cols[idx.credit] || '',
         ledger: cols[idx.ledger] || '',
+        comment: cols[idx.comment] || '',
         party: cols[idx.party] || '',
         location: cols[idx.location] || ''
       });
@@ -413,10 +537,11 @@ async function init(){
     lastSynced.textContent = 'synced ' + new Date().toLocaleTimeString('de-CH');
 
     let currentRange = '60D';
+    let customDates = null; // { from: Date, to: Date }
     const now = new Date();
 
     function render(){
-      const filtered = filterByRange(txs, currentRange, now);
+      const filtered = filterByRange(txs, currentRange, now, customDates);
       const total = filtered.reduce((s,t) => s + t.amt, 0);
       const count = filtered.length;
       const avg = count > 0 ? total / count : 0;
@@ -429,17 +554,31 @@ async function init(){
       document.getElementById('statPG').textContent = fmtCHF0(totalPG);
       document.getElementById('statVP').textContent = fmtCHF0(totalVP);
 
-      renderRankList(document.getElementById('rankList'), filtered);
-      drawDailyBarChart(document.getElementById('chartDaily'), filtered);
-      renderTable(document.getElementById('txBody'), filtered);
+      renderRankList(document.getElementById('rankListDebit'), filtered, getPeriodDays(currentRange, now, customDates), 'debit');
+      renderRankList(document.getElementById('rankListCredit'), filtered, getPeriodDays(currentRange, now, customDates), 'credit');
+      drawDailyBarChart(document.getElementById('chartDaily'), document.getElementById('chartLegend'), filtered);
+
+      // "Letzte Buchungen" always shows the last 30 days, independent of the range selector above
+      renderTable(document.getElementById('txBody'), lastNDays(txs, now, 30));
     }
 
     document.querySelectorAll('#rangeSelector .range-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         currentRange = btn.dataset.range;
+        customDates = null;
         document.querySelectorAll('#rangeSelector .range-btn').forEach(b => b.classList.toggle('active', b === btn));
         render();
       });
+    });
+
+    document.getElementById('applyCustomRange').addEventListener('click', () => {
+      const fromRaw = document.getElementById('customFrom').value;
+      const toRaw = document.getElementById('customTo').value;
+      if (!fromRaw || !toRaw) return;
+      customDates = { from: new Date(fromRaw + 'T00:00:00'), to: new Date(toRaw + 'T00:00:00') };
+      currentRange = 'CUSTOM';
+      document.querySelectorAll('#rangeSelector .range-btn').forEach(b => b.classList.remove('active'));
+      render();
     });
 
     render();
@@ -447,9 +586,10 @@ async function init(){
   } catch(err){
     dot.classList.add('error');
     statusText.textContent = 'connection failed';
-    document.getElementById('rankList').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
+    document.getElementById('rankListDebit').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
+    document.getElementById('rankListCredit').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
     document.getElementById('chartDaily').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
-    document.getElementById('txBody').innerHTML = '<tr><td colspan="5" class="error">Fehler beim Laden: ' + err.message + '</td></tr>';
+    document.getElementById('txBody').innerHTML = '<tr><td colspan="6" class="error">Fehler beim Laden: ' + err.message + '</td></tr>';
   }
 }
 
