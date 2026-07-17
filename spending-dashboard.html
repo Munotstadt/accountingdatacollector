@@ -191,16 +191,17 @@
       <div class="stat-box"><span class="stat-label">Total</span><span class="stat-value" id="statTotal">—</span></div>
       <div class="stat-box"><span class="stat-label">Buchungen</span><span class="stat-value" id="statCount">—</span></div>
       <div class="stat-box"><span class="stat-label">Ø pro Buchung</span><span class="stat-value" id="statAvg">—</span></div>
+      <div class="stat-box"><span class="stat-label">Ø pro Tag</span><span class="stat-value" id="statAvgDay">—</span></div>
       <div class="stat-box"><span class="stat-label">PG</span><span class="stat-value" id="statPG">—</span></div>
       <div class="stat-box"><span class="stat-label">VP</span><span class="stat-value" id="statVP">—</span></div>
     </div>
   </div>
 
   <div class="range-selector" id="rangeSelector">
-    <button type="button" class="range-btn" data-range="WEEK">Aktuelle Woche</button>
+    <button type="button" class="range-btn active" data-range="WEEK">Aktuelle Woche</button>
     <button type="button" class="range-btn" data-range="10D">10 Tage</button>
     <button type="button" class="range-btn" data-range="30D">30 Tage</button>
-    <button type="button" class="range-btn active" data-range="60D">60 Tage</button>
+    <button type="button" class="range-btn" data-range="60D">60 Tage</button>
     <button type="button" class="range-btn" data-range="CM">Aktueller Monat</button>
   </div>
 
@@ -229,10 +230,11 @@
         <th>Comment</th>
         <th>Party</th>
         <th>Location</th>
+        <th class="num">AmtLC</th>
         <th class="num">CHF</th>
       </tr>
     </thead>
-    <tbody id="txBody"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+    <tbody id="txBody"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
   </table>
 
   <div class="footer">
@@ -254,6 +256,12 @@ function fmtDateShort(d){
   const dd = String(d.getDate()).padStart(2,'0');
   const mm = String(d.getMonth()+1).padStart(2,'0');
   return `${dd}.${mm}.${d.getFullYear()}`;
+}
+const WEEKDAY_ABBR = ['SO','MO','DI','MI','DO','FR','SA'];
+function fmtDayWithWeekday(d){
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  return `${WEEKDAY_ABBR[d.getDay()]} ${dd}.${mm}`;
 }
 
 // Robust CSV parser: handles quoted fields, embedded commas/newlines, "" escaping
@@ -322,12 +330,23 @@ function lastNDays(txs, now, days){
   return txs.filter(t => t.date >= start && t.date < end);
 }
 
-function getPeriodDays(range, now, custom){
-  if (range === 'WEEK') return 7;
+function getPeriodDays(range, now, custom, txsInRange){
+  if (range === 'WEEK'){
+    // Only count days that have actually started, based on the latest entry in the range
+    // (e.g. entries up to Thursday -> divide by 4), not the calendar date.
+    if (!txsInRange || txsInRange.length === 0) return 1;
+    const maxDate = txsInRange.reduce((m,t) => t.date > m ? t.date : m, txsInRange[0].date);
+    const dow = maxDate.getDay(); // 0 = Sunday
+    return Math.max(1, dow === 0 ? 7 : dow); // Monday=1 ... Sunday=7
+  }
+  if (range === 'CM'){
+    if (!txsInRange || txsInRange.length === 0) return 1;
+    const maxDate = txsInRange.reduce((m,t) => t.date > m ? t.date : m, txsInRange[0].date);
+    return Math.max(1, maxDate.getDate());
+  }
   if (range === '10D') return 10;
   if (range === '30D') return 30;
   if (range === '60D') return 60;
-  if (range === 'CM') return now.getDate(); // days elapsed this month, including today
   if (range === 'CUSTOM' && custom && custom.from && custom.to){
     const ms = custom.to - custom.from;
     return Math.max(1, Math.round(ms / 86400000) + 1);
@@ -395,7 +414,7 @@ function drawDailyBarChart(container, legendEl, txs){
   const first = allDates[0], last = allDates[allDates.length - 1];
   const days = [];
   for (let d = new Date(first); d <= last; d.setDate(d.getDate() + 1)){
-    days.push({ key: fmtDateShort(new Date(d)), byCat: {} });
+    days.push({ key: fmtDateShort(new Date(d)), date: new Date(d), byCat: {} });
   }
   const dayIndexByKey = {};
   days.forEach((d,i) => dayIndexByKey[d.key] = i);
@@ -411,7 +430,7 @@ function drawDailyBarChart(container, legendEl, txs){
   if (days.length === 1){
     const d = days[0];
     const line = categories.map(c => `${c}: ${fmtCHF(d.byCat[c]||0)}`).join(' · ');
-    container.innerHTML = `<div class="chart-empty">${d.key}: ${line}</div>`;
+    container.innerHTML = `<div class="chart-empty">${fmtDayWithWeekday(d.date)}: ${line}</div>`;
     renderLegend(legendEl, categories, colorFor);
     return;
   }
@@ -454,8 +473,8 @@ function drawDailyBarChart(container, legendEl, txs){
   const xLabels = days.map((d, i) => {
     if (i % labelEvery !== 0 && i !== days.length - 1) return '';
     const x = xScale(i);
-    const short = d.key.slice(0,5); // dd.mm
-    return `<text x="${x.toFixed(1)}" y="${height-8}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#767E8A">${short}</text>`;
+    const label = fmtDayWithWeekday(d.date);
+    return `<text x="${x.toFixed(1)}" y="${height-8}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#767E8A">${label}</text>`;
   }).join('');
 
   container.innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Täglicher Verlauf nach Kategorie">${gridLines}${bars}${xLabels}</svg>`;
@@ -471,17 +490,23 @@ function renderLegend(legendEl, categories, colorFor){
 function renderTable(tbody, txs){
   const sorted = txs.slice().sort((a,b) => b.date - a.date);
   if (sorted.length === 0){
-    tbody.innerHTML = '<tr><td colspan="6" class="empty">Keine Buchungen in den letzten 30 Tagen.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">Keine Buchungen in den letzten 30 Tagen.</td></tr>';
     return;
   }
-  tbody.innerHTML = sorted.map(t => `<tr>
+  tbody.innerHTML = sorted.map(t => {
+    const lc = (t.amtLC != null && !isNaN(t.amtLC))
+      ? t.amtLC.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + (t.currency || '')
+      : '—';
+    return `<tr>
     <td class="time">${fmtDateShort(t.date)}</td>
     <td>${t.debit}</td>
     <td>${t.comment || '—'}</td>
     <td>${t.party || '—'}</td>
     <td>${t.location || '—'}</td>
+    <td class="amt">${lc}</td>
     <td class="amt">${fmtCHF(t.amt)}</td>
-  </tr>`).join('');
+  </tr>`;
+  }).join('');
 }
 
 async function init(){
@@ -500,6 +525,8 @@ async function init(){
     const idx = {
       date: header.indexOf('Date'),
       amtCHF: header.indexOf('AmtCHF'),
+      amtLC: header.indexOf('AmtLC'),
+      currency: header.indexOf('Currency'),
       debit: header.indexOf('DebitAccount'),
       credit: header.indexOf('CreditAccount'),
       ledger: header.indexOf('Ledger'),
@@ -520,12 +547,15 @@ async function init(){
       if (!dateRaw) continue;
       const debitVal = cols[idx.debit] || '';
       const creditVal = cols[idx.credit] || '';
-      // Admin & Transfer entries are internal reclassifications, not real
-      // expenses (Debit) or real payment sources (Credit) -- exclude entirely
-      if (debitVal.startsWith('Admin & Transfer') || creditVal.startsWith('Admin & Transfer')) continue;
+      // A row where BOTH sides are Admin & Transfer is a pure internal
+      // reclassification with no real economic content -- skip it entirely.
+      if (debitVal.startsWith('Admin & Transfer') && creditVal.startsWith('Admin & Transfer')) continue;
+      const amtLCRaw = (cols[idx.amtLC] || '').trim();
       txs.push({
         date: parseDDMMYYYY(dateRaw),
         amt: amt,
+        amtLC: amtLCRaw !== '' ? parseFloat(amtLCRaw) : null,
+        currency: cols[idx.currency] || '',
         debit: debitVal,
         credit: creditVal,
         ledger: cols[idx.ledger] || '',
@@ -541,27 +571,39 @@ async function init(){
     statusText.textContent = 'live';
     lastSynced.textContent = 'synced ' + new Date().toLocaleTimeString('de-CH');
 
-    let currentRange = '60D';
+    let currentRange = 'WEEK';
     let customDates = null; // { from: Date, to: Date }
     const now = new Date();
 
     function render(){
       const filtered = filterByRange(txs, currentRange, now, customDates);
-      const total = filtered.reduce((s,t) => s + t.amt, 0);
-      const count = filtered.length;
+
+      // Admin & Transfer accounts are internal reclassifications, not real
+      // expense categories or real payment sources. A row still counts on
+      // whichever side is real:
+      //  - Debit = real category, Credit = Admin & Transfer  -> counts as an expense (Debit view)
+      //  - Debit = Admin & Transfer, Credit = real account    -> counts as a payment (Credit view)
+      const expenseTxs = filtered.filter(t => !t.debit.startsWith('Admin & Transfer'));
+      const paymentTxs = filtered.filter(t => !t.credit.startsWith('Admin & Transfer'));
+
+      const total = expenseTxs.reduce((s,t) => s + t.amt, 0);
+      const count = expenseTxs.length;
       const avg = count > 0 ? total / count : 0;
-      const totalPG = filtered.filter(t => (t.ledger||'PG') === 'PG').reduce((s,t) => s + t.amt, 0);
-      const totalVP = filtered.filter(t => t.ledger === 'VP').reduce((s,t) => s + t.amt, 0);
+      const totalPG = expenseTxs.filter(t => (t.ledger||'PG') === 'PG').reduce((s,t) => s + t.amt, 0);
+      const totalVP = expenseTxs.filter(t => t.ledger === 'VP').reduce((s,t) => s + t.amt, 0);
+      const periodDays = getPeriodDays(currentRange, now, customDates, filtered);
+      const avgPerDay = total / Math.max(1, periodDays);
 
       document.getElementById('statTotal').textContent = fmtCHF0(total);
       document.getElementById('statCount').textContent = count;
       document.getElementById('statAvg').textContent = fmtCHF(avg);
+      document.getElementById('statAvgDay').textContent = fmtCHF(avgPerDay);
       document.getElementById('statPG').textContent = fmtCHF0(totalPG);
       document.getElementById('statVP').textContent = fmtCHF0(totalVP);
 
-      renderRankList(document.getElementById('rankListDebit'), filtered, getPeriodDays(currentRange, now, customDates), 'debit');
-      renderRankList(document.getElementById('rankListCredit'), filtered, getPeriodDays(currentRange, now, customDates), 'credit');
-      drawDailyBarChart(document.getElementById('chartDaily'), document.getElementById('chartLegend'), filtered);
+      renderRankList(document.getElementById('rankListDebit'), expenseTxs, periodDays, 'debit');
+      renderRankList(document.getElementById('rankListCredit'), paymentTxs, periodDays, 'credit');
+      drawDailyBarChart(document.getElementById('chartDaily'), document.getElementById('chartLegend'), expenseTxs);
 
       // "Letzte Buchungen" always shows the last 30 days, independent of the range selector above
       renderTable(document.getElementById('txBody'), lastNDays(txs, now, 30));
@@ -594,7 +636,7 @@ async function init(){
     document.getElementById('rankListDebit').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
     document.getElementById('rankListCredit').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
     document.getElementById('chartDaily').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
-    document.getElementById('txBody').innerHTML = '<tr><td colspan="6" class="error">Fehler beim Laden: ' + err.message + '</td></tr>';
+    document.getElementById('txBody').innerHTML = '<tr><td colspan="7" class="error">Fehler beim Laden: ' + err.message + '</td></tr>';
   }
 }
 
