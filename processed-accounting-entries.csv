@@ -1,2 +1,2 @@
 Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags,SubmittedBy,Device,IP,ProcessingDateTime
-12.07.2026 06:53,11.07.2026,CHF,70,1,70.0,Restaurants (Family) PG,CC TCS PG,#DD3,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,,17.07.2026 16:53:00
+12.07.2026 06:53,10.07.2026,CHF,0,1,0.0,Restaurants (Family) PG,CC TCS PG,#DD3,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,,17.07.2026 16:53:00
