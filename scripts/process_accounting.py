@@ -29,7 +29,10 @@ VP_RENAME_MAP = {
     "SQ WS CHF PG (#315)": "SQ WS CHF VP",
     "Groceries PG": "Groceries VP",
     "Sport & Hobbies & Leisure PG": "Sport & Hobbies & Leisure VP",
+    "Revolut PG": "Revolut VP",
+    "RB PK Plus PG": "RB PK Plus VP",
 }
+
 
 
 def load_fx_rates(path_or_url):
