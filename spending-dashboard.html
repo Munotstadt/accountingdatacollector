@@ -518,11 +518,16 @@ async function init(){
       if (isNaN(amt)) continue;
       const dateRaw = (cols[idx.date] || '').trim();
       if (!dateRaw) continue;
+      const debitVal = cols[idx.debit] || '';
+      const creditVal = cols[idx.credit] || '';
+      // Admin & Transfer entries are internal reclassifications, not real
+      // expenses (Debit) or real payment sources (Credit) -- exclude entirely
+      if (debitVal.startsWith('Admin & Transfer') || creditVal.startsWith('Admin & Transfer')) continue;
       txs.push({
         date: parseDDMMYYYY(dateRaw),
         amt: amt,
-        debit: cols[idx.debit] || '',
-        credit: cols[idx.credit] || '',
+        debit: debitVal,
+        credit: creditVal,
         ledger: cols[idx.ledger] || '',
         comment: cols[idx.comment] || '',
         party: cols[idx.party] || '',
