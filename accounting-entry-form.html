@@ -3,204 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accounting Entry — Ledger</title>
+<title>accountingdatacollector — Ledger Entry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
   :root{
-    --paper:#F5F1E8;
-    --paper-line:#DCD4C0;
-    --ink:#1C2B3A;
-    --ink-soft:#5B6B7A;
-    --rule:#B9AD8F;
-    --accent:#7A3B2E;
-    --accent-soft:#9C5A46;
-    --ok:#3E5C46;
-    --err:#A3372B;
+    --bg: #FFFFFF;
+    --panel: #F7F8FA;
+    --line: #E3E6EA;
+    --text: #1A1D22;
+    --muted: #767E8A;
+    --accent: #E30613;
+    --gain: #1F8A6E;
+    --loss: #C0293D;
+    --radius: 3px;
   }
-  *{box-sizing:border-box;}
+  * { box-sizing: border-box; }
   body{
-    margin:0;
-    background:var(--paper);
-    background-image:
-      repeating-linear-gradient(var(--paper) 0px, var(--paper) 34px, var(--paper-line) 35px);
-    color:var(--ink);
-    font-family:'IBM Plex Mono', monospace;
-    display:flex;
-    justify-content:center;
-    padding:40px 16px 80px;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 20px 80px;
   }
-  .sheet{
-    width:100%;
-    max-width:640px;
-  }
-  header{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    border-bottom:3px double var(--rule);
-    padding-bottom:14px;
-    margin-bottom:6px;
-  }
-  h1{
-    font-family:'Source Serif 4', serif;
-    font-weight:700;
-    font-size:28px;
-    margin:0;
-    letter-spacing:.2px;
-  }
-  .stamp{
-    font-size:11px;
-    color:var(--ink-soft);
-    text-align:right;
-    line-height:1.5;
-  }
-  .stamp b{color:var(--ink);}
-  #entryNo{color:var(--accent);font-weight:600;}
+  .sheet{ width: 100%; max-width: 720px; }
 
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 18px;
+    border-bottom: 2px solid var(--accent);
+  }
+  .brand{ display: flex; align-items: baseline; gap: 10px; }
+  .brand h1{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.02em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .brand span.sub{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .status{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: right;
+  }
+  .dot{
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gain);
+    box-shadow: 0 0 0 3px rgba(31,138,110,0.15);
+    animation: pulse 2.4s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  .dot.stale{ background: var(--muted); box-shadow: none; animation: none; }
+  .dot.error{ background: var(--loss); box-shadow: 0 0 0 3px rgba(192,41,61,0.15); animation: none; }
+  @media (prefers-reduced-motion: reduce){ .dot{ animation: none; } }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+
+  .meta-header{ padding: 18px 0 22px; border-bottom: 1px solid var(--line); }
+  .meta-header h2{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0 0 4px;
+  }
+  .meta-sub{ font-family: 'Inter', sans-serif; font-size: 13px; color: var(--muted); margin: 0; }
   .target-bar{
-    font-size:11px;
-    color:var(--ink-soft);
-    margin:10px 0 26px;
-    display:flex;
-    gap:6px;
-    flex-wrap:wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
   }
   .target-bar code{
-    background:rgba(122,59,46,.08);
-    padding:1px 6px;
-    border-radius:2px;
-    color:var(--accent);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 1px 6px;
+    border-radius: var(--radius);
+    color: var(--text);
   }
 
-  fieldset{border:none;margin:0;padding:0;}
-  .row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-    margin-bottom:20px;
+  .history-title{
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); margin: 28px 0 10px;
   }
-  .field{margin-bottom:20px;}
+
+  fieldset{ border:none; margin:0; padding:0; }
+  .row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
+  .field{ margin-bottom:18px; }
   label{
-    display:flex;
-    justify-content:space-between;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color:var(--ink-soft);
-    margin-bottom:6px;
+    display:flex; justify-content:space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--muted); margin-bottom:7px;
   }
-  label .req{color:var(--accent);}
+  label .req{ color:var(--accent); }
+  label .hint{ text-transform:none; letter-spacing:0; color:var(--muted); font-family:'Inter',sans-serif; }
+
   input, select, textarea{
     width:100%;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:15px;
-    color:var(--ink);
-    background:transparent;
-    border:none;
-    border-bottom:1.5px solid var(--rule);
-    padding:6px 2px;
+    font-family:'Inter', sans-serif;
+    font-size:14px;
+    color:var(--text);
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:10px 12px;
     outline:none;
     transition:border-color .15s;
   }
-  input:focus, select:focus, textarea:focus{border-bottom-color:var(--accent);}
-  select{cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235B6B7A'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 4px center;}
-
-  .otherWrap{margin-top:8px; display:none;}
-  .otherWrap.show{display:block;}
-
-  .flags{display:flex; gap:18px; flex-wrap:wrap; padding-top:4px;}
-  .flags label{
-    display:flex; align-items:center; gap:6px;
-    text-transform:none; font-size:13px; color:var(--ink);
-    letter-spacing:0;
+  input:focus, select:focus, textarea:focus{ border-color:var(--accent); }
+  select{
+    cursor:pointer; appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23767E8A'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 12px center;
   }
-  .flags input[type=checkbox]{width:auto; accent-color:var(--accent);}
 
-  label .hint{text-transform:none; letter-spacing:0; color:var(--ink-soft); font-size:11px;}
+  .otherWrap{ margin-top:8px; display:none; }
+  .otherWrap.show{ display:block; }
+
   .checks{
-    display:flex; flex-wrap:wrap; gap:8px 14px;
-    padding:6px 0 2px;
-    border-bottom:1.5px solid var(--rule);
-    padding-bottom:12px;
+    display:flex; flex-wrap:wrap; gap:8px;
+    padding:12px; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
   }
   .checks label{
-    display:flex; align-items:center; gap:5px;
-    text-transform:none; letter-spacing:0;
-    font-size:12.5px; color:var(--ink);
-    background:rgba(28,43,58,.03);
-    padding:4px 9px;
-    border-radius:2px;
+    display:flex; align-items:center; gap:6px;
+    text-transform:none; letter-spacing:0; font-family:'Inter',sans-serif;
+    font-size:13px; color:var(--text);
+    background:var(--bg); border:1px solid var(--line);
+    padding:5px 10px; border-radius:var(--radius);
   }
-  .checks input[type=checkbox]{width:auto; accent-color:var(--accent); margin:0;}
+  .checks input[type=checkbox]{ width:auto; accent-color:var(--accent); margin:0; }
 
-  .divider{
-    border:none; border-top:1px dashed var(--rule); margin:30px 0;
+  .flags{ display:flex; gap:16px; flex-wrap:wrap; padding-top:2px; }
+  .flags label{
+    display:flex; align-items:center; gap:6px;
+    text-transform:none; letter-spacing:0; font-family:'Inter',sans-serif;
+    font-size:13px; color:var(--text);
   }
+  .flags input[type=checkbox]{ width:auto; accent-color:var(--accent); }
 
   .credentials{
-    background:rgba(28,43,58,.04);
-    border:1px solid var(--paper-line);
-    padding:16px 18px;
-    margin-bottom:28px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    margin:24px 0 28px;
     font-size:12px;
   }
-  .credentials summary{cursor:pointer; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.08em; font-size:11px;}
-  .credentials .field{margin:14px 0 0;}
+  .credentials summary{
+    cursor:pointer; color:var(--muted);
+    font-family:'IBM Plex Mono', monospace;
+    text-transform:uppercase; letter-spacing:.06em; font-size:11px;
+  }
+  .credentials .field{ margin:14px 0 0; }
 
   button{
     font-family:'IBM Plex Mono', monospace;
-    font-weight:600;
-    font-size:14px;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-    background:var(--ink);
-    color:var(--paper);
-    border:none;
-    padding:14px 28px;
-    cursor:pointer;
-    width:100%;
+    font-weight:600; font-size:13px; letter-spacing:.04em; text-transform:uppercase;
+    background:var(--text); color:#fff;
+    border:none; border-radius:var(--radius);
+    padding:14px 28px; cursor:pointer; width:100%;
     transition:background .15s;
   }
-  button:hover{background:var(--accent);}
-  button:disabled{background:var(--ink-soft); cursor:wait;}
+  button:hover{ background:var(--accent); }
+  button:disabled{ background:var(--muted); cursor:wait; }
 
   #status{
-    margin-top:16px;
-    font-size:13px;
-    padding:12px 14px;
-    border-left:3px solid transparent;
-    display:none;
-    white-space:pre-wrap;
+    margin-top:14px; font-size:13px; padding:12px 14px;
+    border-left:3px solid transparent; border-radius:var(--radius);
+    display:none; white-space:pre-wrap;
+    font-family:'IBM Plex Mono', monospace;
   }
-  #status.ok{display:block; border-color:var(--ok); background:rgba(62,92,70,.08); color:var(--ok);}
-  #status.err{display:block; border-color:var(--err); background:rgba(163,55,43,.08); color:var(--err);}
-  #status.pending{display:block; border-color:var(--ink-soft); background:rgba(91,107,122,.08); color:var(--ink-soft);}
+  #status.ok{ display:block; border-color:var(--gain); background:rgba(31,138,110,.08); color:var(--gain); }
+  #status.err{ display:block; border-color:var(--loss); background:rgba(192,41,61,.08); color:var(--loss); }
+  #status.pending{ display:block; border-color:var(--muted); background:var(--panel); color:var(--muted); }
 
-  .ledger-footer{
-    margin-top:34px;
-    text-align:center;
-    font-size:10px;
-    color:var(--ink-soft);
-    letter-spacing:.1em;
-    text-transform:uppercase;
+  .footer{
+    margin-top:26px; display:flex; align-items:center; justify-content:space-between;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--muted); flex-wrap:wrap; gap:6px;
+    padding-top:16px; border-top:1px solid var(--line);
   }
 
-  @media (max-width:520px){
-    .row{grid-template-columns:1fr;}
-  }
+  @media (max-width:560px){ .row{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
 <div class="sheet">
 
-  <header>
-    <h1>Accounting Entry</h1>
-    <div class="stamp">Ledger No. <span id="entryNo">—</span><br><b>Munotstadt</b></div>
-  </header>
+  <div class="eyebrow">
+    <div class="brand">
+      <h1>accountingdatacollector</h1>
+      <span class="sub">/ ledger entry</span>
+    </div>
+    <div class="status">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">checking ledger…</span>
+    </div>
+  </div>
 
-  <div class="target-bar">
-    writes to <code id="targetRepoLabel">Munotstadt/AccountingDataCollector</code> · file <code>accounting_entries.csv</code> · branch <code>main</code>
+  <div class="meta-header">
+    <h2>New Entry — Ledger No. <span id="entryNo">—</span></h2>
+    <p class="meta-sub">Double-entry accounting form, posts directly to GitHub</p>
+    <div class="target-bar">
+      writes to <code id="targetRepoLabel">Munotstadt/AccountingDataCollector</code> · file <code>accounting_entries.csv</code> · branch <code>main</code>
+    </div>
   </div>
 
   <details class="credentials" open>
@@ -210,16 +234,22 @@
       <input type="password" id="pat" placeholder="ghp_...">
     </div>
     <div style="margin-top:8px;">
-      <a href="#" id="clearTokenLink" style="font-size:11px; color:var(--ink-soft);">clear saved token</a>
+      <a href="#" id="clearTokenLink" style="font-size:11px; color:var(--muted); font-family:'IBM Plex Mono', monospace;">clear saved token</a>
     </div>
   </details>
 
   <form id="entryForm" autocomplete="off">
 
+    <div class="history-title">Basics</div>
+    <div class="field">
+      <label>Date <span class="req">*</span></label>
+      <input type="date" id="date" required>
+    </div>
+
     <div class="row">
       <div class="field">
-        <label>Date <span class="req">*</span></label>
-        <input type="date" id="date" required>
+        <label>Amount (LC) <span class="req">*</span></label>
+        <input type="number" step="0.01" id="amtLC" placeholder="0.00" required style="text-align:right;">
       </div>
       <div class="field">
         <label>Currency <span class="req">*</span></label>
@@ -233,11 +263,7 @@
       </div>
     </div>
 
-    <div class="field">
-      <label>Amount (LC) <span class="req">*</span></label>
-      <input type="number" step="0.01" id="amtLC" placeholder="0.00" required>
-    </div>
-
+    <div class="history-title">Accounts</div>
     <div class="field">
       <label>Debit Account <span class="req">*</span></label>
       <select id="debitAccount" required>
@@ -268,6 +294,7 @@
       <div class="otherWrap" id="creditAccountOtherWrap"><input type="text" id="creditAccountOther" placeholder="specify..."></div>
     </div>
 
+    <div class="history-title">Tags</div>
     <div class="field">
       <label>Comment <span class="hint">(multiple)</span></label>
       <div class="checks" id="commentChecks">
@@ -320,6 +347,7 @@
       <input type="text" id="locationOther" placeholder="other location (optional, freetext)" style="margin-top:10px;">
     </div>
 
+    <div class="history-title">Other</div>
     <div class="row">
       <div class="field">
         <label>Ledger</label>
@@ -340,22 +368,157 @@
       <input type="text" id="flagsOther" placeholder="additional flag/comment (optional)">
     </div>
 
-    <hr class="divider">
-
     <button type="submit" id="submitBtn">Post entry to ledger</button>
     <div id="status"></div>
   </form>
 
-  <div class="ledger-footer">recorded to accounting_entries.csv · Munotstadt/AccountingDataCollector</div>
+  <div class="footer">
+    <span>Daten: accounting_entries.csv · Munotstadt/AccountingDataCollector</span>
+    <span id="lastSynced">—</span>
+  </div>
 </div>
 
 <script>
 const REPO = "Munotstadt/AccountingDataCollector";
 const FILE_PATH = "accounting_entries.csv";
 const BRANCH = "main";
-const HEADER = "Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags";
+const HEADER = "Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags,SubmittedBy,Device,IP";
 
-let entryCounter = 0;
+// Persistent anonymous device identifier (no login) — created once per browser, reused after
+const DEVICE_ID_KEY = 'accountingLedger_deviceId';
+let deviceId = localStorage.getItem(DEVICE_ID_KEY);
+if (!deviceId) {
+  deviceId = 'device-' + (crypto.randomUUID ? crypto.randomUUID().slice(0,8) : Math.random().toString(36).slice(2,10));
+  localStorage.setItem(DEVICE_ID_KEY, deviceId);
+}
+
+function getDeviceDescriptor(){
+  const ua = navigator.userAgent || 'unknown';
+  const platform = navigator.platform || '';
+  const lang = navigator.language || '';
+  const screenInfo = `${screen.width}x${screen.height}`;
+  return `${platform} | ${screenInfo} | ${lang} | ${ua}`;
+}
+
+async function getPublicIP(){
+  try {
+    const res = await fetch('https://api.ipify.org?format=json');
+    if (!res.ok) return 'unavailable';
+    const data = await res.json();
+    return data.ip || 'unavailable';
+  } catch (e) {
+    return 'unavailable';
+  }
+}
+
+let entryCount = null; // number of existing data rows in the CSV (excl. header)
+
+function setLedgerStatus(state, text){
+  const dot = document.getElementById('statusDot');
+  const statusText = document.getElementById('statusText');
+  dot.classList.remove('stale','error');
+  if (state === 'stale') dot.classList.add('stale');
+  if (state === 'error') dot.classList.add('error');
+  statusText.textContent = text;
+}
+
+function updateLedgerNoDisplay(){
+  const el = document.getElementById('entryNo');
+  el.textContent = entryCount == null ? '—' : String(entryCount + 1).padStart(4,'0');
+}
+
+// Full CSV parser (handles quoted fields, embedded commas/newlines, "" escaping)
+function parseCSV(text){
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (inQuotes){
+      if (c === '"'){
+        if (text[i+1] === '"'){ field += '"'; i++; }
+        else { inQuotes = false; }
+      } else field += c;
+    } else {
+      if (c === '"'){ inQuotes = true; }
+      else if (c === ','){ row.push(field); field = ''; }
+      else if (c === '\n'){ row.push(field); rows.push(row); row = []; field = ''; }
+      else if (c === '\r'){ /* skip */ }
+      else field += c;
+    }
+  }
+  if (field.length > 0 || row.length > 0){ row.push(field); rows.push(row); }
+  return rows;
+}
+
+// Counts how often each tag appears (pipe-separated multi-value fields) per column
+function computeTagFrequencies(rows){
+  const freq = { Comment: {}, Party: {}, Location: {} };
+  if (rows.length === 0) return freq;
+  const header = rows[0];
+  const idx = {
+    Comment: header.indexOf('Comment'),
+    Party: header.indexOf('Party'),
+    Location: header.indexOf('Location')
+  };
+  for (let r = 1; r < rows.length; r++){
+    const cols = rows[r];
+    for (const key of ['Comment','Party','Location']){
+      const i = idx[key];
+      if (i == null || i < 0) continue;
+      const val = cols[i];
+      if (!val) continue;
+      val.split('|').map(s => s.trim()).filter(Boolean).forEach(tag => {
+        freq[key][tag] = (freq[key][tag] || 0) + 1;
+      });
+    }
+  }
+  return freq;
+}
+
+// Reorders the checkbox <label> elements inside a .checks container by descending usage frequency
+function reorderChecksByFrequency(containerId, freqMap){
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const labels = Array.from(container.querySelectorAll('label'));
+  labels.sort((a, b) => {
+    const fa = freqMap[a.querySelector('input').value] || 0;
+    const fb = freqMap[b.querySelector('input').value] || 0;
+    return fb - fa; // stable sort keeps original relative order for ties
+  });
+  labels.forEach(l => container.appendChild(l));
+}
+
+// Reads the current CSV directly from GitHub (public repo, no token needed)
+// to determine the true next ledger number, kept in sync across devices,
+// and to re-rank the Comment/Party/Location checkboxes by usage frequency.
+async function refreshLedgerNumber(){
+  setLedgerStatus('stale', 'checking ledger…');
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}?ref=${BRANCH}`);
+    if (res.status === 200) {
+      const data = await res.json();
+      const content = b64DecodeUnicode(data.content.replace(/\n/g,''));
+      const rows = parseCSV(content);
+      entryCount = Math.max(0, rows.length - 1); // minus header row
+      const freq = computeTagFrequencies(rows);
+      reorderChecksByFrequency('commentChecks', freq.Comment);
+      reorderChecksByFrequency('partyChecks', freq.Party);
+      reorderChecksByFrequency('locationChecks', freq.Location);
+      setLedgerStatus('ok', 'ledger synced');
+    } else if (res.status === 404) {
+      entryCount = 0;
+      setLedgerStatus('ok', 'ledger empty');
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+  } catch (e) {
+    entryCount = null;
+    setLedgerStatus('error', 'ledger unreachable');
+  }
+  updateLedgerNoDisplay();
+}
 
 // load any saved token from this browser's localStorage
 const PAT_KEY = 'accountingLedger_pat';
@@ -459,13 +622,20 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
   const amtCry = ""; // computed downstream
   const amtCHF = ""; // computed downstream
 
-  const row = [
-    timestamp, date, currency, amtLC, amtCry, amtCHF,
-    debitAccount, creditAccount, comment, party, location, ledger, flags
-  ].map(csvEscape).join(',');
-
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
+  setStatus('pending', 'Looking up device info…');
+
+  const submittedBy = deviceId;
+  const device = getDeviceDescriptor();
+  const ip = await getPublicIP();
+
+  const row = [
+    timestamp, date, currency, amtLC, amtCry, amtCHF,
+    debitAccount, creditAccount, comment, party, location, ledger, flags,
+    submittedBy, device, ip
+  ].map(csvEscape).join(',');
+
   setStatus('pending', 'Contacting GitHub…');
 
   const apiUrl = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
@@ -510,8 +680,10 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
       throw new Error(`PUT failed (${putRes.status}): ${errBody}`);
     }
 
-    entryCounter++;
-    document.getElementById('entryNo').textContent = String(entryCounter).padStart(4,'0');
+    entryCount = (entryCount == null ? 0 : entryCount) + 1;
+    updateLedgerNoDisplay();
+    setLedgerStatus('ok', 'ledger synced');
+    document.getElementById('lastSynced').textContent = 'synced ' + new Date().toLocaleTimeString('de-CH');
     setStatus('ok', `Posted → ${REPO}/${FILE_PATH}\n${row}`);
     e.target.reset();
     document.querySelectorAll('.otherWrap').forEach(w => w.classList.remove('show'));
@@ -525,6 +697,8 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
     btn.disabled = false;
   }
 });
+
+refreshLedgerNumber();
 </script>
 </body>
 </html>
