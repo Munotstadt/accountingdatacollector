@@ -203,11 +203,14 @@
     writes to <code id="targetRepoLabel">Munotstadt/AccountingDataCollector</code> · file <code>accounting_entries.csv</code> · branch <code>main</code>
   </div>
 
-  <details class="credentials">
-    <summary>GitHub access (entered fresh each session — never stored)</summary>
+  <details class="credentials" open>
+    <summary>GitHub access (saved on this device only)</summary>
     <div class="field">
       <label>Personal Access Token <span class="req">*</span></label>
       <input type="password" id="pat" placeholder="ghp_...">
+    </div>
+    <div style="margin-top:8px;">
+      <a href="#" id="clearTokenLink" style="font-size:11px; color:var(--ink-soft);">clear saved token</a>
     </div>
   </details>
 
@@ -353,6 +356,18 @@ const BRANCH = "main";
 const HEADER = "Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags";
 
 let entryCounter = 0;
+
+// load any saved token from this browser's localStorage
+const PAT_KEY = 'accountingLedger_pat';
+const savedPat = localStorage.getItem(PAT_KEY);
+if (savedPat) document.getElementById('pat').value = savedPat;
+
+document.getElementById('clearTokenLink').addEventListener('click', (e) => {
+  e.preventDefault();
+  localStorage.removeItem(PAT_KEY);
+  document.getElementById('pat').value = '';
+  setStatus('pending', 'Saved token cleared from this device.');
+});
 
 // wire up "other" reveal behavior (single-select dropdowns only)
 function wireOther(selectId, wrapId){
@@ -502,7 +517,7 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
     document.querySelectorAll('.otherWrap').forEach(w => w.classList.remove('show'));
     document.getElementById('currency').value = 'CHF';
     document.getElementById('ledger').value = 'PG';
-    document.getElementById('pat').value = pat; // keep token for next entry this session
+    localStorage.setItem(PAT_KEY, pat); // persist on this device for next time
 
   } catch (err) {
     setStatus('err', 'Failed: ' + err.message);
