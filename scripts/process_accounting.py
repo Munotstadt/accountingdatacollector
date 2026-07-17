@@ -5,6 +5,8 @@ Processes accounting_entries.csv into processed-accounting-entries.csv:
     (first rate of the transaction date, or the last available rate before that date)
   - Stores the FX rate used in AmtCry (1 for CHF)
   - Renames Debit/Credit accounts to their VP equivalents when Ledger == "VP"
+  - Only processes rows that don't have a ProcessingDateTime yet -- already
+    processed rows are carried forward unchanged (never recomputed)
 
 Run from the repo root (expects accounting_entries.csv alongside this script,
 or pass paths as CLI args: input, fx_source, output).
@@ -32,7 +34,6 @@ VP_RENAME_MAP = {
     "Revolut PG": "Revolut VP",
     "RB PK Plus PG": "RB PK Plus VP",
 }
-
 
 
 def load_fx_rates(path_or_url):
@@ -81,11 +82,46 @@ def process(input_path, fx_source, output_path):
 
     with open(input_path, encoding="utf-8") as f:
         reader = csv.DictReader(f)
-        fieldnames = reader.fieldnames
-        rows = list(reader)
+        raw_rows = list(reader)
+
+    # Load already-processed rows (if the output file exists yet), keyed by Timestamp.
+    # These are carried forward unchanged -- they are never recomputed.
+    existing_by_ts = {}
+    fieldnames = None
+    try:
+        with open(output_path, encoding="utf-8") as f:
+            existing_reader = csv.DictReader(f)
+            fieldnames = existing_reader.fieldnames
+            for row in existing_reader:
+                existing_by_ts[row["Timestamp"]] = row
+    except FileNotFoundError:
+        pass
+
+    now_str = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+
+    # Base fieldnames come from the raw file, plus ProcessingDateTime at the end.
+    base_fieldnames = list(raw_rows[0].keys()) if raw_rows else []
+    if fieldnames is None:
+        fieldnames = base_fieldnames + ["ProcessingDateTime"]
+    elif "ProcessingDateTime" not in fieldnames:
+        fieldnames = fieldnames + ["ProcessingDateTime"]
 
     warnings = []
-    for row in rows:
+    output_rows = []
+
+    for raw_row in raw_rows:
+        ts = raw_row.get("Timestamp", "")
+        existing = existing_by_ts.get(ts)
+
+        if existing is not None:
+            # Already processed in an earlier run -- migrate missing ProcessingDateTime
+            # (e.g. rows processed before this column existed) but do not recompute.
+            if not existing.get("ProcessingDateTime"):
+                existing["ProcessingDateTime"] = now_str
+            output_rows.append(existing)
+            continue
+
+        row = dict(raw_row)  # fresh copy, never processed before
         currency = (row.get("Currency") or "").strip()
         amt_lc_raw = (row.get("AmtLC") or "").strip()
         date_raw = (row.get("Date") or "").strip()
@@ -122,14 +158,18 @@ def process(input_path, fx_source, output_path):
             if credit in VP_RENAME_MAP:
                 row["CreditAccount"] = VP_RENAME_MAP[credit]
 
+        row["ProcessingDateTime"] = now_str
+        output_rows.append(row)
+
     with open(output_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
-        writer.writerows(rows)
+        writer.writerows(output_rows)
 
+    new_count = sum(1 for r in output_rows if r["ProcessingDateTime"] == now_str)
     for w in warnings:
         print("WARNING:", w, file=sys.stderr)
-    print(f"Processed {len(rows)} rows -> {output_path}")
+    print(f"{len(output_rows)} total rows, {new_count} newly processed -> {output_path}")
 
 
 if __name__ == "__main__":
