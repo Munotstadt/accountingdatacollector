@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accounting Entry — Ledger</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper:#F5F1E8;
+    --paper-line:#DCD4C0;
+    --ink:#1C2B3A;
+    --ink-soft:#5B6B7A;
+    --rule:#B9AD8F;
+    --accent:#7A3B2E;
+    --accent-soft:#9C5A46;
+    --ok:#3E5C46;
+    --err:#A3372B;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      repeating-linear-gradient(var(--paper) 0px, var(--paper) 34px, var(--paper-line) 35px);
+    color:var(--ink);
+    font-family:'IBM Plex Mono', monospace;
+    display:flex;
+    justify-content:center;
+    padding:40px 16px 80px;
+  }
+  .sheet{
+    width:100%;
+    max-width:640px;
+  }
+  header{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-bottom:3px double var(--rule);
+    padding-bottom:14px;
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size:28px;
+    margin:0;
+    letter-spacing:.2px;
+  }
+  .stamp{
+    font-size:11px;
+    color:var(--ink-soft);
+    text-align:right;
+    line-height:1.5;
+  }
+  .stamp b{color:var(--ink);}
+  #entryNo{color:var(--accent);font-weight:600;}
+
+  .target-bar{
+    font-size:11px;
+    color:var(--ink-soft);
+    margin:10px 0 26px;
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .target-bar code{
+    background:rgba(122,59,46,.08);
+    padding:1px 6px;
+    border-radius:2px;
+    color:var(--accent);
+  }
+
+  fieldset{border:none;margin:0;padding:0;}
+  .row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-bottom:20px;
+  }
+  .field{margin-bottom:20px;}
+  label{
+    display:flex;
+    justify-content:space-between;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  label .req{color:var(--accent);}
+  input, select, textarea{
+    width:100%;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:15px;
+    color:var(--ink);
+    background:transparent;
+    border:none;
+    border-bottom:1.5px solid var(--rule);
+    padding:6px 2px;
+    outline:none;
+    transition:border-color .15s;
+  }
+  input:focus, select:focus, textarea:focus{border-bottom-color:var(--accent);}
+  select{cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235B6B7A'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 4px center;}
+
+  .otherWrap{margin-top:8px; display:none;}
+  .otherWrap.show{display:block;}
+
+  .flags{display:flex; gap:18px; flex-wrap:wrap; padding-top:4px;}
+  .flags label{
+    display:flex; align-items:center; gap:6px;
+    text-transform:none; font-size:13px; color:var(--ink);
+    letter-spacing:0;
+  }
+  .flags input[type=checkbox]{width:auto; accent-color:var(--accent);}
+
+  label .hint{text-transform:none; letter-spacing:0; color:var(--ink-soft); font-size:11px;}
+  .checks{
+    display:flex; flex-wrap:wrap; gap:8px 14px;
+    padding:6px 0 2px;
+    border-bottom:1.5px solid var(--rule);
+    padding-bottom:12px;
+  }
+  .checks label{
+    display:flex; align-items:center; gap:5px;
+    text-transform:none; letter-spacing:0;
+    font-size:12.5px; color:var(--ink);
+    background:rgba(28,43,58,.03);
+    padding:4px 9px;
+    border-radius:2px;
+  }
+  .checks input[type=checkbox]{width:auto; accent-color:var(--accent); margin:0;}
+
+  .divider{
+    border:none; border-top:1px dashed var(--rule); margin:30px 0;
+  }
+
+  .credentials{
+    background:rgba(28,43,58,.04);
+    border:1px solid var(--paper-line);
+    padding:16px 18px;
+    margin-bottom:28px;
+    font-size:12px;
+  }
+  .credentials summary{cursor:pointer; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.08em; font-size:11px;}
+  .credentials .field{margin:14px 0 0;}
+
+  button{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:14px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:14px 28px;
+    cursor:pointer;
+    width:100%;
+    transition:background .15s;
+  }
+  button:hover{background:var(--accent);}
+  button:disabled{background:var(--ink-soft); cursor:wait;}
+
+  #status{
+    margin-top:16px;
+    font-size:13px;
+    padding:12px 14px;
+    border-left:3px solid transparent;
+    display:none;
+    white-space:pre-wrap;
+  }
+  #status.ok{display:block; border-color:var(--ok); background:rgba(62,92,70,.08); color:var(--ok);}
+  #status.err{display:block; border-color:var(--err); background:rgba(163,55,43,.08); color:var(--err);}
+  #status.pending{display:block; border-color:var(--ink-soft); background:rgba(91,107,122,.08); color:var(--ink-soft);}
+
+  .ledger-footer{
+    margin-top:34px;
+    text-align:center;
+    font-size:10px;
+    color:var(--ink-soft);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+  }
+
+  @media (max-width:520px){
+    .row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <h1>Accounting Entry</h1>
+    <div class="stamp">Ledger No. <span id="entryNo">—</span><br><b>Munotstadt</b></div>
+  </header>
+
+  <div class="target-bar">
+    writes to <code id="targetRepoLabel">Munotstadt/AccountingDataCollector</code> · file <code>accounting_entries.csv</code> · branch <code>main</code>
+  </div>
+
+  <details class="credentials">
+    <summary>GitHub access (entered fresh each session — never stored)</summary>
+    <div class="field">
+      <label>Personal Access Token <span class="req">*</span></label>
+      <input type="password" id="pat" placeholder="ghp_...">
+    </div>
+  </details>
+
+  <form id="entryForm" autocomplete="off">
+
+    <div class="row">
+      <div class="field">
+        <label>Date <span class="req">*</span></label>
+        <input type="date" id="date" required>
+      </div>
+      <div class="field">
+        <label>Currency <span class="req">*</span></label>
+        <select id="currency" required>
+          <option value="CHF" selected>CHF</option>
+          <option value="EUR">EUR</option>
+          <option value="USD">USD</option>
+          <option value="__other__">XXX (other)</option>
+        </select>
+        <div class="otherWrap" id="currencyOtherWrap"><input type="text" id="currencyOther" placeholder="currency code..."></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Amount (LC) <span class="req">*</span></label>
+      <input type="number" step="0.01" id="amtLC" placeholder="0.00" required>
+    </div>
+
+    <div class="field">
+      <label>Debit Account <span class="req">*</span></label>
+      <select id="debitAccount" required>
+        <option value="" disabled selected>Choose</option>
+        <option>Life PG</option><option>Mobility Expenses PG</option><option>Restaurants PG</option>
+        <option>Restaurants (Family) PG</option><option>Groceries PG</option><option>Auto Laden PG</option>
+        <option>Auto Parken PG</option><option>Auto Andere PG</option><option>Gifts PG</option>
+        <option>Vacation & Leisure PG</option><option>Sport & Hobbies & Leisure PG</option>
+        <option>Living Haushalt PG</option><option>Kleider Chemische Reinigung</option>
+        <option>IT: Software & Apps PG</option><option>Health Expenses PG</option><option>Cash CHF</option>
+        <option>Revolut PG</option><option>Culture PG</option><option>RB PK Plus PG</option>
+        <option>InfoCom Other PG</option><option>Admin & Transfer PG</option><option>Sundry PG</option>
+        <option>Work related expenses (PwC) PG</option><option value="__other__">OTHERS</option>
+      </select>
+      <div class="otherWrap" id="debitAccountOtherWrap"><input type="text" id="debitAccountOther" placeholder="specify..."></div>
+    </div>
+
+    <div class="field">
+      <label>Credit Account <span class="req">*</span></label>
+      <select id="creditAccount" required>
+        <option value="" disabled selected>Choose</option>
+        <option>CC TCS PG</option><option>Gutschein SBB PG</option><option>Revolut PG</option>
+        <option>RB PK Plus PG</option><option>Life PG</option><option>Admin & Transfer PG</option>
+        <option>Other income PG</option><option>Gutschein REKA & Co PG</option>
+        <option>SQ WS CHF PG (#315)</option><option>SQ WS EUR PG (#315)</option>
+        <option value="__other__">OTHERS</option>
+      </select>
+      <div class="otherWrap" id="creditAccountOtherWrap"><input type="text" id="creditAccountOther" placeholder="specify..."></div>
+    </div>
+
+    <div class="field">
+      <label>Comment <span class="hint">(multiple)</span></label>
+      <div class="checks" id="commentChecks">
+        <label><input type="checkbox" class="chk-comment" value="#LL1">#LL1</label>
+        <label><input type="checkbox" class="chk-comment" value="#LL2">#LL2</label>
+        <label><input type="checkbox" class="chk-comment" value="#LL3">#LL3</label>
+        <label><input type="checkbox" class="chk-comment" value="#DD1">#DD1</label>
+        <label><input type="checkbox" class="chk-comment" value="#DD2">#DD2</label>
+        <label><input type="checkbox" class="chk-comment" value="#DD3">#DD3</label>
+        <label><input type="checkbox" class="chk-comment" value="Einkauf Lebensmittel">Einkauf Lebensmittel</label>
+        <label><input type="checkbox" class="chk-comment" value="Parking">Parking</label>
+        <label><input type="checkbox" class="chk-comment" value="Cash">Cash</label>
+        <label><input type="checkbox" class="chk-comment" value="Drinks & Kaffee">Drinks & Kaffee</label>
+        <label><input type="checkbox" class="chk-comment" value="Snack">Snack</label>
+        <label><input type="checkbox" class="chk-comment" value="PwC Lunch mit">PwC Lunch mit</label>
+        <label><input type="checkbox" class="chk-comment" value="Niederhasli-Zürich-Niederhasli">Niederhasli-Zürich-Niederhasli</label>
+        <label><input type="checkbox" class="chk-comment" value="Niederhasli-Winterthur-Niederhasli">Niederhasli-Winterthur-Niederhasli</label>
+        <label><input type="checkbox" class="chk-comment" value="Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt)">Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt)</label>
+        <label><input type="checkbox" class="chk-comment" value="#Takeout">#Takeout</label>
+        <label><input type="checkbox" class="chk-comment" value="#Superpunkte">#Superpunkte</label>
+      </div>
+      <input type="text" id="commentOther" placeholder="other comment (optional, freetext)" style="margin-top:10px;">
+    </div>
+
+    <div class="field">
+      <label>Party <span class="hint">(multiple)</span></label>
+      <div class="checks" id="partyChecks">
+        <label><input type="checkbox" class="chk-party" value="Coop">Coop</label>
+        <label><input type="checkbox" class="chk-party" value="Migros">Migros</label>
+        <label><input type="checkbox" class="chk-party" value="Volg">Volg</label>
+        <label><input type="checkbox" class="chk-party" value="PwC">PwC</label>
+        <label><input type="checkbox" class="chk-party" value="FAIRTIQ">FAIRTIQ</label>
+        <label><input type="checkbox" class="chk-party" value="SBB">SBB</label>
+        <label><input type="checkbox" class="chk-party" value="_Gastro">_Gastro</label>
+        <label><input type="checkbox" class="chk-party" value="_Stores">_Stores</label>
+        <label><input type="checkbox" class="chk-party" value="_Transfers">_Transfers</label>
+      </div>
+      <input type="text" id="partyOther" placeholder="other party (optional, freetext)" style="margin-top:10px;">
+    </div>
+
+    <div class="field">
+      <label>Location <span class="hint">(multiple)</span></label>
+      <div class="checks" id="locationChecks">
+        <label><input type="checkbox" class="chk-location" value="Zürich">Zürich</label>
+        <label><input type="checkbox" class="chk-location" value="Winterthur">Winterthur</label>
+        <label><input type="checkbox" class="chk-location" value="Dielsdorf">Dielsdorf</label>
+        <label><input type="checkbox" class="chk-location" value="Niederhasli">Niederhasli</label>
+        <label><input type="checkbox" class="chk-location" value="Rümlang">Rümlang</label>
+      </div>
+      <input type="text" id="locationOther" placeholder="other location (optional, freetext)" style="margin-top:10px;">
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Ledger</label>
+        <select id="ledger">
+          <option value="PG" selected>PG</option>
+          <option value="VP">VP</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Flags</label>
+        <div class="flags">
+          <label><input type="checkbox" value="TRUE" class="flagBox"> TRUE</label>
+          <label><input type="checkbox" value="TWINT" class="flagBox"> TWINT</label>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <input type="text" id="flagsOther" placeholder="additional flag/comment (optional)">
+    </div>
+
+    <hr class="divider">
+
+    <button type="submit" id="submitBtn">Post entry to ledger</button>
+    <div id="status"></div>
+  </form>
+
+  <div class="ledger-footer">recorded to accounting_entries.csv · Munotstadt/AccountingDataCollector</div>
+</div>
+
+<script>
+const REPO = "Munotstadt/AccountingDataCollector";
+const FILE_PATH = "accounting_entries.csv";
+const BRANCH = "main";
+const HEADER = "Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags";
+
+let entryCounter = 0;
+
+// wire up "other" reveal behavior (single-select dropdowns only)
+function wireOther(selectId, wrapId){
+  const sel = document.getElementById(selectId);
+  const wrap = document.getElementById(wrapId);
+  sel.addEventListener('change', () => {
+    wrap.classList.toggle('show', sel.value === '__other__');
+  });
+}
+['debitAccount','creditAccount','currency'].forEach(id => wireOther(id, id+'OtherWrap'));
+
+function resolveValue(selectId, otherId){
+  const sel = document.getElementById(selectId);
+  if (!sel) return "";
+  if (sel.value === '__other__') return document.getElementById(otherId).value.trim();
+  return sel.value;
+}
+
+// combine checked boxes + freetext "other" field into one pipe-separated string
+function resolveMulti(checkboxClass, otherId){
+  const checked = Array.from(document.querySelectorAll('.' + checkboxClass + ':checked')).map(cb => cb.value);
+  const other = document.getElementById(otherId).value.trim();
+  if (other) checked.push(other);
+  return checked.join(' | ');
+}
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+// dd.mm.yyyy hh:mm, from a Date object (local time)
+function fmtTimestamp(d){
+  return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+// dd.mm.yyyy, from an <input type=date> value (yyyy-mm-dd)
+function fmtDate(isoDate){
+  const [y,m,day] = isoDate.split('-');
+  return `${day}.${m}.${y}`;
+}
+
+function csvEscape(v){
+  v = (v ?? "").toString();
+  if (/[",\n]/.test(v)) return '"' + v.replace(/"/g,'""') + '"';
+  return v;
+}
+
+function b64EncodeUnicode(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m, p1) => String.fromCharCode(parseInt(p1, 16))));
+}
+function b64DecodeUnicode(str) {
+  return decodeURIComponent(atob(str).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+}
+
+function setStatus(kind, msg){
+  const el = document.getElementById('status');
+  el.className = kind;
+  el.textContent = msg;
+}
+
+document.getElementById('entryForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const pat = document.getElementById('pat').value.trim();
+  if (!pat){ setStatus('err','Missing: GitHub Personal Access Token.'); return; }
+
+  const dateRaw = document.getElementById('date').value;
+  const amtLC = document.getElementById('amtLC').value;
+  if (!dateRaw || !amtLC){ setStatus('err','Date and Amount (LC) are required.'); return; }
+
+  const currency = resolveValue('currency','currencyOther');
+  const debitAccount = resolveValue('debitAccount','debitAccountOther');
+  const creditAccount = resolveValue('creditAccount','creditAccountOther');
+  if (!currency || !debitAccount || !creditAccount){
+    setStatus('err','Currency, Debit Account and Credit Account are required.');
+    return;
+  }
+
+  const comment = resolveMulti('chk-comment','commentOther');
+  const party = resolveMulti('chk-party','partyOther');
+  const location = resolveMulti('chk-location','locationOther');
+  const ledger = document.getElementById('ledger').value;
+
+  const flagList = Array.from(document.querySelectorAll('.flagBox:checked')).map(cb => cb.value);
+  const flagsOther = document.getElementById('flagsOther').value.trim();
+  if (flagsOther) flagList.push(flagsOther);
+  const flags = flagList.join(' | ');
+
+  const timestamp = fmtTimestamp(new Date());
+  const date = fmtDate(dateRaw);
+  const amtCry = ""; // computed downstream
+  const amtCHF = ""; // computed downstream
+
+  const row = [
+    timestamp, date, currency, amtLC, amtCry, amtCHF,
+    debitAccount, creditAccount, comment, party, location, ledger, flags
+  ].map(csvEscape).join(',');
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  setStatus('pending', 'Contacting GitHub…');
+
+  const apiUrl = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
+  const headers = {
+    'Authorization': `Bearer ${pat}`,
+    'Accept': 'application/vnd.github+json'
+  };
+
+  try {
+    let sha = null;
+    let existingContent = "";
+    const getRes = await fetch(`${apiUrl}?ref=${BRANCH}`, { headers });
+
+    if (getRes.status === 200) {
+      const data = await getRes.json();
+      sha = data.sha;
+      existingContent = b64DecodeUnicode(data.content.replace(/\n/g,''));
+      if (!existingContent.endsWith('\n')) existingContent += '\n';
+    } else if (getRes.status === 404) {
+      existingContent = HEADER + '\n';
+    } else {
+      const errBody = await getRes.text();
+      throw new Error(`GET failed (${getRes.status}): ${errBody}`);
+    }
+
+    const newContent = existingContent + row + '\n';
+    const putBody = {
+      message: `Add ledger entry ${date} · ${party || debitAccount} · ${currency} ${amtLC}`,
+      content: b64EncodeUnicode(newContent),
+      branch: BRANCH
+    };
+    if (sha) putBody.sha = sha;
+
+    const putRes = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify(putBody)
+    });
+
+    if (!putRes.ok) {
+      const errBody = await putRes.text();
+      throw new Error(`PUT failed (${putRes.status}): ${errBody}`);
+    }
+
+    entryCounter++;
+    document.getElementById('entryNo').textContent = String(entryCounter).padStart(4,'0');
+    setStatus('ok', `Posted → ${REPO}/${FILE_PATH}\n${row}`);
+    e.target.reset();
+    document.querySelectorAll('.otherWrap').forEach(w => w.classList.remove('show'));
+    document.getElementById('currency').value = 'CHF';
+    document.getElementById('ledger').value = 'PG';
+    document.getElementById('pat').value = pat; // keep token for next entry this session
+
+  } catch (err) {
+    setStatus('err', 'Failed: ' + err.message);
+  } finally {
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
