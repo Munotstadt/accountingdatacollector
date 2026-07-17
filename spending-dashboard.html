@@ -216,17 +216,20 @@
     <button type="button" id="applyCustomRange">Anwenden</button>
   </div>
 
+  <div class="history-title">Nach Kategorie <span class="hint">Total · Ø/Tag</span></div>
+  <div class="rank-list" id="rankListDebitAgg"><div class="chart-empty">Loading…</div></div>
+
   <div class="history-title">Täglicher Verlauf (AmtCHF pro Tag, nach Kategorie)</div>
   <div class="chart-wrap" id="chartDaily"><div class="chart-empty">Loading chart…</div></div>
   <div class="legend" id="chartLegend"></div>
 
   <div class="history-title">Nach Kategorie (Debit Account) <span class="hint">Total · Ø/Tag</span></div>
-  <div class="rank-list" id="rankListDebit"><div class="chart-empty">Loading…</div></div>
+  <div class="rank-list" id="rankListDebitRaw"><div class="chart-empty">Loading…</div></div>
 
   <div class="history-title">Nach Zahlungsquelle (Credit Account) <span class="hint">Total · Ø/Tag</span></div>
   <div class="rank-list" id="rankListCredit"><div class="chart-empty">Loading…</div></div>
 
-  <div class="history-title" id="txTitle">Letzte Buchungen <span class="hint">(letzte 30 Tage)</span></div>
+  <div class="history-title" id="txTitle">Letzte Buchungen <span class="hint">(Aktuelle Woche)</span></div>
   <table id="txTable">
     <thead>
       <tr>
@@ -236,10 +239,9 @@
         <th>Party</th>
         <th>Location</th>
         <th class="num">AmtLC</th>
-        <th class="num">CHF</th>
       </tr>
     </thead>
-    <tbody id="txBody"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+    <tbody id="txBody"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
   </table>
 
   <div class="footer">
@@ -367,7 +369,7 @@ function getPeriodDays(range, now, custom, txsInRange){
   return 60;
 }
 
-function renderRankList(container, txs, periodDays, keyFn){
+function renderRankList(container, txs, periodDays, keyFn, colorFn){
   const byCategory = {};
   txs.forEach(t => { const k = keyFn(t); byCategory[k] = (byCategory[k] || 0) + t.amt; });
   const entries = Object.entries(byCategory).sort((a,b) => b[1] - a[1]);
@@ -381,20 +383,48 @@ function renderRankList(container, txs, periodDays, keyFn){
     const [name, amt] = entry;
     const pct = Math.max(2, (amt / max) * 100);
     const perDay = amt / days;
+    const color = colorFn ? colorFn(name) : null;
+    const swatch = color ? `<span class="legend-swatch" style="background:${color}; margin-right:6px;"></span>` : '';
+    const barColor = color || 'var(--accent)';
     return `<div class="rank-row">
       <div class="rank-num">${i+1}</div>
       <div class="rank-body">
         <div class="rank-top">
-          <span class="rank-name">${name}</span>
+          <span class="rank-name">${swatch}${name}</span>
           <span class="rank-amounts"><span class="rank-amt">${fmtCHF(amt)}</span><span class="rank-avg">Ø ${fmtCHF(perDay)}/Tag</span></span>
         </div>
-        <div class="rank-track"><div class="rank-fill" style="width:${pct.toFixed(1)}%"></div></div>
+        <div class="rank-track"><div class="rank-fill" style="width:${pct.toFixed(1)}%; background:${barColor};"></div></div>
       </div>
     </div>`;
   }).join('');
 }
 
-const CATEGORY_COLORS = ['#1F6FA8', '#C08A00', '#1F8A6E', '#8A5CC0', '#C0293D', '#767E8A'];
+const CATEGORY_COLORS = ['#1F6FA8', '#C08A00', '#1F8A6E', '#8A5CC0', '#C0293D', '#3D8FC7', '#A65D2E', '#5C6BC0'];
+
+// Fixed, memorable colors for the common known categories; anything else gets
+// a stable hash-derived color so it's still consistent across renders.
+const FIXED_CATEGORY_COLORS = {
+  'Restaurants': '#1F6FA8',            // blue
+  'Restaurants (Family)': '#3D8FC7',   // related blue, kept distinct
+  'Life': '#C0293D',                   // red
+  'Groceries': '#1F8A6E',              // green
+  'Vacation & Leisure': '#8A5CC0',     // purple
+  'Sport & Hobbies & Leisure': '#C08A00', // amber
+  'Andere': '#767E8A'                  // gray
+};
+
+function hashColor(str){
+  let hash = 0;
+  for (let i = 0; i < str.length; i++){ hash = (hash * 31 + str.charCodeAt(i)) | 0; }
+  const idx = Math.abs(hash) % CATEGORY_COLORS.length;
+  return CATEGORY_COLORS[idx];
+}
+
+function getCategoryColor(rawName){
+  const base = baseCategory(rawName);
+  if (FIXED_CATEGORY_COLORS[base]) return FIXED_CATEGORY_COLORS[base];
+  return hashColor(base);
+}
 
 function drawDailyBarChart(container, legendEl, txs){
   const width = 800, height = 240, pad = { top: 14, right: 14, bottom: 26, left: 46 };
@@ -416,7 +446,7 @@ function drawDailyBarChart(container, legendEl, txs){
   const hasOther = rankedCats.length > topN;
   const categories = hasOther ? topCats.concat(['Andere']) : topCats;
   const colorFor = {};
-  categories.forEach((c,i) => colorFor[c] = CATEGORY_COLORS[i % CATEGORY_COLORS.length]);
+  categories.forEach(c => colorFor[c] = getCategoryColor(c));
 
   function catFor(debit){
     const base = baseCategory(debit);
@@ -509,7 +539,7 @@ function renderLegend(legendEl, categories, colorFor){
 function renderTable(tbody, txs){
   const sorted = txs.slice().sort((a,b) => b.date - a.date);
   if (sorted.length === 0){
-    tbody.innerHTML = '<tr><td colspan="7" class="empty">Keine Buchungen in den letzten 30 Tagen.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="empty">Keine Buchungen im gewählten Zeitraum.</td></tr>';
     return;
   }
   tbody.innerHTML = sorted.map(t => {
@@ -523,7 +553,6 @@ function renderTable(tbody, txs){
     <td>${t.party || '—'}</td>
     <td>${t.location || '—'}</td>
     <td class="amt">${lc}</td>
-    <td class="amt">${fmtCHF(t.amt)}</td>
   </tr>`;
   }).join('');
 }
@@ -595,7 +624,13 @@ async function init(){
     let chartFilter = null; // { dayKey: 'dd.mm.yyyy', category: string|null }
     let lastTopCats = [];
     let lastExpenseTxs = [];
+    let lastFilteredAll = [];
     const now = new Date();
+
+    const RANGE_LABELS = {
+      WEEK: 'Aktuelle Woche', '10D': '10 Tage', '30D': '30 Tage', '60D': '60 Tage',
+      CM: 'Aktueller Monat', CUSTOM: 'Benutzerdefiniert'
+    };
 
     function categoryOf(debit){
       const base = baseCategory(debit);
@@ -618,8 +653,8 @@ async function init(){
         });
         renderTable(document.getElementById('txBody'), rows);
       } else {
-        txTitle.innerHTML = 'Letzte Buchungen <span class="hint">(letzte 30 Tage)</span>';
-        renderTable(document.getElementById('txBody'), lastNDays(txs, now, 30));
+        txTitle.innerHTML = `Letzte Buchungen <span class="hint">(${RANGE_LABELS[currentRange] || ''})</span>`;
+        renderTable(document.getElementById('txBody'), lastFilteredAll);
       }
     }
 
@@ -635,6 +670,7 @@ async function init(){
 
     function render(){
       const filtered = filterByRange(txs, currentRange, now, customDates);
+      lastFilteredAll = filtered;
 
       // Admin & Transfer accounts are internal reclassifications, not real
       // expense categories or real payment sources. A row still counts on
@@ -660,7 +696,8 @@ async function init(){
       document.getElementById('statPG').textContent = fmtCHF0(totalPG);
       document.getElementById('statVP').textContent = fmtCHF0(totalVP);
 
-      renderRankList(document.getElementById('rankListDebit'), expenseTxs, periodDays, t => baseCategory(t.debit));
+      renderRankList(document.getElementById('rankListDebitAgg'), expenseTxs, periodDays, t => baseCategory(t.debit), name => getCategoryColor(name));
+      renderRankList(document.getElementById('rankListDebitRaw'), expenseTxs, periodDays, t => t.debit, name => getCategoryColor(name));
       renderRankList(document.getElementById('rankListCredit'), paymentTxs, periodDays, t => t.credit);
       const chartMeta = drawDailyBarChart(document.getElementById('chartDaily'), document.getElementById('chartLegend'), expenseTxs);
       lastTopCats = (chartMeta && chartMeta.topCats) || [];
@@ -694,10 +731,11 @@ async function init(){
   } catch(err){
     dot.classList.add('error');
     statusText.textContent = 'connection failed';
-    document.getElementById('rankListDebit').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
+    document.getElementById('rankListDebitAgg').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
+    document.getElementById('rankListDebitRaw').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
     document.getElementById('rankListCredit').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
     document.getElementById('chartDaily').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
-    document.getElementById('txBody').innerHTML = '<tr><td colspan="7" class="error">Fehler beim Laden: ' + err.message + '</td></tr>';
+    document.getElementById('txBody').innerHTML = '<tr><td colspan="6" class="error">Fehler beim Laden: ' + err.message + '</td></tr>';
   }
 }
 
