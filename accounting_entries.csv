@@ -1,6 +1,4 @@
 Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags,SubmittedBy,Device,IP
-17.07.2026 17:56,17.07.2026,EUR,9.7,,,Restaurants PG,SQ WS EUR PG (#315),Drinks & Kaffee,Union Lido,IT-Cavallino,PG,TEMP,,,
-17.07.2026 18:16,17.07.2026,EUR,58.35,,,Restaurants (Family) PG,SQ WS EUR PG (#315),#LL3,Union Lido: Test,IT-Cavallino,PG,TEMP,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",172.225.229.36
 12.07.2026 06:53,11.07.2026,CHF,13,,13,Life PG,CC TCS VP,Drinks & Kaffee,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,
 12.07.2026 06:53,11.07.2026,CHF,70,,70,Restaurants (Family) PG,CC TCS PG,#DD3,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,
 12.07.2026 06:54,11.07.2026,CHF,18,,18,Sport & Hobbies & Leisure PG,CC TCS PG,Eintritt,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,
@@ -51,4 +49,3 @@ Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,P
 17.07.2026 07:00,16.07.2026,EUR,11,,10.2,Sport & Hobbies & Leisure PG,SQ WS EUR PG (#315),Schwimmbrille,Camping Market,IT-Cavallino,PG,,bulk-import,manual CSV import,
 17.07.2026 07:01,16.07.2026,EUR,14.41,,13.3,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,PG,,bulk-import,manual CSV import,
 17.07.2026 07:01,16.07.2026,EUR,56,,51.8,Restaurants (Family) PG,SQ WS EUR PG (#315),#LL3,Union Lido: Sole e Natura,IT-Cavallino,PG,,bulk-import,manual CSV import,
-17.07.2026 18:44,17.07.2026,USD,15,,,Life PG,CC TCS PG,Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt),Coop,Rümlang,VP,temp,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",104.28.42.96
