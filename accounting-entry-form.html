@@ -185,6 +185,8 @@
   }
   button:hover{ background:var(--accent); }
   button:disabled{ background:var(--muted); cursor:wait; }
+  button.success{ background:var(--gain); }
+  button.success:hover{ background:var(--gain); }
 
   #status{
     margin-top:14px; font-size:13px; padding:12px 14px;
@@ -624,6 +626,7 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
 
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
+  btn.classList.remove('success');
   setStatus('pending', 'Looking up device info…');
 
   const submittedBy = deviceId;
@@ -653,6 +656,11 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
       const data = await getRes.json();
       sha = data.sha;
       existingContent = b64DecodeUnicode(data.content.replace(/\n/g,''));
+      const contentLines = existingContent.split('\n');
+      if (contentLines[0].trim() !== HEADER) {
+        contentLines[0] = HEADER; // self-heal: keep header in sync with current schema
+        existingContent = contentLines.join('\n');
+      }
       if (!existingContent.endsWith('\n')) existingContent += '\n';
     } else if (getRes.status === 404) {
       existingContent = HEADER + '\n';
@@ -685,6 +693,7 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
     setLedgerStatus('ok', 'ledger synced');
     document.getElementById('lastSynced').textContent = 'synced ' + new Date().toLocaleTimeString('de-CH');
     setStatus('ok', `Posted → ${REPO}/${FILE_PATH}\n${row}`);
+    btn.classList.add('success');
     e.target.reset();
     document.querySelectorAll('.otherWrap').forEach(w => w.classList.remove('show'));
     document.getElementById('currency').value = 'CHF';
