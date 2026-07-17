@@ -1,3 +1,3 @@
-Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags
-17.07.2026 17:56,17.07.2026,EUR,9.7,,,Restaurants PG,SQ WS EUR PG (#315),Drinks & Kaffee,Union Lido,IT-Cavallino,PG,
+Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags,SubmittedBy,Device,IP
+17.07.2026 17:56,17.07.2026,EUR,9.7,,,Restaurants PG,SQ WS EUR PG (#315),Drinks & Kaffee,Union Lido,IT-Cavallino,PG,,,,
 17.07.2026 18:16,17.07.2026,EUR,58.35,,,Restaurants (Family) PG,SQ WS EUR PG (#315),#LL3,Union Lido: Test,IT-Cavallino,PG,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",172.225.229.36
