@@ -1,0 +1,37 @@
+name: Process Accounting Entries
+
+on:
+  push:
+    paths:
+      - 'accounting_entries.csv'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run processing script
+        run: >
+          python scripts/process_accounting.py
+          accounting_entries.csv
+          https://raw.githubusercontent.com/Munotstadt/financialdatacollector-public/main/all_data.csv
+          processed-accounting-entries.csv
+
+      - name: Commit processed table
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add processed-accounting-entries.csv
+          git diff --quiet --cached || git commit -m "Update processed-accounting-entries.csv"
+          git push
