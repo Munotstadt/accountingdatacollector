@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>accountingdatacollector — Spending</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FFFFFF;
+    --panel: #F7F8FA;
+    --line: #E3E6EA;
+    --text: #1A1D22;
+    --muted: #767E8A;
+    --accent: #E30613;
+    --gain: #1F8A6E;
+    --loss: #C0293D;
+    --radius: 3px;
+  }
+  * { box-sizing: border-box; }
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 20px 80px;
+  }
+  .sheet{ width: 100%; max-width: 880px; }
+
+  .eyebrow{
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 18px; border-bottom: 2px solid var(--accent);
+  }
+  .brand{ display: flex; align-items: baseline; gap: 10px; }
+  .brand h1{
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px;
+    letter-spacing: 0.02em; margin: 0; text-transform: uppercase;
+  }
+  .brand span.sub{ font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
+  .status{
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--muted);
+  }
+  .dot{
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gain); box-shadow: 0 0 0 3px rgba(31,138,110,0.15);
+    animation: pulse 2.4s ease-in-out infinite; flex-shrink: 0;
+  }
+  .dot.stale{ background: var(--muted); box-shadow: none; animation: none; }
+  .dot.error{ background: var(--loss); box-shadow: 0 0 0 3px rgba(192,41,61,0.15); animation: none; }
+  @media (prefers-reduced-motion: reduce){ .dot{ animation: none; } }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+
+  .meta-header{ padding: 18px 0 6px; }
+  .meta-header h2{ font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; margin: 0 0 4px; }
+  .meta-sub{ font-family: 'Inter', sans-serif; font-size: 14px; color: var(--muted); margin: 0; }
+
+  .summary-row{ display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .stat-box{
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 12px 16px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); min-width: 130px; flex: 1 1 130px;
+  }
+  .stat-label{
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .stat-value{ font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; }
+
+  .range-selector{ display: flex; gap: 6px; margin-top: 26px; flex-wrap: wrap; }
+  .range-btn{
+    background: none; border: 1px solid var(--line); color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 6px 12px;
+    border-radius: var(--radius); cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+  .range-btn:hover{ border-color: var(--muted); color: var(--text); }
+  .range-btn.active{ background: var(--text); border-color: var(--text); color: var(--bg); font-weight: 600; }
+  .range-btn:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .history-title{
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); margin: 32px 0 12px;
+  }
+
+  .rank-list{ display: flex; flex-direction: column; gap: 10px; }
+  .rank-row{ display: flex; align-items: center; gap: 12px; }
+  .rank-num{
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted);
+    width: 20px; text-align: right; flex-shrink: 0;
+  }
+  .rank-body{ flex: 1; min-width: 0; }
+  .rank-top{ display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; gap: 8px; }
+  .rank-name{ font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rank-amt{ font-family: 'IBM Plex Mono', monospace; color: var(--text); white-space: nowrap; }
+  .rank-track{ height: 6px; background: var(--panel); border-radius: 3px; overflow: hidden; }
+  .rank-fill{ height: 100%; background: var(--accent); border-radius: 3px; }
+
+  .chart-wrap{
+    margin: 0 0 8px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 20px 16px 12px;
+  }
+  .chart-wrap svg{ display: block; width: 100%; height: auto; }
+  .chart-empty{ padding: 40px 10px; text-align: center; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+
+  table{ width: 100%; border-collapse: collapse; margin-top: 4px; }
+  thead th{
+    text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 500;
+    padding: 10px 10px 8px; border-bottom: 1px solid var(--line);
+  }
+  thead th.num{ text-align: right; }
+  tbody td{ padding: 10px; border-bottom: 1px solid var(--line); font-size: 13px; vertical-align: middle; }
+  .amt, .time{ font-family: 'IBM Plex Mono', monospace; text-align: right; color: var(--text); white-space: nowrap; }
+  .time{ color: var(--muted); font-size: 12px; text-align: left; }
+  .tag{
+    display: inline-block; font-size: 11px; font-family: 'IBM Plex Mono', monospace;
+    padding: 1px 7px; border-radius: var(--radius); background: var(--panel); border: 1px solid var(--line); color: var(--muted);
+  }
+  .empty, .error{ padding: 40px 10px; text-align: center; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+  .error{ color: var(--loss); }
+
+  .footer{
+    margin-top: 26px; display: flex; align-items: center; justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); flex-wrap: wrap; gap: 6px;
+    padding-top: 16px; border-top: 1px solid var(--line);
+  }
+
+  @media (max-width: 560px){
+    .stat-value{ font-size: 18px; }
+    #txTable thead th:nth-child(4), #txTable tbody td:nth-child(4) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="eyebrow">
+    <div class="brand">
+      <h1>accountingdatacollector</h1>
+      <span class="sub">/ spending</span>
+    </div>
+    <div class="status">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">loading…</span>
+    </div>
+  </div>
+
+  <div class="meta-header">
+    <h2>Spending Overview</h2>
+    <p class="meta-sub">Auswertung von processed-accounting-entries.csv · Beträge in CHF (AmtCHF)</p>
+
+    <div class="summary-row" id="summaryRow">
+      <div class="stat-box"><span class="stat-label">Total</span><span class="stat-value" id="statTotal">—</span></div>
+      <div class="stat-box"><span class="stat-label">Buchungen</span><span class="stat-value" id="statCount">—</span></div>
+      <div class="stat-box"><span class="stat-label">Ø pro Buchung</span><span class="stat-value" id="statAvg">—</span></div>
+      <div class="stat-box"><span class="stat-label">PG</span><span class="stat-value" id="statPG">—</span></div>
+      <div class="stat-box"><span class="stat-label">VP</span><span class="stat-value" id="statVP">—</span></div>
+    </div>
+  </div>
+
+  <div class="range-selector" id="rangeSelector">
+    <button type="button" class="range-btn active" data-range="60D">60 Tage</button>
+    <button type="button" class="range-btn" data-range="30D">30 Tage</button>
+    <button type="button" class="range-btn" data-range="10D">10 Tage</button>
+    <button type="button" class="range-btn" data-range="CM">Aktueller Monat</button>
+  </div>
+
+  <div class="history-title">Nach Kategorie (Debit Account)</div>
+  <div class="rank-list" id="rankList"><div class="chart-empty">Loading…</div></div>
+
+  <div class="history-title">Täglicher Verlauf (AmtCHF pro Tag)</div>
+  <div class="chart-wrap" id="chartDaily"><div class="chart-empty">Loading chart…</div></div>
+
+  <div class="history-title">Letzte Buchungen</div>
+  <table id="txTable">
+    <thead>
+      <tr>
+        <th>Datum</th>
+        <th>Kategorie</th>
+        <th>Party</th>
+        <th>Ledger</th>
+        <th class="num">CHF</th>
+      </tr>
+    </thead>
+    <tbody id="txBody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+  </table>
+
+  <div class="footer">
+    <span>Daten: processed-accounting-entries.csv · Munotstadt/AccountingDataCollector</span>
+    <span id="lastSynced">—</span>
+  </div>
+</div>
+
+<script>
+const DATA_URL = "https://raw.githubusercontent.com/Munotstadt/AccountingDataCollector/main/processed-accounting-entries.csv";
+
+function fmtCHF(n){
+  return n == null ? '—' : n.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' CHF';
+}
+function fmtCHF0(n){
+  return n == null ? '—' : n.toLocaleString('de-CH', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' CHF';
+}
+function fmtDateShort(d){
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  return `${dd}.${mm}.${d.getFullYear()}`;
+}
+
+// Robust CSV parser: handles quoted fields, embedded commas/newlines, "" escaping
+function parseCSV(text){
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (inQuotes){
+      if (c === '"'){
+        if (text[i+1] === '"'){ field += '"'; i++; }
+        else { inQuotes = false; }
+      } else field += c;
+    } else {
+      if (c === '"'){ inQuotes = true; }
+      else if (c === ','){ row.push(field); field = ''; }
+      else if (c === '\n'){ row.push(field); rows.push(row); row = []; field = ''; }
+      else if (c === '\r'){ /* skip */ }
+      else field += c;
+    }
+  }
+  if (field.length > 0 || row.length > 0){ row.push(field); rows.push(row); }
+  return rows;
+}
+
+function parseDDMMYYYY(s){
+  const [dd,mm,yyyy] = s.split('.').map(Number);
+  return new Date(yyyy, mm - 1, dd);
+}
+
+function filterByRange(txs, range, now){
+  let cutoff;
+  if (range === '60D'){ cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 60); }
+  else if (range === '30D'){ cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 30); }
+  else if (range === '10D'){ cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 10); }
+  else if (range === 'CM'){ cutoff = new Date(now.getFullYear(), now.getMonth(), 1); }
+  else { cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 60); }
+  return txs.filter(t => t.date >= cutoff);
+}
+
+function renderRankList(container, txs){
+  const byCategory = {};
+  txs.forEach(t => { byCategory[t.debit] = (byCategory[t.debit] || 0) + t.amt; });
+  const entries = Object.entries(byCategory).sort((a,b) => b[1] - a[1]);
+  if (entries.length === 0){
+    container.innerHTML = '<div class="chart-empty">Keine Daten im gewählten Zeitraum.</div>';
+    return;
+  }
+  const max = entries[0][1];
+  container.innerHTML = entries.slice(0, 12).map((entry, i) => {
+    const [name, amt] = entry;
+    const pct = Math.max(2, (amt / max) * 100);
+    return `<div class="rank-row">
+      <div class="rank-num">${i+1}</div>
+      <div class="rank-body">
+        <div class="rank-top"><span class="rank-name">${name}</span><span class="rank-amt">${fmtCHF(amt)}</span></div>
+        <div class="rank-track"><div class="rank-fill" style="width:${pct.toFixed(1)}%"></div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function drawDailyBarChart(container, txs){
+  const width = 800, height = 220, pad = { top: 14, right: 14, bottom: 26, left: 46 };
+  const innerW = width - pad.left - pad.right;
+  const innerH = height - pad.top - pad.bottom;
+
+  const byDay = {};
+  txs.forEach(t => {
+    const key = fmtDateShort(t.date); // dd.mm.yyyy
+    byDay[key] = (byDay[key] || 0) + t.amt;
+  });
+  // build a continuous day axis so gaps (no spending that day) show as zero, not skipped
+  const dayKeys = Object.keys(byDay);
+  if (dayKeys.length < 1){
+    container.innerHTML = '<div class="chart-empty">Keine Daten im gewählten Zeitraum.</div>';
+    return;
+  }
+  const allDates = txs.map(t => t.date).sort((a,b) => a - b);
+  const first = allDates[0], last = allDates[allDates.length - 1];
+  const points = [];
+  for (let d = new Date(first); d <= last; d.setDate(d.getDate() + 1)){
+    const key = fmtDateShort(d);
+    points.push({ key, v: byDay[key] || 0 });
+  }
+
+  if (points.length < 1){
+    container.innerHTML = '<div class="chart-empty">Nicht genug Datenpunkte.</div>';
+    return;
+  }
+  if (points.length === 1){
+    container.innerHTML = `<div class="chart-empty">${points[0].key}: ${fmtCHF(points[0].v)}</div>`;
+    return;
+  }
+
+  const vals = points.map(p => p.v);
+  const minY = 0, maxY = Math.max.apply(null, vals);
+  const yPad = maxY * 0.1 || 1;
+  const yMin = minY, yMax = maxY + yPad;
+
+  function xScale(i){ return pad.left + (i / (points.length - 1)) * innerW; }
+  function yScale(v){ return pad.top + innerH - ((v - yMin) / (yMax - yMin || 1)) * innerH; }
+
+  const barColor = '#1F6FA8';
+  const barW = Math.max(3, Math.min(20, (innerW / points.length) * 0.65));
+  const baseline = yScale(0);
+
+  const bars = points.map((p, i) => {
+    const x = xScale(i);
+    const y = yScale(p.v);
+    const barH = Math.max(p.v > 0 ? 1 : 0, baseline - y);
+    return `<rect x="${(x - barW/2).toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" fill="${barColor}" opacity="0.8" />`;
+  }).join('');
+
+  let gridLines = '';
+  const steps = 4;
+  for (let i = 0; i <= steps; i++){
+    const v = yMin + (i/steps) * (yMax - yMin);
+    const y = yScale(v);
+    gridLines += `<line x1="${pad.left}" y1="${y.toFixed(1)}" x2="${width-pad.right}" y2="${y.toFixed(1)}" stroke="#E3E6EA" stroke-width="1" />`;
+    gridLines += `<text x="${pad.left-8}" y="${(y+3).toFixed(1)}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="#767E8A">${Math.round(v)}</text>`;
+  }
+
+  const labelEvery = Math.max(1, Math.ceil(points.length / 8));
+  const xLabels = points.map((p, i) => {
+    if (i % labelEvery !== 0 && i !== points.length - 1) return '';
+    const x = xScale(i);
+    const short = p.key.slice(0,5); // dd.mm
+    return `<text x="${x.toFixed(1)}" y="${height-8}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#767E8A">${short}</text>`;
+  }).join('');
+
+  container.innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Täglicher Verlauf">${gridLines}${bars}${xLabels}</svg>`;
+}
+
+function renderTable(tbody, txs){
+  const sorted = txs.slice().sort((a,b) => b.date - a.date).slice(0, 25);
+  if (sorted.length === 0){
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">Keine Buchungen im gewählten Zeitraum.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = sorted.map(t => `<tr>
+    <td class="time">${fmtDateShort(t.date)}</td>
+    <td>${t.debit}</td>
+    <td>${t.party || '—'}</td>
+    <td><span class="tag">${t.ledger || 'PG'}</span></td>
+    <td class="amt">${fmtCHF(t.amt)}</td>
+  </tr>`).join('');
+}
+
+async function init(){
+  const dot = document.getElementById('statusDot');
+  const statusText = document.getElementById('statusText');
+  const lastSynced = document.getElementById('lastSynced');
+
+  try{
+    const res = await fetch(DATA_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const rows = parseCSV(text);
+    if (rows.length < 2) throw new Error('Keine Daten in der CSV.');
+
+    const header = rows[0];
+    const idx = {
+      date: header.indexOf('Date'),
+      amtCHF: header.indexOf('AmtCHF'),
+      debit: header.indexOf('DebitAccount'),
+      credit: header.indexOf('CreditAccount'),
+      ledger: header.indexOf('Ledger'),
+      party: header.indexOf('Party'),
+      location: header.indexOf('Location')
+    };
+
+    const txs = [];
+    for (let r = 1; r < rows.length; r++){
+      const cols = rows[r];
+      if (cols.length < 2) continue;
+      const amtRaw = (cols[idx.amtCHF] || '').trim();
+      if (!amtRaw) continue; // only rows with a CHF amount
+      const amt = parseFloat(amtRaw);
+      if (isNaN(amt)) continue;
+      const dateRaw = (cols[idx.date] || '').trim();
+      if (!dateRaw) continue;
+      txs.push({
+        date: parseDDMMYYYY(dateRaw),
+        amt: amt,
+        debit: cols[idx.debit] || '',
+        credit: cols[idx.credit] || '',
+        ledger: cols[idx.ledger] || '',
+        party: cols[idx.party] || '',
+        location: cols[idx.location] || ''
+      });
+    }
+
+    if (txs.length === 0) throw new Error('Keine gültigen AmtCHF-Werte gefunden.');
+
+    dot.classList.remove('stale','error');
+    statusText.textContent = 'live';
+    lastSynced.textContent = 'synced ' + new Date().toLocaleTimeString('de-CH');
+
+    let currentRange = '60D';
+    const now = new Date();
+
+    function render(){
+      const filtered = filterByRange(txs, currentRange, now);
+      const total = filtered.reduce((s,t) => s + t.amt, 0);
+      const count = filtered.length;
+      const avg = count > 0 ? total / count : 0;
+      const totalPG = filtered.filter(t => (t.ledger||'PG') === 'PG').reduce((s,t) => s + t.amt, 0);
+      const totalVP = filtered.filter(t => t.ledger === 'VP').reduce((s,t) => s + t.amt, 0);
+
+      document.getElementById('statTotal').textContent = fmtCHF0(total);
+      document.getElementById('statCount').textContent = count;
+      document.getElementById('statAvg').textContent = fmtCHF(avg);
+      document.getElementById('statPG').textContent = fmtCHF0(totalPG);
+      document.getElementById('statVP').textContent = fmtCHF0(totalVP);
+
+      renderRankList(document.getElementById('rankList'), filtered);
+      drawDailyBarChart(document.getElementById('chartDaily'), filtered);
+      renderTable(document.getElementById('txBody'), filtered);
+    }
+
+    document.querySelectorAll('#rangeSelector .range-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentRange = btn.dataset.range;
+        document.querySelectorAll('#rangeSelector .range-btn').forEach(b => b.classList.toggle('active', b === btn));
+        render();
+      });
+    });
+
+    render();
+
+  } catch(err){
+    dot.classList.add('error');
+    statusText.textContent = 'connection failed';
+    document.getElementById('rankList').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
+    document.getElementById('chartDaily').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
+    document.getElementById('txBody').innerHTML = '<tr><td colspan="5" class="error">Fehler beim Laden: ' + err.message + '</td></tr>';
+  }
+}
+
+init();
+</script>
+</body>
+</html>
