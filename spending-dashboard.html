@@ -157,6 +157,11 @@
   .history-title .hint{
     text-transform: none; letter-spacing: 0; color: var(--muted); font-family: 'Inter', sans-serif;
   }
+  .reset-link{
+    text-transform: none; letter-spacing: 0; color: var(--accent); font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; cursor: pointer; margin-left: 4px;
+  }
+  .reset-link:hover{ text-decoration: underline; }
 
   .legend{ display: flex; flex-wrap: wrap; gap: 12px; margin: 10px 0 0; }
   .legend-item{ display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
@@ -211,17 +216,17 @@
     <button type="button" id="applyCustomRange">Anwenden</button>
   </div>
 
-  <div class="history-title">Nach Kategorie (Debit Account) <span class="hint">Total · Ø/Tag</span></div>
-  <div class="rank-list" id="rankListDebit"><div class="chart-empty">Loading…</div></div>
-
   <div class="history-title">Täglicher Verlauf (AmtCHF pro Tag, nach Kategorie)</div>
   <div class="chart-wrap" id="chartDaily"><div class="chart-empty">Loading chart…</div></div>
   <div class="legend" id="chartLegend"></div>
 
+  <div class="history-title">Nach Kategorie (Debit Account) <span class="hint">Total · Ø/Tag</span></div>
+  <div class="rank-list" id="rankListDebit"><div class="chart-empty">Loading…</div></div>
+
   <div class="history-title">Nach Zahlungsquelle (Credit Account) <span class="hint">Total · Ø/Tag</span></div>
   <div class="rank-list" id="rankListCredit"><div class="chart-empty">Loading…</div></div>
 
-  <div class="history-title">Letzte Buchungen <span class="hint">(letzte 30 Tage)</span></div>
+  <div class="history-title" id="txTitle">Letzte Buchungen <span class="hint">(letzte 30 Tage)</span></div>
   <table id="txTable">
     <thead>
       <tr>
@@ -262,6 +267,14 @@ function fmtDayWithWeekday(d){
   const dd = String(d.getDate()).padStart(2,'0');
   const mm = String(d.getMonth()+1).padStart(2,'0');
   return `${WEEKDAY_ABBR[d.getDay()]} ${dd}.${mm}`;
+}
+
+// Rolls up "Life PG"/"Life VP" -> "Life", "SQ WS EUR PG (#315)"/"SQ WS EUR VP" -> "SQ WS EUR", etc.
+// Used for the Debit-side category view and daily chart only (Credit/payment-source view stays as-is).
+function baseCategory(name){
+  let n = (name || '').replace(/\s*\(#\d+\)\s*$/, ''); // strip trailing "(#315)"-style suffix
+  n = n.replace(/\s+(PG|VP)$/, ''); // strip trailing PG/VP ledger suffix
+  return n.trim() || name;
 }
 
 // Robust CSV parser: handles quoted fields, embedded commas/newlines, "" escaping
@@ -354,9 +367,9 @@ function getPeriodDays(range, now, custom, txsInRange){
   return 60;
 }
 
-function renderRankList(container, txs, periodDays, field){
+function renderRankList(container, txs, periodDays, keyFn){
   const byCategory = {};
-  txs.forEach(t => { const k = t[field]; byCategory[k] = (byCategory[k] || 0) + t.amt; });
+  txs.forEach(t => { const k = keyFn(t); byCategory[k] = (byCategory[k] || 0) + t.amt; });
   const entries = Object.entries(byCategory).sort((a,b) => b[1] - a[1]);
   if (entries.length === 0){
     container.innerHTML = '<div class="chart-empty">Keine Daten im gewählten Zeitraum.</div>';
@@ -391,12 +404,12 @@ function drawDailyBarChart(container, legendEl, txs){
   if (txs.length === 0){
     container.innerHTML = '<div class="chart-empty">Keine Daten im gewählten Zeitraum.</div>';
     legendEl.innerHTML = '';
-    return;
+    return { topCats: [] };
   }
 
   // Top categories by total spend in range; everything else bucketed as "Andere"
   const totalsByCat = {};
-  txs.forEach(t => { totalsByCat[t.debit] = (totalsByCat[t.debit] || 0) + t.amt; });
+  txs.forEach(t => { const base = baseCategory(t.debit); totalsByCat[base] = (totalsByCat[base] || 0) + t.amt; });
   const rankedCats = Object.entries(totalsByCat).sort((a,b) => b[1]-a[1]).map(e => e[0]);
   const topN = 5;
   const topCats = rankedCats.slice(0, topN);
@@ -406,7 +419,8 @@ function drawDailyBarChart(container, legendEl, txs){
   categories.forEach((c,i) => colorFor[c] = CATEGORY_COLORS[i % CATEGORY_COLORS.length]);
 
   function catFor(debit){
-    return topCats.includes(debit) ? debit : 'Andere';
+    const base = baseCategory(debit);
+    return topCats.includes(base) ? base : 'Andere';
   }
 
   // continuous day axis so days without spending show as zero, not skipped
@@ -432,7 +446,7 @@ function drawDailyBarChart(container, legendEl, txs){
     const line = categories.map(c => `${c}: ${fmtCHF(d.byCat[c]||0)}`).join(' · ');
     container.innerHTML = `<div class="chart-empty">${fmtDayWithWeekday(d.date)}: ${line}</div>`;
     renderLegend(legendEl, categories, colorFor);
-    return;
+    return { topCats };
   }
 
   const dayTotals = days.map(d => categories.reduce((s,c) => s + (d.byCat[c]||0), 0));
@@ -448,16 +462,20 @@ function drawDailyBarChart(container, legendEl, txs){
 
   const bars = days.map((d, i) => {
     const x = xScale(i);
+    // Full-height transparent hit area for the whole day -- catches clicks
+    // that don't land on a colored segment (e.g. empty space above a short bar).
+    const dayHit = `<rect class="day-hit" data-day="${d.key}" x="${(x-barW/2-2).toFixed(1)}" y="${pad.top}" width="${(barW+4).toFixed(1)}" height="${innerH.toFixed(1)}" fill="transparent" style="cursor:pointer" />`;
     let cumulative = 0;
-    return categories.map(c => {
+    const segments = categories.map(c => {
       const v = d.byCat[c] || 0;
       if (v <= 0) return '';
       const yTop = yScale(cumulative + v);
       const yBottom = yScale(cumulative);
       const h = Math.max(1, yBottom - yTop);
       cumulative += v;
-      return `<rect x="${(x-barW/2).toFixed(1)}" y="${yTop.toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" fill="${colorFor[c]}" opacity="0.85" />`;
+      return `<rect class="cat-seg" data-day="${d.key}" data-category="${c}" x="${(x-barW/2).toFixed(1)}" y="${yTop.toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" fill="${colorFor[c]}" opacity="0.85" style="cursor:pointer" />`;
     }).join('');
+    return dayHit + segments;
   }).join('');
 
   let gridLines = '';
@@ -479,6 +497,7 @@ function drawDailyBarChart(container, legendEl, txs){
 
   container.innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Täglicher Verlauf nach Kategorie">${gridLines}${bars}${xLabels}</svg>`;
   renderLegend(legendEl, categories, colorFor);
+  return { topCats };
 }
 
 function renderLegend(legendEl, categories, colorFor){
@@ -573,7 +592,46 @@ async function init(){
 
     let currentRange = 'WEEK';
     let customDates = null; // { from: Date, to: Date }
+    let chartFilter = null; // { dayKey: 'dd.mm.yyyy', category: string|null }
+    let lastTopCats = [];
+    let lastExpenseTxs = [];
     const now = new Date();
+
+    function categoryOf(debit){
+      const base = baseCategory(debit);
+      return lastTopCats.includes(base) ? base : 'Andere';
+    }
+
+    function updateTable(){
+      const txTitle = document.getElementById('txTitle');
+      if (chartFilter){
+        const rows = lastExpenseTxs.filter(t => {
+          if (fmtDateShort(t.date) !== chartFilter.dayKey) return false;
+          if (chartFilter.category) return categoryOf(t.debit) === chartFilter.category;
+          return true;
+        });
+        const label = chartFilter.category ? `${chartFilter.dayKey} · ${chartFilter.category}` : chartFilter.dayKey;
+        txTitle.innerHTML = `Buchungen: ${label} <span class="reset-link" id="resetFilter">Zurücksetzen (letzte 30 Tage)</span>`;
+        document.getElementById('resetFilter').addEventListener('click', () => {
+          chartFilter = null;
+          updateTable();
+        });
+        renderTable(document.getElementById('txBody'), rows);
+      } else {
+        txTitle.innerHTML = 'Letzte Buchungen <span class="hint">(letzte 30 Tage)</span>';
+        renderTable(document.getElementById('txBody'), lastNDays(txs, now, 30));
+      }
+    }
+
+    // Click on a day column or a category segment in the daily chart filters the table below.
+    document.getElementById('chartDaily').addEventListener('click', (e) => {
+      const el = e.target.closest('[data-day]');
+      if (!el) return;
+      const dayKey = el.getAttribute('data-day');
+      const category = el.getAttribute('data-category'); // null for whole-day clicks
+      chartFilter = { dayKey, category: category || null };
+      updateTable();
+    });
 
     function render(){
       const filtered = filterByRange(txs, currentRange, now, customDates);
@@ -585,6 +643,7 @@ async function init(){
       //  - Debit = Admin & Transfer, Credit = real account    -> counts as a payment (Credit view)
       const expenseTxs = filtered.filter(t => !t.debit.startsWith('Admin & Transfer'));
       const paymentTxs = filtered.filter(t => !t.credit.startsWith('Admin & Transfer'));
+      lastExpenseTxs = expenseTxs;
 
       const total = expenseTxs.reduce((s,t) => s + t.amt, 0);
       const count = expenseTxs.length;
@@ -601,12 +660,14 @@ async function init(){
       document.getElementById('statPG').textContent = fmtCHF0(totalPG);
       document.getElementById('statVP').textContent = fmtCHF0(totalVP);
 
-      renderRankList(document.getElementById('rankListDebit'), expenseTxs, periodDays, 'debit');
-      renderRankList(document.getElementById('rankListCredit'), paymentTxs, periodDays, 'credit');
-      drawDailyBarChart(document.getElementById('chartDaily'), document.getElementById('chartLegend'), expenseTxs);
+      renderRankList(document.getElementById('rankListDebit'), expenseTxs, periodDays, t => baseCategory(t.debit));
+      renderRankList(document.getElementById('rankListCredit'), paymentTxs, periodDays, t => t.credit);
+      const chartMeta = drawDailyBarChart(document.getElementById('chartDaily'), document.getElementById('chartLegend'), expenseTxs);
+      lastTopCats = (chartMeta && chartMeta.topCats) || [];
 
-      // "Letzte Buchungen" always shows the last 30 days, independent of the range selector above
-      renderTable(document.getElementById('txBody'), lastNDays(txs, now, 30));
+      // A range change can invalidate the current chart-click filter (e.g. day no longer visible) -- reset it.
+      chartFilter = null;
+      updateTable();
     }
 
     document.querySelectorAll('#rangeSelector .range-btn').forEach(btn => {
