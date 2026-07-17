@@ -1,6 +1,5 @@
 Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags,SubmittedBy,Device,IP,ProcessingDateTime
-12.07.2026 06:53,10.07.2026,CHF,0,1,0.0,Restaurants (Family) PG,CC TCS PG,#DD3,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,,17.07.2026 16:53:00
-12.07.2026 06:53,10.07.2026,CHF,0,1,0.0,Restaurants (Family) PG,CC TCS PG,#DD3,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,,17.07.2026 16:53:00
+12.07.2026 06:53,10.07.2026,CHF,70,1,70.0,Restaurants (Family) PG,CC TCS PG,#DD3,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,,17.07.2026 16:53:00
 12.07.2026 06:54,11.07.2026,CHF,18,1,18.0,Sport & Hobbies & Leisure PG,CC TCS PG,Eintritt,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,,17.07.2026 17:35:49
 12.07.2026 06:54,11.07.2026,CHF,6,1,6.0,Life PG,CC TCS PG,Drinks & Kaffee,BadinThusis,Thusis,PG,,bulk-import,manual CSV import,,17.07.2026 17:35:49
 12.07.2026 06:55,11.07.2026,CHF,104.83,1,104.83,Admin & Transfer PG,CC TCS VP,Tanken und Einkauf,Coop,Thusis,PG,,bulk-import,manual CSV import,,17.07.2026 17:35:49
