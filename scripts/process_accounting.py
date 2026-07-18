@@ -84,6 +84,14 @@ def raw_hash(raw_row):
     return hashlib.sha256(parts.encode("utf-8")).hexdigest()[:16]
 
 
+PROCESSED_FIELD_ORDER = [
+    "Timestamp", "Date", "Currency", "AmtLC", "AmtCry", "AmtCHF",
+    "DebitAccount", "CreditAccount", "Comment", "Party", "Location",
+    "Ledger", "Flags", "SubmittedBy", "Device", "IP", "EntryID",
+    "ProcessingDateTime", "RawHash",
+]
+
+
 def process(input_path, fx_source, output_path):
     fx_rates = load_fx_rates(fx_source)
 
@@ -99,11 +107,9 @@ def process(input_path, fx_source, output_path):
     # reprocessed. Rows whose EntryID has disappeared from the raw file
     # (deleted) are dropped automatically since we only iterate raw_rows.
     existing_by_id = {}
-    fieldnames = None
     try:
         with open(output_path, encoding="utf-8") as f:
             existing_reader = csv.DictReader(f)
-            fieldnames = existing_reader.fieldnames
             for row in existing_reader:
                 eid = row.get("EntryID")
                 if eid:
@@ -112,15 +118,7 @@ def process(input_path, fx_source, output_path):
         pass
 
     now_str = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
-
-    base_fieldnames = list(raw_rows[0].keys()) if raw_rows else []
-    extra_cols = [c for c in ["ProcessingDateTime", "RawHash"] if c not in base_fieldnames]
-    if fieldnames is None:
-        fieldnames = base_fieldnames + extra_cols
-    else:
-        for c in extra_cols:
-            if c not in fieldnames:
-                fieldnames.append(c)
+    fieldnames = PROCESSED_FIELD_ORDER
 
     warnings = []
     output_rows = []
@@ -185,7 +183,7 @@ def process(input_path, fx_source, output_path):
         reprocessed_count += 1
 
     with open(output_path, "w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n", extrasaction="ignore", restval="")
         writer.writeheader()
         writer.writerows(output_rows)
 
