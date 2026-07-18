@@ -509,19 +509,43 @@ function reorderChecksByFrequency(containerId, freqMap){
   labels.forEach(l => container.appendChild(l));
 }
 
+// Adds checkboxes for the top-N most-used real values from the raw ledger that
+// aren't already present as a checkbox (e.g. free-text "Other" entries like
+// "Union Lido" or "Thusis"), so frequently used real answers become one-tap
+// options instead of always needing the freetext field.
+function addTopUsedCheckboxes(containerId, freqMap, checkboxClass, limit){
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const existingValues = new Set(Array.from(container.querySelectorAll('input')).map(i => i.value));
+  const topEntries = Object.entries(freqMap).sort((a, b) => b[1] - a[1]).slice(0, limit);
+  topEntries.forEach(([value]) => {
+    if (existingValues.has(value)) return;
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.className = checkboxClass;
+    input.value = value;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(value));
+    container.appendChild(label);
+  });
+}
+
 // Reads the current CSV directly from GitHub (public repo, no token needed)
 // to determine the true next ledger number, kept in sync across devices,
 // and to re-rank the Comment/Party/Location checkboxes by usage frequency.
 async function refreshLedgerNumber(){
   setLedgerStatus('stale', 'checking ledger…');
   try {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}?ref=${BRANCH}`);
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}?ref=${BRANCH}`, { cache: 'no-store' });
     if (res.status === 200) {
       const data = await res.json();
       const content = b64DecodeUnicode(data.content.replace(/\n/g,''));
       const rows = parseCSV(content);
       entryCount = Math.max(0, rows.length - 1); // minus header row
       const freq = computeTagFrequencies(rows);
+      addTopUsedCheckboxes('partyChecks', freq.Party, 'chk-party', 10);
+      addTopUsedCheckboxes('locationChecks', freq.Location, 'chk-location', 10);
       reorderChecksByFrequency('commentChecks', freq.Comment);
       reorderChecksByFrequency('partyChecks', freq.Party);
       reorderChecksByFrequency('locationChecks', freq.Location);
@@ -543,6 +567,12 @@ async function refreshLedgerNumber(){
 const PAT_KEY = 'accountingLedger_pat';
 const savedPat = localStorage.getItem(PAT_KEY);
 if (savedPat) document.getElementById('pat').value = savedPat;
+
+// Save on every change, not just after a successful post -- otherwise a failed
+// submission (e.g. network error, 409 conflict) would lose a freshly typed token.
+document.getElementById('pat').addEventListener('input', (e) => {
+  localStorage.setItem(PAT_KEY, e.target.value);
+});
 
 document.getElementById('clearTokenLink').addEventListener('click', (e) => {
   e.preventDefault();
@@ -663,10 +693,15 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
     'Accept': 'application/vnd.github+json'
   };
 
-  try {
+  // Fetches the current file + sha and attempts one PUT. Returns the fetch
+  // Response for the PUT call so the caller can check status/retry.
+  async function attemptPost(){
     let sha = null;
     let existingContent = "";
-    const getRes = await fetch(`${apiUrl}?ref=${BRANCH}`, { headers });
+    // cache: 'no-store' is essential here -- a cached GET would return a stale
+    // sha, and GitHub rejects the PUT with a 409 conflict if the sha is stale
+    // (e.g. right after the file was edited elsewhere, like a manual GitHub edit).
+    const getRes = await fetch(`${apiUrl}?ref=${BRANCH}`, { headers, cache: 'no-store' });
 
     if (getRes.status === 200) {
       const data = await getRes.json();
@@ -693,11 +728,23 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
     };
     if (sha) putBody.sha = sha;
 
-    const putRes = await fetch(apiUrl, {
+    return fetch(apiUrl, {
       method: 'PUT',
       headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify(putBody)
+      body: JSON.stringify(putBody),
+      cache: 'no-store'
     });
+  }
+
+  try {
+    let putRes = await attemptPost();
+
+    if (putRes.status === 409) {
+      // Someone/something else changed the file between our GET and PUT
+      // (stale sha) -- re-fetch the latest version and try once more.
+      setStatus('pending', 'Ledger changed in the meantime, retrying…');
+      putRes = await attemptPost();
+    }
 
     if (!putRes.ok) {
       const errBody = await putRes.text();
@@ -716,7 +763,7 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
     document.getElementById('ledger').value = 'PG';
     localStorage.setItem(PAT_KEY, pat); // persist on this device for next time
 
-  } catch (err) {
+  } catch (err){
     setStatus('err', 'Failed: ' + err.message);
   } finally {
     btn.disabled = false;
