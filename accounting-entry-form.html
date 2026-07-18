@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>accountingdatacollector — Ledger Entry</title>
+<title>Accounting - Entry</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
@@ -199,12 +199,28 @@
   #status.pending{ display:block; border-color:var(--muted); background:var(--panel); color:var(--muted); }
 
   .footer{
-    margin-top:26px; display:flex; align-items:center; justify-content:space-between;
-    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--muted); flex-wrap:wrap; gap:6px;
+    margin-top:26px;
+    display:flex; flex-direction:column; gap:14px;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--muted);
     padding-top:16px; border-top:1px solid var(--line);
   }
+  .footer-title{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:16px; color:var(--text);
+  }
+  .footer-sub{ font-family:'Inter', sans-serif; font-size:12px; color:var(--muted); margin-top:2px; }
+  .footer .target-bar{ margin-top:8px; }
+  .footer-sync{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;
+  }
 
-  @media (max-width:560px){ .row{ grid-template-columns:1fr; } }
+  @media (max-width:560px){
+    body{ padding:24px 16px 56px; }
+    .row{ grid-template-columns:1fr; }
+    .eyebrow{ flex-wrap:wrap; row-gap:8px; }
+    .brand h1{ font-size:17px; }
+    .footer-sync{ flex-direction:column; align-items:flex-start; }
+    input, select, textarea{ font-size:16px; } /* prevents iOS Safari auto-zoom on focus */
+  }
 </style>
 </head>
 <body>
@@ -212,33 +228,14 @@
 
   <div class="eyebrow">
     <div class="brand">
-      <h1>accountingdatacollector</h1>
-      <span class="sub">/ ledger entry</span>
+      <h1>Accounting</h1>
+      <span class="sub">- Entry</span>
     </div>
     <div class="status">
       <span class="dot" id="statusDot"></span>
       <span id="statusText">checking ledger…</span>
     </div>
   </div>
-
-  <div class="meta-header">
-    <h2>New Entry — Ledger No. <span id="entryNo">—</span></h2>
-    <p class="meta-sub">Double-entry accounting form, posts directly to GitHub</p>
-    <div class="target-bar">
-      writes to <code id="targetRepoLabel">Munotstadt/AccountingDataCollector</code> · file <code>accounting_entries.csv</code> · branch <code>main</code>
-    </div>
-  </div>
-
-  <details class="credentials" open>
-    <summary>GitHub access (saved on this device only)</summary>
-    <div class="field">
-      <label>Personal Access Token <span class="req">*</span></label>
-      <input type="password" id="pat" placeholder="ghp_...">
-    </div>
-    <div style="margin-top:8px;">
-      <a href="#" id="clearTokenLink" style="font-size:11px; color:var(--muted); font-family:'IBM Plex Mono', monospace;">clear saved token</a>
-    </div>
-  </details>
 
   <form id="entryForm" autocomplete="off">
 
@@ -370,13 +367,33 @@
       <input type="text" id="flagsOther" placeholder="additional flag/comment (optional)">
     </div>
 
+    <details class="credentials" open>
+      <summary>GitHub access (saved on this device only)</summary>
+      <div class="field">
+        <label>Personal Access Token <span class="req">*</span></label>
+        <input type="password" id="pat" placeholder="ghp_...">
+      </div>
+      <div style="margin-top:8px;">
+        <a href="#" id="clearTokenLink" style="font-size:11px; color:var(--muted); font-family:'IBM Plex Mono', monospace;">clear saved token</a>
+      </div>
+    </details>
+
     <button type="submit" id="submitBtn">Post entry to ledger</button>
     <div id="status"></div>
   </form>
 
   <div class="footer">
-    <span>Daten: accounting_entries.csv · Munotstadt/AccountingDataCollector</span>
-    <span id="lastSynced">—</span>
+    <div class="footer-meta">
+      <div class="footer-title">New Entry — Ledger No. <span id="entryNo">—</span></div>
+      <div class="footer-sub">Double-entry accounting form, posts directly to GitHub</div>
+      <div class="target-bar">
+        writes to <code id="targetRepoLabel">Munotstadt/AccountingDataCollector</code> · file <code>accounting_entries.csv</code> · branch <code>main</code>
+      </div>
+    </div>
+    <div class="footer-sync">
+      <span>Daten: accounting_entries.csv · Munotstadt/AccountingDataCollector</span>
+      <span id="lastSynced">—</span>
+    </div>
   </div>
 </div>
 
