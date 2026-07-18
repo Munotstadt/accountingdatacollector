@@ -340,6 +340,36 @@ function buildRow(fields, index){
 
   const tr = document.createElement('tr');
 
+  function fmtAmt(v){
+    const n = parseFloat(v);
+    if (isNaN(n)) return v || '';
+    return n.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // Amount field: shows formatted (1'234.50, matching the Dashboard) while not
+  // focused, switches to the plain editable number on focus/typing.
+  function amountCell(key){
+    const td = document.createElement('td');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.inputMode = 'decimal';
+    input.style.textAlign = 'right';
+    input.value = fmtAmt(current[key]);
+    input.addEventListener('focus', () => {
+      input.value = current[key];
+      input.select();
+    });
+    input.addEventListener('input', () => {
+      current[key] = input.value;
+      markDirty();
+    });
+    input.addEventListener('blur', () => {
+      input.value = fmtAmt(current[key]);
+    });
+    td.appendChild(input);
+    return td;
+  }
+
   function cellInput(key, type, extra){
     const td = document.createElement('td');
     const input = document.createElement(type === 'select' ? 'select' : 'input');
@@ -375,7 +405,7 @@ function buildRow(fields, index){
 
   tr.appendChild(cellInput('Date', 'date'));
   tr.appendChild(cellInput('Currency', 'text'));
-  tr.appendChild(cellInput('AmtLC', 'number'));
+  tr.appendChild(amountCell('AmtLC'));
   tr.appendChild(cellInput('DebitAccount', 'text'));
   tr.appendChild(cellInput('CreditAccount', 'text'));
   tr.appendChild(cellInput('Comment', 'text'));
