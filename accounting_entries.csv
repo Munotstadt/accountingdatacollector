@@ -1,57 +1,57 @@
-Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags,SubmittedBy,Device,IP
-12.07.2026 06:53,11.07.2026,CHF,13,,13,Life PG,CC TCS VP,Drinks & Kaffee,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,
-12.07.2026 06:53,11.07.2026,CHF,70,,70,Restaurants (Family) PG,CC TCS PG,#DD3,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,
-12.07.2026 06:54,11.07.2026,CHF,18,,18,Sport & Hobbies & Leisure PG,CC TCS PG,Eintritt,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,
-12.07.2026 06:54,11.07.2026,CHF,6,,6,Life PG,CC TCS PG,Drinks & Kaffee,BadinThusis,Thusis,PG,,bulk-import,manual CSV import,
-12.07.2026 06:55,11.07.2026,CHF,104.83,,104.83,Admin & Transfer PG,CC TCS VP,Tanken und Einkauf,Coop,Thusis,PG,,bulk-import,manual CSV import,
-12.07.2026 06:55,11.07.2026,CHF,20.83,,20.83,Sport & Hobbies & Leisure PG,Admin & Transfer PG,Tanken und Einkauf,Coop,Thusis,PG,,bulk-import,manual CSV import,
-12.07.2026 06:55,11.07.2026,CHF,84,,84,Vacation & Leisure PG,Admin & Transfer PG,Reclass Tanken,Coop,Thusis,PG,,bulk-import,manual CSV import,
-13.07.2026 06:39,12.07.2026,CHF,17.1,,17.1,Life VP,CC TCS VP,Snack,BP-Tankstelle,Coldrerio,VP,,bulk-import,manual CSV import,
-13.07.2026 06:39,12.07.2026,CHF,1,,1,Life VP,CC TCS VP,WC,BP Tankstelle,Coldrerio,PG,,bulk-import,manual CSV import,
-13.07.2026 06:40,12.07.2026,CHF,1,,1,Life PG,CC TCS PG,WC,BP Tankstelle,Coldrerio,PG,,bulk-import,manual CSV import,
-13.07.2026 06:40,12.07.2026,CHF,16.6,,16.6,Life PG,CC TCS PG,"Drinks & Kaffee, Snack",BP Tankstelle,Coldrerio,PG,,bulk-import,manual CSV import,
-13.07.2026 06:41,12.07.2026,EUR,45,,41.6,Restaurants (Family) PG,SQ WS EUR PG (#315),#DD3,Union Lido: Pizze e Sapori,IT-Cavallino,PG,,bulk-import,manual CSV import,
-13.07.2026 06:42,12.07.2026,EUR,32.5,,30.1,Life PG,SQ WS EUR PG (#315),Snack,Union Lido: LIDO,IT-Cavallino,PG,,bulk-import,manual CSV import,
-13.07.2026 06:42,12.07.2026,EUR,13.38,,12.4,Life PG,SQ WS EUR PG (#315),"Drinks & Kaffee, Snack",Autogrill,IT,PG,,bulk-import,manual CSV import,
-14.07.2026 07:00,13.07.2026,EUR,5,,4.6,Sport & Hobbies & Leisure VP,SQ WS EUR VP,Trampolin&Park,De Cintio Federico,IT-Cavallino,VP,,bulk-import,manual CSV import,
-14.07.2026 07:00,13.07.2026,EUR,10,,9.3,Sport & Hobbies & Leisure VP,SQ WS EUR VP,Trampolin&Park,De Cintio Federico,IT-Cavallino,VP,,bulk-import,manual CSV import,
-14.07.2026 07:01,13.07.2026,EUR,11.13,,10.3,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,La Torre di Catelli,IT-Cavallino,VP,,bulk-import,manual CSV import,
-14.07.2026 07:01,13.07.2026,EUR,16.05,,14.8,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,VP,,bulk-import,manual CSV import,
-14.07.2026 07:02,13.07.2026,EUR,6,,5.6,Life VP,SQ WS EUR VP,Snack,Union Lido,IT-Cavallino,VP,,bulk-import,manual CSV import,
-14.07.2026 07:04,13.07.2026,EUR,22.8,,21.1,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,PG,,bulk-import,manual CSV import,
-14.07.2026 07:05,13.07.2026,EUR,64.5,,59.7,Restaurants (Family) PG,SQ WS EUR PG (#315),#LL3,Union Lido: LIDO,IT-Cavallino,PG,,bulk-import,manual CSV import,
-14.07.2026 07:06,13.07.2026,EUR,50.6,,46.8,Sport & Hobbies & Leisure PG,SQ WS EUR PG (#315),"Ventilator, WC-Mittel, Besen",Camping Market,IT-Cavallino,PG,,bulk-import,manual CSV import,
-14.07.2026 07:06,13.07.2026,EUR,10.11,,9.4,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,PG,,bulk-import,manual CSV import,
-14.07.2026 07:07,13.07.2026,EUR,5.5,,5.1,Life PG,SQ WS EUR PG (#315),Snack,Union Lido,IT-Cavallino,PG,,bulk-import,manual CSV import,
-15.07.2026 06:49,14.07.2026,EUR,13,,12,Life PG,SQ WS EUR PG (#315),"Drinks & Kaffee, Snack",Union Lido: Ginngerbread,IT-Cavallino,PG,,bulk-import,manual CSV import,
-15.07.2026 06:50,14.07.2026,EUR,11.5,,10.6,Life PG,SQ WS EUR PG (#315),Snack,Union Lido: Ca‘Rustica,IT-Cavallino,PG,,bulk-import,manual CSV import,
-15.07.2026 06:50,14.07.2026,EUR,11.54,,10.7,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,PG,,bulk-import,manual CSV import,
-15.07.2026 06:51,14.07.2026,EUR,78.3,,72.4,Restaurants (Family) PG,SQ WS EUR PG (#315),#LL3,Union Lido: Restorante Cavallo Marino,IT-Cavallino,PG,,bulk-import,manual CSV import,
-15.07.2026 06:51,14.07.2026,EUR,5.1,,4.7,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,Union Lido: Le Delizie,IT-Cavallino,PG,,bulk-import,manual CSV import,
-15.07.2026 06:52,14.07.2026,EUR,10.8,,10,Life VP,SQ WS EUR VP,Drinks & Kaffee,Union Lido: Sole e Natura,IT-Cavallino,VP,,bulk-import,manual CSV import,
-15.07.2026 06:52,14.07.2026,EUR,10,,9.3,Life VP,SQ WS EUR VP,Drinks & Kaffee,Union Lido: Sole e Natura,IT-Cavallino,VP,,bulk-import,manual CSV import,
-15.07.2026 06:53,14.07.2026,EUR,4.8,,4.4,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,Union Lido: Panifico Vianello,IT-Cavallino,VP,,bulk-import,manual CSV import,
-16.07.2026 07:26,15.07.2026,EUR,9.05,,8.4,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,VP,,bulk-import,manual CSV import,
-16.07.2026 07:26,15.07.2026,EUR,9.46,,8.8,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,La Torre di Catelli,IT-Cavallino,VP,,bulk-import,manual CSV import,
-16.07.2026 07:27,15.07.2026,EUR,4.7,,4.3,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,Union Lido: Panifico Vianello,IT-Cavallino,VP,,bulk-import,manual CSV import,
-16.07.2026 07:27,15.07.2026,EUR,2.5,,2.3,Life VP,SQ WS EUR VP,Drinks & Kaffee,Union Lido: Sole e Natura,IT-Cavallino,PG,,bulk-import,manual CSV import,
-16.07.2026 07:29,15.07.2026,EUR,96,,88.8,Restaurants (Family) PG,SQ WS EUR PG (#315),#DD3,Union Lido: Ristorante Adriactico,IT-Cavallino,PG,,bulk-import,manual CSV import,
-16.07.2026 07:30,15.07.2026,EUR,20.5,,19,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,Union Lido: Marino,IT-Cavallino,PG,,bulk-import,manual CSV import,
-16.07.2026 07:30,15.07.2026,EUR,6.6,,6.1,Life PG,SQ WS EUR PG (#315),Snack,Union Lido: VOVI VEGS&MORE,IT-Cavallino,PG,,bulk-import,manual CSV import,
-16.07.2026 07:31,15.07.2026,EUR,9,,8.3,Life PG,SQ WS EUR PG (#315),Snack,Union Lido: CAVANA,IT-Cavallino,PG,,bulk-import,manual CSV import,
-16.07.2026 07:32,15.07.2026,EUR,8.7,,8,Life PG,SQ WS EUR PG (#315),Schrauben / Spielsachen,Camping Market,IT-Cavallino,PG,,bulk-import,manual CSV import,
-17.07.2026 06:56,16.07.2026,EUR,13.09,,12.1,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,La Torre di Catelli,IT-Cavallino,PG,,bulk-import,manual CSV import,
-17.07.2026 06:56,16.07.2026,EUR,2.5,,2.3,Life VP,SQ WS EUR VP,Drinks & Kaffee,Union Lido: Sole e Natura,IT-Cavallino,VP,,bulk-import,manual CSV import,
-17.07.2026 06:57,16.07.2026,EUR,6.9,,6.4,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,Union Lido: Panifico Vianello,IT-Cavallino,PG,,bulk-import,manual CSV import,
-17.07.2026 06:59,16.07.2026,EUR,13,,12,Life PG,SQ WS EUR PG (#315),"Drinks & Kaffee, Snack",Union Lido: Marino,IT-Cavallino,PG,,bulk-import,manual CSV import,
-17.07.2026 06:59,16.07.2026,EUR,14.5,,13.4,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,Union Lido: Marino,IT-Cavallino,PG,,bulk-import,manual CSV import,
-17.07.2026 07:00,16.07.2026,EUR,49.06,,45.4,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,PG,,bulk-import,manual CSV import,
-17.07.2026 07:00,16.07.2026,EUR,11,,10.2,Sport & Hobbies & Leisure PG,SQ WS EUR PG (#315),Schwimmbrille,Camping Market,IT-Cavallino,PG,,bulk-import,manual CSV import,
-17.07.2026 07:01,16.07.2026,EUR,14.41,,13.3,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,PG,,bulk-import,manual CSV import,
-17.07.2026 07:01,16.07.2026,EUR,56,,51.8,Restaurants (Family) PG,SQ WS EUR PG (#315),#LL3,Union Lido: Sole e Natura,IT-Cavallino,PG,,bulk-import,manual CSV import,
-18.07.2026 06:33,18.07.2026,EUR,3.9,,,Vacation & Leisure PG,SQ WS EUR PG (#315),Abo,Tollbird,,PG,,device-a23f52a4,"iPhone | 402x874 | de-DE | Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Mobile/15E148 Safari/604.1",104.28.42.96
-18.07.2026 07:19,17.07.2026,EUR,11.77,,,Groceries PG,CC TCS PG,Einkauf Lebensmittel,Union Lido,IT-Cavallino,VP,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",104.28.42.96
-18.07.2026 07:28,17.07.2026,EUR,14,,,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,Union Lido: Ginngerbread,IT-Cavallino,PG,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",104.28.42.96
-18.07.2026 07:29,17.07.2026,EUR,9.7,,,Life PG,SQ WS EUR PG (#315),Snack,Union Lido: Ca‘Rustica,IT-Cavallino,PG,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",104.28.42.96
-18.07.2026 07:30,17.07.2026,CHF,58.65,,,Restaurants (Family) PG,SQ WS CHF PG (#315),#LL3,Union Lido: Le Delizie,IT-Cavallino,PG,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",104.28.42.96
-18.07.2026 07:31,17.07.2026,EUR,8.3,,,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Panificio Vianello,IT-Cavallino,PG,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",104.28.42.96
+Timestamp,Date,Currency,AmtLC,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags,SubmittedBy,Device,IP,EntryID
+12.07.2026 06:53:00,11.07.2026,CHF,13,Life PG,CC TCS VP,Drinks & Kaffee,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,,e-b6efdd6f7a
+12.07.2026 06:53:00,11.07.2026,CHF,70,Restaurants (Family) PG,CC TCS PG,#DD3,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,,e-fa1404e56e
+12.07.2026 06:54:00,11.07.2026,CHF,18,Sport & Hobbies & Leisure PG,CC TCS PG,Eintritt,Badi Thusis,Thusis,PG,,bulk-import,manual CSV import,,e-4c797e9dd0
+12.07.2026 06:54:00,11.07.2026,CHF,6,Life PG,CC TCS PG,Drinks & Kaffee,BadinThusis,Thusis,PG,,bulk-import,manual CSV import,,e-31fe354260
+12.07.2026 06:55:00,11.07.2026,CHF,104.83,Admin & Transfer PG,CC TCS VP,Tanken und Einkauf,Coop,Thusis,PG,,bulk-import,manual CSV import,,e-4b86b0eca6
+12.07.2026 06:55:00,11.07.2026,CHF,20.83,Sport & Hobbies & Leisure PG,Admin & Transfer PG,Tanken und Einkauf,Coop,Thusis,PG,,bulk-import,manual CSV import,,e-e57b6fa61f
+12.07.2026 06:55:00,11.07.2026,CHF,84,Vacation & Leisure PG,Admin & Transfer PG,Reclass Tanken,Coop,Thusis,PG,,bulk-import,manual CSV import,,e-fb6e0f9f8d
+13.07.2026 06:39:00,12.07.2026,CHF,17.1,Life VP,CC TCS VP,Snack,BP-Tankstelle,Coldrerio,VP,,bulk-import,manual CSV import,,e-d0422c9599
+13.07.2026 06:39:00,12.07.2026,CHF,1,Life VP,CC TCS VP,WC,BP Tankstelle,Coldrerio,PG,,bulk-import,manual CSV import,,e-a19df2c6af
+13.07.2026 06:40:00,12.07.2026,CHF,1,Life PG,CC TCS PG,WC,BP Tankstelle,Coldrerio,PG,,bulk-import,manual CSV import,,e-f10cec9c9e
+13.07.2026 06:40:00,12.07.2026,CHF,16.6,Life PG,CC TCS PG,"Drinks & Kaffee, Snack",BP Tankstelle,Coldrerio,PG,,bulk-import,manual CSV import,,e-055dade872
+13.07.2026 06:41:00,12.07.2026,EUR,45,Restaurants (Family) PG,SQ WS EUR PG (#315),#DD3,Union Lido: Pizze e Sapori,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-31202cf915
+13.07.2026 06:42:00,12.07.2026,EUR,32.5,Life PG,SQ WS EUR PG (#315),Snack,Union Lido: LIDO,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-c1b66171f7
+13.07.2026 06:42:00,12.07.2026,EUR,13.38,Life PG,SQ WS EUR PG (#315),"Drinks & Kaffee, Snack",Autogrill,IT,PG,,bulk-import,manual CSV import,,e-e3096e20a5
+14.07.2026 07:00:00,13.07.2026,EUR,5,Sport & Hobbies & Leisure VP,SQ WS EUR VP,Trampolin&Park,De Cintio Federico,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-fb5f217d66
+14.07.2026 07:00:00,13.07.2026,EUR,10,Sport & Hobbies & Leisure VP,SQ WS EUR VP,Trampolin&Park,De Cintio Federico,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-5532ab810c
+14.07.2026 07:01:00,13.07.2026,EUR,11.13,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,La Torre di Catelli,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-9bed80dec9
+14.07.2026 07:01:00,13.07.2026,EUR,16.05,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-d6c1fe726c
+14.07.2026 07:02:00,13.07.2026,EUR,6,Life VP,SQ WS EUR VP,Snack,Union Lido,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-649b1bc48f
+14.07.2026 07:04:00,13.07.2026,EUR,22.8,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-0fdc21a647
+14.07.2026 07:05:00,13.07.2026,EUR,64.5,Restaurants (Family) PG,SQ WS EUR PG (#315),#LL3,Union Lido: LIDO,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-97e2cd1e62
+14.07.2026 07:06:00,13.07.2026,EUR,50.6,Sport & Hobbies & Leisure PG,SQ WS EUR PG (#315),"Ventilator, WC-Mittel, Besen",Camping Market,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-2c6c90703a
+14.07.2026 07:06:00,13.07.2026,EUR,10.11,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-8a011c3b73
+14.07.2026 07:07:00,13.07.2026,EUR,5.5,Life PG,SQ WS EUR PG (#315),Snack,Union Lido,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-57feb036c7
+15.07.2026 06:49:00,14.07.2026,EUR,13,Life PG,SQ WS EUR PG (#315),"Drinks & Kaffee, Snack",Union Lido: Ginngerbread,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-54f42a0369
+15.07.2026 06:50:00,14.07.2026,EUR,11.5,Life PG,SQ WS EUR PG (#315),Snack,Union Lido: Ca‘Rustica,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-e633b0fe9c
+15.07.2026 06:50:00,14.07.2026,EUR,11.54,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-2570bef860
+15.07.2026 06:51:00,14.07.2026,EUR,78.3,Restaurants (Family) PG,SQ WS EUR PG (#315),#LL3,Union Lido: Restorante Cavallo Marino,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-df7ca90d90
+15.07.2026 06:51:00,14.07.2026,EUR,5.1,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,Union Lido: Le Delizie,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-3770aa2a5e
+15.07.2026 06:52:00,14.07.2026,EUR,10.8,Life VP,SQ WS EUR VP,Drinks & Kaffee,Union Lido: Sole e Natura,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-84b686cad7
+15.07.2026 06:52:00,14.07.2026,EUR,10,Life VP,SQ WS EUR VP,Drinks & Kaffee,Union Lido: Sole e Natura,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-3fbd5d6721
+15.07.2026 06:53:00,14.07.2026,EUR,4.8,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,Union Lido: Panifico Vianello,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-479667b1d6
+16.07.2026 07:26:00,15.07.2026,EUR,9.05,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-27020bf7db
+16.07.2026 07:26:00,15.07.2026,EUR,9.46,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,La Torre di Catelli,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-3dbe540e90
+16.07.2026 07:27:00,15.07.2026,EUR,4.7,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,Union Lido: Panifico Vianello,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-9600872060
+16.07.2026 07:27:00,15.07.2026,EUR,2.5,Life VP,SQ WS EUR VP,Drinks & Kaffee,Union Lido: Sole e Natura,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-073f5be5b3
+16.07.2026 07:29:00,15.07.2026,EUR,96,Restaurants (Family) PG,SQ WS EUR PG (#315),#DD3,Union Lido: Ristorante Adriactico,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-7a13467c8a
+16.07.2026 07:30:00,15.07.2026,EUR,20.5,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,Union Lido: Marino,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-3e06cc7425
+16.07.2026 07:30:00,15.07.2026,EUR,6.6,Life PG,SQ WS EUR PG (#315),Snack,Union Lido: VOVI VEGS&MORE,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-8496cd8d39
+16.07.2026 07:31:00,15.07.2026,EUR,9,Life PG,SQ WS EUR PG (#315),Snack,Union Lido: CAVANA,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-99f6750503
+16.07.2026 07:32:00,15.07.2026,EUR,8.7,Life PG,SQ WS EUR PG (#315),Schrauben / Spielsachen,Camping Market,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-ada21427a5
+17.07.2026 06:56:00,16.07.2026,EUR,13.09,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,La Torre di Catelli,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-f4cb5c015c
+17.07.2026 06:56:00,16.07.2026,EUR,2.5,Life VP,SQ WS EUR VP,Drinks & Kaffee,Union Lido: Sole e Natura,IT-Cavallino,VP,,bulk-import,manual CSV import,,e-d4d8a40738
+17.07.2026 06:57:00,16.07.2026,EUR,6.9,Groceries VP,SQ WS EUR VP,Einkauf Lebensmittel,Union Lido: Panifico Vianello,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-1b80f3559b
+17.07.2026 06:59:00,16.07.2026,EUR,13,Life PG,SQ WS EUR PG (#315),"Drinks & Kaffee, Snack",Union Lido: Marino,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-77fe0e24ab
+17.07.2026 06:59:00,16.07.2026,EUR,14.5,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,Union Lido: Marino,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-0026d5795b
+17.07.2026 07:00:00,16.07.2026,EUR,49.06,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-28d51bc79f
+17.07.2026 07:00:00,16.07.2026,EUR,11,Sport & Hobbies & Leisure PG,SQ WS EUR PG (#315),Schwimmbrille,Camping Market,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-379eabd312
+17.07.2026 07:01:00,16.07.2026,EUR,14.41,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Tourist Market,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-72ee8e5c87
+17.07.2026 07:01:00,16.07.2026,EUR,56,Restaurants (Family) PG,SQ WS EUR PG (#315),#LL3,Union Lido: Sole e Natura,IT-Cavallino,PG,,bulk-import,manual CSV import,,e-c54d64852e
+18.07.2026 06:33:00,18.07.2026,EUR,3.9,Vacation & Leisure PG,SQ WS EUR PG (#315),Abo,Tollbird,,PG,,device-a23f52a4,"iPhone | 402x874 | de-DE | Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Mobile/15E148 Safari/604.1",104.28.42.96,e-f438afc6ab
+18.07.2026 07:19:00,17.07.2026,EUR,11.77,Groceries PG,CC TCS PG,Einkauf Lebensmittel,Union Lido,IT-Cavallino,VP,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",104.28.42.96,e-b28719b980
+18.07.2026 07:28:00,17.07.2026,EUR,14,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,Union Lido: Ginngerbread,IT-Cavallino,PG,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",104.28.42.96,e-1fabaef099
+18.07.2026 07:29:00,17.07.2026,EUR,9.7,Life PG,SQ WS EUR PG (#315),Snack,Union Lido: Ca‘Rustica,IT-Cavallino,PG,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",104.28.42.96,e-490c5edd98
+18.07.2026 07:30:00,17.07.2026,CHF,58.65,Restaurants (Family) PG,SQ WS CHF PG (#315),#LL3,Union Lido: Le Delizie,IT-Cavallino,PG,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",104.28.42.96,e-dc22887935
+18.07.2026 07:31:00,17.07.2026,EUR,8.3,Groceries PG,SQ WS EUR PG (#315),Einkauf Lebensmittel,Union Lido: Panificio Vianello,IT-Cavallino,PG,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",104.28.42.96,e-4ca9a1ab38
