@@ -124,6 +124,14 @@
   .row-save-btn:hover{ background: #b8050f; }
   .row-save-btn:disabled{ background: var(--muted); cursor: wait; }
 
+  .row-delete-btn{
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; text-transform: uppercase;
+    background: transparent; color: var(--muted); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 5px 9px; cursor: pointer;
+  }
+  .row-delete-btn:hover{ background: var(--loss); border-color: var(--loss); color: #fff; }
+  .row-delete-btn:disabled{ opacity: 0.5; cursor: wait; }
+
   .summary-bar{
     display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
     margin-top: 14px;
@@ -375,12 +383,25 @@ function buildRow(fields, index){
   tr.appendChild(cellInput('Flags', 'text'));
 
   const actionsTd = document.createElement('td');
+  actionsTd.className = 'row-actions';
   const rowSaveBtn = document.createElement('button');
   rowSaveBtn.type = 'button';
   rowSaveBtn.className = 'row-save-btn';
   rowSaveBtn.textContent = 'Save';
   rowSaveBtn.addEventListener('click', () => saveChanges([entry]));
   actionsTd.appendChild(rowSaveBtn);
+
+  const rowDeleteBtn = document.createElement('button');
+  rowDeleteBtn.type = 'button';
+  rowDeleteBtn.className = 'row-delete-btn';
+  rowDeleteBtn.textContent = 'Delete';
+  rowDeleteBtn.addEventListener('click', () => {
+    const desc = `${current.Date} · ${current.DebitAccount} / ${current.CreditAccount} · ${current.Currency} ${current.AmtLC}`;
+    if (confirm(`Diese Zeile wirklich löschen?\n\n${desc}\n\nDas kann nicht rückgängig gemacht werden.`)){
+      deleteRow(entry);
+    }
+  });
+  actionsTd.appendChild(rowDeleteBtn);
   tr.appendChild(actionsTd);
 
   function markDirty(){
@@ -389,7 +410,7 @@ function buildRow(fields, index){
     updateSaveAllVisibility();
   }
 
-  const entry = { original, current, tr, rowSaveBtn, markDirty };
+  const entry = { original, current, tr, rowSaveBtn, rowDeleteBtn, markDirty };
   return entry;
 }
 
@@ -526,6 +547,77 @@ async function saveChanges(entriesToSave){
 document.getElementById('saveAllBtn').addEventListener('click', () => {
   saveChanges(rowsData);
 });
+
+// Removes exactly one row (matched by EntryID) from the file on GitHub, then
+// removes it from the local table. Uses the same fetch-fresh + 409-retry
+// pattern as saveChanges so a stale sha never silently overwrites someone
+// else's concurrent change.
+async function deleteRow(entry){
+  const pat = document.getElementById('pat').value.trim();
+  if (!pat){ setStatus('err', 'Missing: GitHub Personal Access Token.'); return; }
+
+  entry.rowSaveBtn.disabled = true;
+  entry.rowDeleteBtn.disabled = true;
+  setStatus('pending', 'Lösche Zeile…');
+
+  const apiUrl = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
+  const headers = { 'Authorization': `Bearer ${pat}`, 'Accept': 'application/vnd.github+json' };
+
+  async function attempt(){
+    const getRes = await fetch(`${apiUrl}?ref=${BRANCH}`, { headers, cache: 'no-store' });
+    if (!getRes.ok) throw new Error(`GET failed (${getRes.status})`);
+    const data = await getRes.json();
+    const sha = data.sha;
+    const content = b64DecodeUnicode(data.content.replace(/\n/g,''));
+    const rows = parseCSV(content);
+    const eidIdx = rows[0].indexOf('EntryID');
+
+    const remainingRows = rows.filter((r, i) => i === 0 || r[eidIdx] !== entry.original.EntryID);
+    if (remainingRows.length === rows.length){
+      throw new Error('Zeile wurde auf GitHub nicht gefunden (evtl. bereits gelöscht).');
+    }
+
+    const newLines = remainingRows.map(r => r.map(csvEscape).join(','));
+    const newContent = newLines.join('\n') + '\n';
+
+    const putBody = {
+      message: `Delete ledger entry ${entry.original.Date} · ${entry.original.DebitAccount} / ${entry.original.CreditAccount} via Raw Editor`,
+      content: b64EncodeUnicode(newContent),
+      branch: BRANCH,
+      sha: sha
+    };
+
+    return fetch(apiUrl, {
+      method: 'PUT',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify(putBody),
+      cache: 'no-store'
+    });
+  }
+
+  try {
+    let putRes = await attempt();
+    if (putRes.status === 409){
+      setStatus('pending', 'Datei wurde zwischenzeitlich geändert, versuche erneut…');
+      putRes = await attempt();
+    }
+    if (!putRes.ok){
+      const errBody = await putRes.text();
+      throw new Error(`PUT failed (${putRes.status}): ${errBody}`);
+    }
+
+    entry.tr.remove();
+    rowsData = rowsData.filter(e => e !== entry);
+    document.getElementById('countLabel').textContent = `${rowsData.length} Einträge`;
+    updateSaveAllVisibility();
+    setStatus('ok', 'Zeile gelöscht.');
+    document.getElementById('lastSynced').textContent = 'synced ' + new Date().toLocaleTimeString('de-CH');
+  } catch (err){
+    setStatus('err', 'Failed: ' + err.message);
+    entry.rowSaveBtn.disabled = false;
+    entry.rowDeleteBtn.disabled = false;
+  }
+}
 
 loadData();
 </script>
