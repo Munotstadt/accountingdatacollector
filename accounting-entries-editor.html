@@ -101,6 +101,8 @@
   tbody tr.dirty{ background: rgba(227, 6, 19, 0.04); }
   tbody tr.dirty td:first-child{ box-shadow: inset 3px 0 0 var(--accent); }
   tbody tr.hidden{ display: none; }
+  tbody tr.linked{ background: rgba(31, 111, 168, 0.08); }
+  tbody tr.linked td:first-child{ box-shadow: inset 3px 0 0 #1F6FA8; }
 
   td input, td select{
     width: 100%; min-width: 90px;
@@ -454,11 +456,27 @@ async function loadData(){
     renderTable();
     setSyncStatus('ok', 'live');
     document.getElementById('lastSynced').textContent = 'synced ' + new Date().toLocaleTimeString('de-CH');
+    highlightFromUrl();
   } catch (err){
     setSyncStatus('error', 'connection failed');
     document.getElementById('tableBody').innerHTML =
       `<tr><td colspan="13" style="padding:30px; text-align:center; color:var(--loss); font-family:'IBM Plex Mono',monospace;">Fehler beim Laden: ${err.message}</td></tr>`;
   }
+}
+
+// Deep-linking: ?entryId=e-xxxx scrolls to and highlights the matching row
+// (e.g. an "Edit" link from the Spending Dashboard).
+function highlightFromUrl(){
+  const params = new URLSearchParams(location.search);
+  const targetId = params.get('entryId');
+  if (!targetId) return;
+  const entry = rowsData.find(e => e.original.EntryID === targetId);
+  if (!entry) return;
+  document.getElementById('searchInput').value = '';
+  applySearch();
+  entry.tr.classList.add('linked');
+  entry.tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setStatus('ok', 'Datensatz über Link ausgewählt.');
 }
 
 // Writes the full file back to GitHub, replacing only the dirty rows'
