@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accounting - Raw Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FFFFFF;
+    --panel: #F7F8FA;
+    --line: #E3E6EA;
+    --text: #1A1D22;
+    --muted: #767E8A;
+    --accent: #E30613;
+    --gain: #1F8A6E;
+    --loss: #C0293D;
+    --radius: 3px;
+  }
+  * { box-sizing: border-box; }
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 20px 80px;
+  }
+  .sheet{ width: 100%; max-width: 1200px; }
+
+  .eyebrow{
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 18px; border-bottom: 2px solid var(--accent);
+  }
+  .brand{ display: flex; align-items: baseline; gap: 10px; }
+  .brand h1{
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px;
+    letter-spacing: 0.02em; margin: 0; text-transform: uppercase;
+  }
+  .brand span.sub{ font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
+  .status{
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--muted);
+  }
+  .dot{
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gain); box-shadow: 0 0 0 3px rgba(31,138,110,0.15);
+    animation: pulse 2.4s ease-in-out infinite; flex-shrink: 0;
+  }
+  .dot.stale{ background: var(--muted); box-shadow: none; animation: none; }
+  .dot.error{ background: var(--loss); box-shadow: 0 0 0 3px rgba(192,41,61,0.15); animation: none; }
+  @media (prefers-reduced-motion: reduce){ .dot{ animation: none; } }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+
+  .toolbar{
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    margin: 20px 0 4px;
+  }
+  .search-input{
+    flex: 1 1 260px;
+    font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text);
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 10px 12px;
+  }
+  .search-input:focus{ outline: none; border-color: var(--accent); }
+
+  .credentials{
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 14px 16px; margin: 16px 0; font-size: 12px;
+  }
+  .credentials summary{
+    cursor: pointer; color: var(--muted); font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase; letter-spacing: .06em; font-size: 11px;
+  }
+  .credentials .field{ margin: 14px 0 0; }
+  .credentials label{
+    display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 6px;
+  }
+  .credentials input[type=password]{
+    width: 100%; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text);
+    background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 10px 12px;
+  }
+
+  .table-wrap{ overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: var(--radius); }
+  table{ width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 1180px; }
+  thead th{
+    text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px;
+    letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500;
+    padding: 10px 8px; border-bottom: 1px solid var(--line); background: var(--panel);
+    position: sticky; top: 0;
+  }
+  tbody td{ padding: 4px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tbody tr:hover{ background: rgba(0,0,0,0.015); }
+  tbody tr.dirty{ background: rgba(227, 6, 19, 0.04); }
+  tbody tr.dirty td:first-child{ box-shadow: inset 3px 0 0 var(--accent); }
+  tbody tr.hidden{ display: none; }
+
+  td input, td select{
+    width: 100%; min-width: 90px;
+    font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--text);
+    background: transparent; border: 1px solid transparent; border-radius: var(--radius);
+    padding: 6px 6px;
+  }
+  td input:hover, td select:hover{ border-color: var(--line); background: var(--panel); }
+  td input:focus, td select:focus{ outline: none; border-color: var(--accent); background: var(--bg); }
+  td input[type=number]{ text-align: right; }
+  td.readonly{ color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 11px; white-space: nowrap; }
+  td.rownum{ color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-align: right; width: 32px; }
+
+  .row-actions{ display: flex; gap: 6px; align-items: center; white-space: nowrap; }
+  .row-save-btn{
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; text-transform: uppercase;
+    background: var(--accent); color: #fff; border: none; border-radius: var(--radius);
+    padding: 5px 9px; cursor: pointer; display: none;
+  }
+  tr.dirty .row-save-btn{ display: inline-block; }
+  .row-save-btn:hover{ background: #b8050f; }
+  .row-save-btn:disabled{ background: var(--muted); cursor: wait; }
+
+  .summary-bar{
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .count-label{ font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
+
+  button.save-all{
+    font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 13px;
+    letter-spacing: .04em; text-transform: uppercase;
+    background: var(--text); color: #fff; border: none; border-radius: var(--radius);
+    padding: 10px 20px; cursor: pointer;
+  }
+  button.save-all:hover{ background: var(--accent); }
+  button.save-all:disabled{ background: var(--muted); cursor: wait; }
+
+  #status{
+    margin-top: 14px; font-size: 13px; padding: 12px 14px;
+    border-left: 3px solid transparent; border-radius: var(--radius);
+    display: none; white-space: pre-wrap; font-family: 'IBM Plex Mono', monospace;
+  }
+  #status.ok{ display: block; border-color: var(--gain); background: rgba(31,138,110,.08); color: var(--gain); }
+  #status.err{ display: block; border-color: var(--loss); background: rgba(192,41,61,.08); color: var(--loss); }
+  #status.pending{ display: block; border-color: var(--muted); background: var(--panel); color: var(--muted); }
+
+  .footer{
+    margin-top: 26px;
+    display: flex; flex-direction: column; gap: 14px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted);
+    padding-top: 16px; border-top: 1px solid var(--line);
+  }
+  .footer-title{ font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; color: var(--text); }
+  .footer-sub{ font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .footer-sync{ display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+
+  @media (max-width: 560px){
+    body{ padding: 24px 16px 56px; }
+    .brand h1{ font-size: 17px; }
+    .footer-sync{ flex-direction: column; align-items: flex-start; }
+    .credentials input[type=password]{ font-size: 16px; } /* prevents iOS Safari auto-zoom */
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="eyebrow">
+    <div class="brand">
+      <h1>Accounting</h1>
+      <span class="sub">/ Raw Editor</span>
+    </div>
+    <div class="status">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">loading…</span>
+    </div>
+  </div>
+
+  <details class="credentials" open>
+    <summary>GitHub access (saved on this device only)</summary>
+    <div class="field">
+      <label>Personal Access Token</label>
+      <input type="password" id="pat" placeholder="ghp_...">
+    </div>
+    <div style="margin-top:8px;">
+      <a href="#" id="clearTokenLink" style="font-size:11px; color:var(--muted); font-family:'IBM Plex Mono', monospace;">clear saved token</a>
+    </div>
+  </details>
+
+  <div class="toolbar">
+    <input type="text" class="search-input" id="searchInput" placeholder="Suchen (Datum, Konto, Comment, Party, Location, …)">
+  </div>
+
+  <div class="table-wrap">
+    <table id="editorTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Timestamp</th>
+          <th>Date</th>
+          <th>Currency</th>
+          <th class="num">AmtLC</th>
+          <th>Debit</th>
+          <th>Credit</th>
+          <th>Comment</th>
+          <th>Party</th>
+          <th>Location</th>
+          <th>Ledger</th>
+          <th>Flags</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr><td colspan="13" style="padding:30px; text-align:center; color:var(--muted); font-family:'IBM Plex Mono',monospace;">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="summary-bar">
+    <span class="count-label" id="countLabel">—</span>
+    <button type="button" class="save-all" id="saveAllBtn">Alle Änderungen speichern</button>
+  </div>
+  <div id="status"></div>
+
+  <div class="footer">
+    <div class="footer-meta">
+      <div class="footer-title">Raw Data Editor</div>
+      <div class="footer-sub">Bearbeitet accounting_entries.csv direkt — EntryID bleibt beim Speichern unverändert, damit das Processing-Skript die Änderung sauber erkennt.</div>
+    </div>
+    <div class="footer-sync">
+      <span>Daten: accounting_entries.csv · Munotstadt/AccountingDataCollector</span>
+      <span id="lastSynced">—</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const REPO = "Munotstadt/AccountingDataCollector";
+const FILE_PATH = "accounting_entries.csv";
+const BRANCH = "main";
+const HEADER = "Timestamp,Date,Currency,AmtLC,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags,SubmittedBy,Device,IP,EntryID";
+
+const PAT_KEY = 'accountingLedger_pat'; // shared with accounting-entry-form.html
+const savedPat = localStorage.getItem(PAT_KEY);
+if (savedPat) document.getElementById('pat').value = savedPat;
+document.getElementById('pat').addEventListener('input', (e) => {
+  localStorage.setItem(PAT_KEY, e.target.value);
+});
+document.getElementById('clearTokenLink').addEventListener('click', (e) => {
+  e.preventDefault();
+  localStorage.removeItem(PAT_KEY);
+  document.getElementById('pat').value = '';
+});
+
+function setStatus(kind, msg){
+  const el = document.getElementById('status');
+  el.className = kind;
+  el.textContent = msg;
+}
+function setSyncStatus(state, text){
+  const dot = document.getElementById('statusDot');
+  const statusText = document.getElementById('statusText');
+  dot.classList.remove('stale','error');
+  if (state === 'stale') dot.classList.add('stale');
+  if (state === 'error') dot.classList.add('error');
+  statusText.textContent = text;
+}
+
+// Robust CSV parser: handles quoted fields, embedded commas/newlines, "" escaping
+function parseCSV(text){
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (inQuotes){
+      if (c === '"'){
+        if (text[i+1] === '"'){ field += '"'; i++; }
+        else { inQuotes = false; }
+      } else field += c;
+    } else {
+      if (c === '"'){ inQuotes = true; }
+      else if (c === ','){ row.push(field); field = ''; }
+      else if (c === '\n'){ row.push(field); rows.push(row); row = []; field = ''; }
+      else if (c === '\r'){ /* skip */ }
+      else field += c;
+    }
+  }
+  if (field.length > 0 || row.length > 0){ row.push(field); rows.push(row); }
+  return rows;
+}
+
+function csvEscape(v){
+  v = (v ?? "").toString();
+  if (/[",\n]/.test(v)) return '"' + v.replace(/"/g,'""') + '"';
+  return v;
+}
+function b64EncodeUnicode(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m, p1) => String.fromCharCode(parseInt(p1, 16))));
+}
+function b64DecodeUnicode(str) {
+  return decodeURIComponent(atob(str).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+}
+
+function isoToDdMm(iso){ // yyyy-mm-dd -> dd.mm.yyyy
+  if (!iso) return '';
+  const [y,m,d] = iso.split('-');
+  return `${d}.${m}.${y}`;
+}
+function ddMmToIso(ddmm){ // dd.mm.yyyy -> yyyy-mm-dd
+  if (!ddmm) return '';
+  const [d,m,y] = ddmm.split('.');
+  if (!d || !m || !y) return '';
+  return `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
+}
+
+const FIELD_KEYS = ['Timestamp','Date','Currency','AmtLC','DebitAccount','CreditAccount','Comment','Party','Location','Ledger','Flags','SubmittedBy','Device','IP','EntryID'];
+
+let rowsData = []; // { original: {...}, current: {...}, tr: <tr> }
+
+function buildRow(fields, index){
+  const original = {};
+  FIELD_KEYS.forEach((k, i) => original[k] = fields[i] || '');
+  const current = { ...original };
+
+  const tr = document.createElement('tr');
+
+  function cellInput(key, type, extra){
+    const td = document.createElement('td');
+    const input = document.createElement(type === 'select' ? 'select' : 'input');
+    if (type === 'select'){
+      (extra.options || []).forEach(opt => {
+        const o = document.createElement('option');
+        o.value = opt; o.textContent = opt;
+        if (opt === current[key]) o.selected = true;
+        input.appendChild(o);
+      });
+    } else {
+      input.type = type;
+      input.value = (type === 'date') ? ddMmToIso(current[key]) : current[key];
+      if (type === 'number') input.step = '0.01';
+    }
+    input.addEventListener('input', () => {
+      current[key] = (type === 'date') ? isoToDdMm(input.value) : input.value;
+      markDirty();
+    });
+    td.appendChild(input);
+    return td;
+  }
+
+  const rowNumTd = document.createElement('td');
+  rowNumTd.className = 'rownum';
+  rowNumTd.textContent = index + 1;
+  tr.appendChild(rowNumTd);
+
+  const tsTd = document.createElement('td');
+  tsTd.className = 'readonly';
+  tsTd.textContent = current.Timestamp;
+  tr.appendChild(tsTd);
+
+  tr.appendChild(cellInput('Date', 'date'));
+  tr.appendChild(cellInput('Currency', 'text'));
+  tr.appendChild(cellInput('AmtLC', 'number'));
+  tr.appendChild(cellInput('DebitAccount', 'text'));
+  tr.appendChild(cellInput('CreditAccount', 'text'));
+  tr.appendChild(cellInput('Comment', 'text'));
+  tr.appendChild(cellInput('Party', 'text'));
+  tr.appendChild(cellInput('Location', 'text'));
+  tr.appendChild(cellInput('Ledger', 'select', { options: ['PG','VP'] }));
+  tr.appendChild(cellInput('Flags', 'text'));
+
+  const actionsTd = document.createElement('td');
+  const rowSaveBtn = document.createElement('button');
+  rowSaveBtn.type = 'button';
+  rowSaveBtn.className = 'row-save-btn';
+  rowSaveBtn.textContent = 'Save';
+  rowSaveBtn.addEventListener('click', () => saveChanges([entry]));
+  actionsTd.appendChild(rowSaveBtn);
+  tr.appendChild(actionsTd);
+
+  function markDirty(){
+    const changed = FIELD_KEYS.some(k => current[k] !== original[k]);
+    tr.classList.toggle('dirty', changed);
+    updateSaveAllVisibility();
+  }
+
+  const entry = { original, current, tr, rowSaveBtn, markDirty };
+  return entry;
+}
+
+function isDirty(entry){
+  return FIELD_KEYS.some(k => entry.current[k] !== entry.original[k]);
+}
+
+function updateSaveAllVisibility(){
+  const anyDirty = rowsData.some(isDirty);
+  document.getElementById('saveAllBtn').style.display = anyDirty ? 'inline-block' : 'none';
+}
+
+function renderTable(){
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  rowsData.forEach(entry => tbody.appendChild(entry.tr));
+  document.getElementById('countLabel').textContent = `${rowsData.length} Einträge`;
+  document.getElementById('saveAllBtn').style.display = 'none';
+}
+
+function applySearch(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  rowsData.forEach(entry => {
+    if (!q){ entry.tr.classList.remove('hidden'); return; }
+    const haystack = FIELD_KEYS.map(k => entry.current[k]).join(' ').toLowerCase();
+    entry.tr.classList.toggle('hidden', !haystack.includes(q));
+  });
+}
+document.getElementById('searchInput').addEventListener('input', applySearch);
+
+async function loadData(){
+  setSyncStatus('stale', 'loading…');
+  try {
+    const res = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const rows = parseCSV(text);
+    if (rows.length < 1) throw new Error('Leere Datei.');
+    const dataRows = rows.slice(1).filter(r => r.length > 1);
+    rowsData = dataRows.map((fields, i) => buildRow(fields, i));
+    renderTable();
+    setSyncStatus('ok', 'live');
+    document.getElementById('lastSynced').textContent = 'synced ' + new Date().toLocaleTimeString('de-CH');
+  } catch (err){
+    setSyncStatus('error', 'connection failed');
+    document.getElementById('tableBody').innerHTML =
+      `<tr><td colspan="13" style="padding:30px; text-align:center; color:var(--loss); font-family:'IBM Plex Mono',monospace;">Fehler beim Laden: ${err.message}</td></tr>`;
+  }
+}
+
+// Writes the full file back to GitHub, replacing only the dirty rows'
+// content while leaving every other row byte-for-byte untouched. EntryID is
+// never modified, so the downstream processing script correctly detects
+// exactly these rows as edited (via their content hash) and reprocesses
+// only them.
+async function saveChanges(entriesToSave){
+  const pat = document.getElementById('pat').value.trim();
+  if (!pat){ setStatus('err', 'Missing: GitHub Personal Access Token.'); return; }
+
+  const dirtyEntries = entriesToSave.filter(isDirty);
+  if (dirtyEntries.length === 0){ setStatus('err', 'Keine Änderungen zum Speichern.'); return; }
+
+  const saveAllBtn = document.getElementById('saveAllBtn');
+  saveAllBtn.disabled = true;
+  dirtyEntries.forEach(e => e.rowSaveBtn.disabled = true);
+  setStatus('pending', 'Speichere ' + dirtyEntries.length + ' Zeile(n)…');
+
+  const apiUrl = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
+  const headers = { 'Authorization': `Bearer ${pat}`, 'Accept': 'application/vnd.github+json' };
+
+  async function attempt(){
+    const getRes = await fetch(`${apiUrl}?ref=${BRANCH}`, { headers, cache: 'no-store' });
+    if (!getRes.ok) throw new Error(`GET failed (${getRes.status})`);
+    const data = await getRes.json();
+    const sha = data.sha;
+    const content = b64DecodeUnicode(data.content.replace(/\n/g,''));
+    const rows = parseCSV(content);
+
+    // Match by EntryID (last column) to find the correct line to replace,
+    // regardless of any rows added elsewhere since this page was loaded.
+    const eidIdx = rows[0].indexOf('EntryID');
+    const updatedRows = rows.map((r, i) => {
+      if (i === 0) return r; // header
+      const eid = r[eidIdx];
+      const match = dirtyEntries.find(e => e.original.EntryID === eid);
+      if (!match) return r;
+      return FIELD_KEYS.map(k => match.current[k]);
+    });
+
+    const newLines = updatedRows.map(r => r.map(csvEscape).join(','));
+    const newContent = newLines.join('\n') + '\n';
+
+    const putBody = {
+      message: `Edit ${dirtyEntries.length} ledger entr${dirtyEntries.length === 1 ? 'y' : 'ies'} via Raw Editor`,
+      content: b64EncodeUnicode(newContent),
+      branch: BRANCH,
+      sha: sha
+    };
+
+    return fetch(apiUrl, {
+      method: 'PUT',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify(putBody),
+      cache: 'no-store'
+    });
+  }
+
+  try {
+    let putRes = await attempt();
+    if (putRes.status === 409){
+      setStatus('pending', 'Datei wurde zwischenzeitlich geändert, versuche erneut…');
+      putRes = await attempt();
+    }
+    if (!putRes.ok){
+      const errBody = await putRes.text();
+      throw new Error(`PUT failed (${putRes.status}): ${errBody}`);
+    }
+
+    dirtyEntries.forEach(e => {
+      e.original = { ...e.current };
+      e.tr.classList.remove('dirty');
+    });
+    updateSaveAllVisibility();
+    setStatus('ok', `Gespeichert: ${dirtyEntries.length} Zeile(n) aktualisiert.`);
+    document.getElementById('lastSynced').textContent = 'synced ' + new Date().toLocaleTimeString('de-CH');
+  } catch (err){
+    setStatus('err', 'Failed: ' + err.message);
+  } finally {
+    saveAllBtn.disabled = false;
+    dirtyEntries.forEach(e => e.rowSaveBtn.disabled = false);
+  }
+}
+
+document.getElementById('saveAllBtn').addEventListener('click', () => {
+  saveChanges(rowsData);
+});
+
+loadData();
+</script>
+</body>
+</html>
