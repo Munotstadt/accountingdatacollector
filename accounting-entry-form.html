@@ -401,7 +401,7 @@
 const REPO = "Munotstadt/AccountingDataCollector";
 const FILE_PATH = "accounting_entries.csv";
 const BRANCH = "main";
-const HEADER = "Timestamp,Date,Currency,AmtLC,AmtCry,AmtCHF,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags,SubmittedBy,Device,IP";
+const HEADER = "Timestamp,Date,Currency,AmtLC,DebitAccount,CreditAccount,Comment,Party,Location,Ledger,Flags,SubmittedBy,Device,IP,EntryID";
 
 // Persistent anonymous device identifier (no login) — created once per browser, reused after
 const DEVICE_ID_KEY = 'accountingLedger_deviceId';
@@ -578,9 +578,9 @@ function resolveMulti(checkboxClass, otherId){
 
 function pad(n){ return String(n).padStart(2,'0'); }
 
-// dd.mm.yyyy hh:mm, from a Date object (local time)
+// dd.mm.yyyy hh:mm:ss, from a Date object (local time)
 function fmtTimestamp(d){
-  return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
 
 // dd.mm.yyyy, from an <input type=date> value (yyyy-mm-dd)
@@ -638,8 +638,6 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
 
   const timestamp = fmtTimestamp(new Date());
   const date = fmtDate(dateRaw);
-  const amtCry = ""; // computed downstream
-  const amtCHF = ""; // computed downstream
 
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
@@ -649,11 +647,12 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
   const submittedBy = deviceId;
   const device = getDeviceDescriptor();
   const ip = await getPublicIP();
+  const entryId = 'e-' + (crypto.randomUUID ? crypto.randomUUID().replace(/-/g,'').slice(0,10) : Math.random().toString(16).slice(2,12));
 
   const row = [
-    timestamp, date, currency, amtLC, amtCry, amtCHF,
+    timestamp, date, currency, amtLC,
     debitAccount, creditAccount, comment, party, location, ledger, flags,
-    submittedBy, device, ip
+    submittedBy, device, ip, entryId
   ].map(csvEscape).join(',');
 
   setStatus('pending', 'Contacting GitHub…');
