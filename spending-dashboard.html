@@ -104,6 +104,20 @@
   .rank-track{ height: 6px; background: var(--panel); border-radius: 3px; overflow: hidden; }
   .rank-fill{ height: 100%; background: var(--accent); border-radius: 3px; }
 
+  .search-input{
+    width: 100%;
+    font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text);
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 10px 12px; margin: 12px 0 6px;
+  }
+  .search-input:focus{ outline: none; border-color: var(--accent); }
+  .edit-link{
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 3px 8px; white-space: nowrap;
+  }
+  .edit-link:hover{ background: var(--text); color: #fff; border-color: var(--text); }
+
   .chart-wrap{
     margin: 0 0 8px; background: var(--panel); border: 1px solid var(--line);
     border-radius: var(--radius); padding: 20px 16px 12px;
@@ -242,6 +256,7 @@
   <div class="rank-list" id="rankListParty"><div class="chart-empty">Loading…</div></div>
 
   <div class="history-title" id="txTitle">Letzte Buchungen <span class="hint">(Aktuelle Woche)</span></div>
+  <input type="text" class="search-input" id="txSearchInput" placeholder="Suchen (Datum, Konto, Comment, Party, Location, …)">
   <table id="txTable">
     <thead>
       <tr>
@@ -250,10 +265,11 @@
         <th>Comment</th>
         <th>Party</th>
         <th>Location</th>
-        <th class="num">AmtLC</th>
+        <th class="num">Amt LC</th>
+        <th></th>
       </tr>
     </thead>
-    <tbody id="txBody"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+    <tbody id="txBody"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
   </table>
 
   <div class="footer">
@@ -564,16 +580,34 @@ function renderLegend(legendEl, categories, colorFor){
   ).join('');
 }
 
+const EDITOR_URL = "accounting-entries-editor.html";
+let txSearchQuery = '';
+
+function filterTxsBySearch(txs, query){
+  if (!query) return txs;
+  const q = query.toLowerCase();
+  return txs.filter(t => {
+    const haystack = [
+      fmtDateShort(t.date), t.debit, t.credit, t.comment, t.party, t.location, t.ledger, t.currency
+    ].join(' ').toLowerCase();
+    return haystack.includes(q);
+  });
+}
+
 function renderTable(tbody, txs){
-  const sorted = txs.slice().sort((a,b) => b.date - a.date);
+  const filtered = filterTxsBySearch(txs, txSearchQuery);
+  const sorted = filtered.slice().sort((a,b) => b.date - a.date);
   if (sorted.length === 0){
-    tbody.innerHTML = '<tr><td colspan="6" class="empty">Keine Buchungen im gewählten Zeitraum.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">Keine Buchungen gefunden.</td></tr>';
     return;
   }
   tbody.innerHTML = sorted.map(t => {
     const lc = (t.amtLC != null && !isNaN(t.amtLC))
       ? t.amtLC.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + (t.currency || '')
       : '—';
+    const editLink = t.entryId
+      ? `<a class="edit-link" href="${EDITOR_URL}?entryId=${encodeURIComponent(t.entryId)}" target="_blank" rel="noopener">Edit</a>`
+      : '';
     return `<tr>
     <td class="time">${fmtDateShort(t.date)}</td>
     <td>${t.debit}</td>
@@ -581,6 +615,7 @@ function renderTable(tbody, txs){
     <td>${t.party || '—'}</td>
     <td>${t.location || '—'}</td>
     <td class="amt">${lc}</td>
+    <td>${editLink}</td>
   </tr>`;
   }).join('');
 }
@@ -608,7 +643,8 @@ async function init(){
       ledger: header.indexOf('Ledger'),
       comment: header.indexOf('Comment'),
       party: header.indexOf('Party'),
-      location: header.indexOf('Location')
+      location: header.indexOf('Location'),
+      entryId: header.indexOf('EntryID')
     };
 
     const txs = [];
@@ -637,7 +673,8 @@ async function init(){
         ledger: cols[idx.ledger] || '',
         comment: cols[idx.comment] || '',
         party: cols[idx.party] || '',
-        location: cols[idx.location] || ''
+        location: cols[idx.location] || '',
+        entryId: cols[idx.entryId] || ''
       });
     }
 
@@ -685,6 +722,11 @@ async function init(){
         renderTable(document.getElementById('txBody'), lastFilteredAll);
       }
     }
+
+    document.getElementById('txSearchInput').addEventListener('input', (e) => {
+      txSearchQuery = e.target.value.trim();
+      updateTable();
+    });
 
     // Click on a day column or a category segment in the daily chart filters the table below.
     document.getElementById('chartDaily').addEventListener('click', (e) => {
@@ -767,7 +809,7 @@ async function init(){
     document.getElementById('rankListLocation').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
     document.getElementById('rankListParty').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
     document.getElementById('chartDaily').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
-    document.getElementById('txBody').innerHTML = '<tr><td colspan="6" class="error">Fehler beim Laden: ' + err.message + '</td></tr>';
+    document.getElementById('txBody').innerHTML = '<tr><td colspan="7" class="error">Fehler beim Laden: ' + err.message + '</td></tr>';
   }
 }
 
