@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>accountingdatacollector — Spending</title>
+<title>Accounting - Spending Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
@@ -129,9 +129,17 @@
   .error{ color: var(--loss); }
 
   .footer{
-    margin-top: 26px; display: flex; align-items: center; justify-content: space-between;
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); flex-wrap: wrap; gap: 6px;
+    margin-top: 26px;
+    display: flex; flex-direction: column; gap: 14px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted);
     padding-top: 16px; border-top: 1px solid var(--line);
+  }
+  .footer-title{
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; color: var(--text);
+  }
+  .footer-sub{ font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .footer-sync{
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;
   }
 
   .custom-range{
@@ -171,6 +179,7 @@
     .stat-value{ font-size: 18px; }
     #txTable thead th:nth-child(3), #txTable tbody td:nth-child(3),
     #txTable thead th:nth-child(5), #txTable tbody td:nth-child(5) { display: none; }
+    .footer-sync{ flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -179,8 +188,8 @@
 <div class="sheet">
   <div class="eyebrow">
     <div class="brand">
-      <h1>accountingdatacollector</h1>
-      <span class="sub">/ spending</span>
+      <h1>Accounting</h1>
+      <span class="sub">/ Spending Dashboard</span>
     </div>
     <div class="status">
       <span class="dot" id="statusDot"></span>
@@ -189,9 +198,6 @@
   </div>
 
   <div class="meta-header">
-    <h2>Spending Overview</h2>
-    <p class="meta-sub">Auswertung von processed-accounting-entries.csv · Beträge in CHF (AmtCHF)</p>
-
     <div class="summary-row" id="summaryRow">
       <div class="stat-box"><span class="stat-label">Total</span><span class="stat-value" id="statTotal">—</span></div>
       <div class="stat-box"><span class="stat-label">Buchungen</span><span class="stat-value" id="statCount">—</span></div>
@@ -229,6 +235,12 @@
   <div class="history-title">Nach Zahlungsquelle (Credit Account) <span class="hint">Total · Ø/Tag</span></div>
   <div class="rank-list" id="rankListCredit"><div class="chart-empty">Loading…</div></div>
 
+  <div class="history-title">Top 5 Locations <span class="hint">Total · Ø/Tag</span></div>
+  <div class="rank-list" id="rankListLocation"><div class="chart-empty">Loading…</div></div>
+
+  <div class="history-title">Top 10 Parties <span class="hint">Total · Ø/Tag</span></div>
+  <div class="rank-list" id="rankListParty"><div class="chart-empty">Loading…</div></div>
+
   <div class="history-title" id="txTitle">Letzte Buchungen <span class="hint">(Aktuelle Woche)</span></div>
   <table id="txTable">
     <thead>
@@ -245,8 +257,14 @@
   </table>
 
   <div class="footer">
-    <span>Daten: processed-accounting-entries.csv · Munotstadt/AccountingDataCollector</span>
-    <span id="lastSynced">—</span>
+    <div class="footer-meta">
+      <div class="footer-title">Spending Overview</div>
+      <div class="footer-sub">Auswertung von processed-accounting-entries.csv · Beträge in CHF (AmtCHF)</div>
+    </div>
+    <div class="footer-sync">
+      <span>Daten: processed-accounting-entries.csv · Munotstadt/AccountingDataCollector</span>
+      <span id="lastSynced">—</span>
+    </div>
   </div>
 </div>
 
@@ -369,9 +387,19 @@ function getPeriodDays(range, now, custom, txsInRange){
   return 60;
 }
 
-function renderRankList(container, txs, periodDays, keyFn, colorFn){
+function splitTags(val){
+  const parts = (val || '').split('|').map(s => s.trim()).filter(Boolean);
+  return parts.length ? parts : ['—'];
+}
+
+function renderRankList(container, txs, periodDays, keyFn, colorFn, limit){
+  limit = limit || 12;
   const byCategory = {};
-  txs.forEach(t => { const k = keyFn(t); byCategory[k] = (byCategory[k] || 0) + t.amt; });
+  txs.forEach(t => {
+    const k = keyFn(t);
+    const keys = Array.isArray(k) ? k : [k];
+    keys.forEach(key => { byCategory[key] = (byCategory[key] || 0) + t.amt; });
+  });
   const entries = Object.entries(byCategory).sort((a,b) => b[1] - a[1]);
   if (entries.length === 0){
     container.innerHTML = '<div class="chart-empty">Keine Daten im gewählten Zeitraum.</div>';
@@ -379,7 +407,7 @@ function renderRankList(container, txs, periodDays, keyFn, colorFn){
   }
   const max = entries[0][1];
   const days = Math.max(1, periodDays);
-  container.innerHTML = entries.slice(0, 12).map((entry, i) => {
+  container.innerHTML = entries.slice(0, limit).map((entry, i) => {
     const [name, amt] = entry;
     const pct = Math.max(2, (amt / max) * 100);
     const perDay = amt / days;
@@ -484,7 +512,7 @@ function drawDailyBarChart(container, legendEl, txs){
   const yPad = maxY * 0.1 || 1;
   const yMin = 0, yMax = maxY + yPad;
 
-  function xScale(i){ return pad.left + (i / (days.length - 1)) * innerW; }
+  function xScale(i){ return pad.left + (i + 0.5) * (innerW / days.length); }
   function yScale(v){ return pad.top + innerH - ((v - yMin) / (yMax - yMin || 1)) * innerH; }
 
   const barW = Math.max(3, Math.min(20, (innerW / days.length) * 0.65));
@@ -699,6 +727,8 @@ async function init(){
       renderRankList(document.getElementById('rankListDebitAgg'), expenseTxs, periodDays, t => baseCategory(t.debit), name => getCategoryColor(name));
       renderRankList(document.getElementById('rankListDebitRaw'), expenseTxs, periodDays, t => t.debit, name => getCategoryColor(name));
       renderRankList(document.getElementById('rankListCredit'), paymentTxs, periodDays, t => t.credit);
+      renderRankList(document.getElementById('rankListLocation'), expenseTxs, periodDays, t => splitTags(t.location), null, 5);
+      renderRankList(document.getElementById('rankListParty'), expenseTxs, periodDays, t => splitTags(t.party), null, 10);
       const chartMeta = drawDailyBarChart(document.getElementById('chartDaily'), document.getElementById('chartLegend'), expenseTxs);
       lastTopCats = (chartMeta && chartMeta.topCats) || [];
 
@@ -734,6 +764,8 @@ async function init(){
     document.getElementById('rankListDebitAgg').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
     document.getElementById('rankListDebitRaw').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
     document.getElementById('rankListCredit').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
+    document.getElementById('rankListLocation').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
+    document.getElementById('rankListParty').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
     document.getElementById('chartDaily').innerHTML = '<div class="chart-empty">Fehler: ' + err.message + '</div>';
     document.getElementById('txBody').innerHTML = '<tr><td colspan="6" class="error">Fehler beim Laden: ' + err.message + '</td></tr>';
   }
