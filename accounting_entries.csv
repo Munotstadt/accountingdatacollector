@@ -64,3 +64,106 @@ Timestamp,Date,Currency,AmtLC,DebitAccount,CreditAccount,Comment,Party,Location,
 19.07.2026 07:22:44,18.07.2026,EUR,2.5,Life PG,SQ WS EUR PG (#315),Snack,Union Lido,IT-Cavallino,VP,,device-1892545d,"MacIntel | 1032x1376 | de-DE | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15",172.225.26.28,e-889cabb7ad
 19.07.2026 16:28:54,19.07.2026,EUR,103,Vacation & Leisure PG,SQ WS EUR PG (#315),Tanken WoMo (50.51 Liter),Delta Energy,IT-Borgo Valsugana,PG,,device-a23f52a4,"iPhone | 402x874 | de-DE | Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Mobile/15E148 Safari/604.1",140.248.36.39,e-2630dce692
 19.07.2026 16:30:46,19.07.2026,EUR,10.5,Life PG,SQ WS EUR PG (#315),Snack,Lago Levico Camping Village,IT-Levico Terme,PG,,device-a23f52a4,"iPhone | 402x874 | de-DE | Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Mobile/15E148 Safari/604.1",140.248.36.38,e-9bef40a753
+01.06.2026 15:05:43,01.06.2026,CHF,17,Restaurants PG,CC TCS PG,#LL1,Bean & Balls,Winterthur,PG,,bulk-import,manual CSV import,,e-0ae888c0ed
+01.06.2026 17:21:23,01.06.2026,CHF,3.75,Life PG,CC TCS PG,Snack,Coop,Zürich,PG,,bulk-import,manual CSV import,,e-4800106bcb
+01.06.2026 20:37:20,01.06.2026,CHF,16.2,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt),SBB,,PG,,bulk-import,manual CSV import,,e-e4c3a36266
+02.06.2026 12:56:32,02.06.2026,CHF,20.8,Restaurants PG,CC TCS PG,#LL1,Sprüngli,Zürich,PG,,bulk-import,manual CSV import,,e-28d0c71308
+02.06.2026 18:00:45,02.06.2026,CHF,1.75,Life PG,CC TCS PG,Drinks & Kaffee,Avec,Lachen SZ,PG,,bulk-import,manual CSV import,,e-23353077e4
+02.06.2026 19:31:17,02.06.2026,CHF,20.4,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Lachen SZ-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-eaa453f9dc
+03.06.2026 16:06:53,03.06.2026,CHF,20.8,Restaurants PG,CC TCS PG,#LL1,Tenz Momos,Winterthur,PG,,bulk-import,manual CSV import,,e-332d90e9c4
+03.06.2026 18:43:03,03.06.2026,CHF,10.3,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Winterthur-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-356fe1e7d5
+04.06.2026 12:42:34,04.06.2026,CHF,8.5,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Zürich-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-449ca207a4
+04.06.2026 13:39:43,04.06.2026,CHF,34.85,Groceries PG,CC TCS PG,Einkauf Lebensmittel,Migros,Niederhasli,PG,,bulk-import,manual CSV import,,e-e5f67f04d9
+04.06.2026 18:53:34,04.06.2026,CHF,5.25,Groceries PG,CC TCS PG,Einkauf Lebensmittel,Migros,Niederhasli,PG,,bulk-import,manual CSV import,,e-1e3a4ff3f1
+05.06.2026 12:42:03,05.06.2026,CHF,4.4,Life PG,CC TCS PG,Drinks & Kaffee,Kuhn,Winterthur,PG,,bulk-import,manual CSV import,,e-4f2451defc
+05.06.2026 13:15:04,05.06.2026,CHF,14.1,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Winterthur-Schaffhausen,SBB,,PG,,bulk-import,manual CSV import,,e-444198d4e9
+06.06.2026 08:05:15,05.06.2026,CHF,10,Restaurants (Family) PG,RB PK Plus PG,#DD3,Rossi Bar,Niederhasli,PG,,bulk-import,manual CSV import,,e-56ec5419e4
+06.06.2026 13:16:47,06.06.2026,CHF,16,Restaurants PG,CC TCS PG,#LL1,Fulmine,Niederhasli,PG,,bulk-import,manual CSV import,,e-7c95da6442
+07.06.2026 17:06:23,07.06.2026,CHF,1.5,Life PG,CC TCS PG,Drinks & Kaffee,Hudson,Zürich-Flughafen,PG,,bulk-import,manual CSV import,,e-160db914a0
+07.06.2026 17:06:52,07.06.2026,CHF,3.3,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Flughafeb,SBB,,PG,,bulk-import,manual CSV import,,e-fb8e7b4af6
+08.06.2026 20:46:19,08.06.2026,EUR,8.07,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,PwC,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-e4c7afe27a
+08.06.2026 20:46:43,08.06.2026,EUR,13.9,Restaurants PG,SQ WS EUR PG (#315),#DD1,Burger King,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-b54a49c0ef
+10.06.2026 07:21:23,07.06.2026,CHF,1.5,Life PG,CC TCS PG,Drinks & Kaffee,Flughafen Zürich,Zürich-Flughafen,PG,,bulk-import,manual CSV import,,e-82e5982034
+10.06.2026 07:22:07,09.06.2026,CHF,44.12,Admin & Transfer PG,CC TCS PG,#DD1,SAZIO,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-bc44126928
+12.06.2026 08:57:38,11.06.2026,EUR,8.7,Life PG,Admin & Transfer PG,Drinks & Kaffee,Novotel,LU-Luxembourg,PG,TRUE,bulk-import,manual CSV import,,e-db516a48a1
+12.06.2026 08:58:24,11.06.2026,CHF,288.28,Admin & Transfer PG,CC TCS PG,PwC Dinner mit ECR Team,Scotts Pub,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-156f7d10e5
+13.06.2026 09:31:27,12.06.2026,EUR,10.5,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,_Gastro,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-b3b4666716
+14.06.2026 10:07:39,13.06.2026,EUR,11,Life PG,SQ WS EUR PG (#315),"Drinks & Kaffee, Snack",Golden Snack,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-64ad59ec84
+14.06.2026 10:08:08,13.06.2026,EUR,24.1,Life SE,SQ WS EUR PG (#315),Geschenke Samantha,Ernster,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-d9ddda2725
+14.06.2026 10:08:31,13.06.2026,EUR,13.6,Restaurants PG,SQ WS EUR PG (#315),#LL1,OrientX,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-ba33e31c10
+14.06.2026 10:09:17,13.06.2026,EUR,12.6,Sport & Hobbies & Leisure PG,SQ WS EUR PG (#315),Visit Tunnels,City Tourist Office,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-fab3e68f8e
+14.06.2026 10:09:49,13.06.2026,EUR,13.39,Sundry PG,SQ WS EUR PG (#315),"Bruno, Nr. 12",amazon.de,,PG,,bulk-import,manual CSV import,,e-cda3ac6fb6
+14.06.2026 10:09:49,14.06.2026,EUR,13.39,Sundry PG,SQ WS EUR PG (#315),"Bruno, Nr. 13",amazon.de,,PG,,bulk-import,manual CSV import,,e-96b8bb9ddb
+14.06.2026 10:10:26,13.06.2026,EUR,3,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,_Gastro,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-569dcf80d2
+14.06.2026 17:11:20,14.06.2026,EUR,1.65,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,Monoprix,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-e1d7ab3e80
+14.06.2026 17:11:51,14.06.2026,EUR,40,Restaurants PG,SQ WS EUR PG (#315),#LL1,La Grand Café,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-168fe00375
+14.06.2026 17:12:20,14.06.2026,EUR,11,Sport & Hobbies & Leisure PG,SQ WS EUR PG (#315),Visit Caves,City Tourist Office,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-58fe381b45
+16.06.2026 12:49:07,15.06.2026,EUR,3.38,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,Sodexo,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-2d7a226760
+16.06.2026 19:25:50,16.06.2026,EUR,6.4,Life PG,SQ WS EUR PG (#315),Drinks & Kaffee,_Stores,LU-Luxembourg,PG,TRUE,bulk-import,manual CSV import,,e-79d0aa5cbf
+16.06.2026 19:26:33,16.06.2026,EUR,13,Restaurants PG,SQ WS EUR PG (#315),#DD1,Oberwies,LU-Luxembourg,PG,TRUE,bulk-import,manual CSV import,,e-a0652a8a14
+17.06.2026 05:55:04,16.06.2026,CHF,22.04,Work related expenses (PwC) PG,SQ WS CHF PG (#315),Flugfahen-Niederhasli,Uber,,PG,,bulk-import,manual CSV import,,e-57bb110453
+18.06.2026 06:55:36,16.06.2026,CHF,364.85,Admin & Transfer PG,CC TCS PG,Abrechnung,Novotel,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-2f51454cc3
+18.06.2026 06:58:13,16.06.2026,CHF,339.13,Admin & Transfer PG,Admin & Transfer PG,Spesenabrechnung,_Transfers,,PG,,bulk-import,manual CSV import,,e-e847620abb
+18.06.2026 06:59:07,16.06.2026,CHF,25.72,Life PG,Admin & Transfer PG,"Drinks & Kaffee, Snack, Various",Novotel,LU-Luxembourg,PG,,bulk-import,manual CSV import,,e-32c59985cd
+18.06.2026 07:00:03,17.06.2026,CHF,63,Sport & Hobbies & Leisure PG,CC TCS PG,Eintritt,Hallenbad Heuel,Rümlang,PG,,bulk-import,manual CSV import,,e-0471f10c27
+18.06.2026 15:46:09,18.06.2026,CHF,21,Restaurants PG,CC TCS PG,#LL1,riceup,Winterthur,PG,,bulk-import,manual CSV import,,e-196411cb14
+19.06.2026 09:15:05,19.06.2026,CHF,8.5,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Zürich-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-6fb7d58b9c
+19.06.2026 09:21:52,19.06.2026,CHF,11.6,Life PG,CC TCS PG,"Drinks & Kaffee, Snack",Oscar,Zürich,PG,,bulk-import,manual CSV import,,e-3295b53541
+20.06.2026 06:18:19,12.06.2026,CHF,20.1,Groceries PG,CC TCS PG,Einkauf Lebensmittel,Migros,Rümlang,PG,,bulk-import,manual CSV import,,e-9b548cfabf
+20.06.2026 06:18:47,19.06.2026,CHF,20.8,Restaurants PG,CC TCS PG,#LL1,Bachmann,Zürich,PG,,bulk-import,manual CSV import,,e-b948f0ddaa
+20.06.2026 09:04:18,20.06.2026,CHF,6.2,Groceries PG,CC TCS PG,Einkauf Lebensmittel,Kilchsperger,Andelfingen,PG,,bulk-import,manual CSV import,,e-7dd1736fe0
+20.06.2026 18:11:01,20.06.2026,CHF,20.9,Groceries PG,CC TCS PG,Einkauf Lebensmittel,Migros,Niederhasli,PG,,bulk-import,manual CSV import,,e-35f1cbafe8
+20.06.2026 18:11:34,20.06.2026,CHF,13,Life PG,CC TCS PG,Snack,Badi see,Niederhasli,PG,,bulk-import,manual CSV import,,e-948a680daa
+20.06.2026 18:12:01,20.06.2026,CHF,1.5,Life PG,CC TCS PG,Eintritt Kiara,Badi see,Niederhasli,PG,,bulk-import,manual CSV import,,e-b6e84b92cc
+20.06.2026 18:12:33,20.06.2026,CHF,192.35,Groceries PG,CC TCS PG,"Einkauf Lebensmittel, #Wein",Coop,Dielsdorf,PG,,bulk-import,manual CSV import,,e-350c552c1e
+20.06.2026 18:12:58,20.06.2026,CHF,24.45,Restaurants (Family) PG,CC TCS PG,#LL2,Coop,Dielsdorf,PG,,bulk-import,manual CSV import,,e-4f2c2a83b8
+21.06.2026 20:59:22,21.06.2026,CHF,6,Life PG,CC TCS PG,Parking,Bad Ragaz,Bad Ragaz,PG,,bulk-import,manual CSV import,,e-70ceb3f6de
+21.06.2026 21:00:16,21.06.2026,CHF,24.5,Life PG,CC TCS PG,"Drinks & Kaffee, Snack",Kiosk Altes Bad Pfäffers,Bad Ragaz,PG,,bulk-import,manual CSV import,,e-1ad689711f
+22.06.2026 16:06:29,22.06.2026,CHF,10.3,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Winterthur-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-1ccb60b18e
+22.06.2026 16:07:37,22.06.2026,CHF,22.9,Restaurants PG,CC TCS PG,#LL1,mit&ohni,Winterthur,PG,,bulk-import,manual CSV import,,e-70ccff4ef8
+22.06.2026 16:08:17,22.06.2026,CHF,32,OTHERS,CC TCS PG,Geschenk Helene,Läckerli-Huus,Winterthur,PG,,bulk-import,manual CSV import,,e-f6019d20ee
+23.06.2026 05:41:37,23.06.2026,CHF,65,Sundry PG,CC TCS PG,Klassenfotos / Fotos Kindergarten,Pictrs GmbH,,PG,,bulk-import,manual CSV import,,e-f985599049
+23.06.2026 09:13:57,23.06.2026,CHF,8.6,Life PG,CC TCS PG,Drinks & Kaffee,Passion by Valentina,Niederhasli,PG,,bulk-import,manual CSV import,,e-a918302800
+23.06.2026 16:16:21,23.06.2026,CHF,27.4,Groceries PG,CC TCS PG,Einkauf Lebensmittel,Migros,Niederhasli,PG,,bulk-import,manual CSV import,,e-50726fb750
+23.06.2026 20:20:12,23.06.2026,CHF,24.5,Restaurants PG,CC TCS PG,#LL1,Sportanlage Erlen,Niederhasli,PG,,bulk-import,manual CSV import,,e-a9e04ccc46
+23.06.2026 21:06:59,23.06.2026,CHF,1,Life PG,Admin & Transfer PG,tet,tet,,PG,TRUE,bulk-import,manual CSV import,,e-b39d7a2c57
+24.06.2026 09:12:43,24.06.2026,CHF,30,Work related expenses (PwC) PG,RB PK Plus PG,Abschied Ennio,_Transfers,,PG,TWINT,bulk-import,manual CSV import,,e-203ad222d4
+24.06.2026 22:02:17,24.06.2026,CHF,130,Restaurants PG,RB PK Plus PG,"#DD1, mit Pille",Restaurant Hofwiesen,Zürich,PG,TWINT,bulk-import,manual CSV import,,e-b097d2ca96
+25.06.2026 07:02:47,25.06.2026,CHF,9.7,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Zürich - inkl. Velo,SBB,,PG,,bulk-import,manual CSV import,,e-1ecb64c0b4
+27.06.2026 05:57:14,27.06.2026,CHF,12,Life PG,CC TCS PG,Drinks & Kaffee,Turnverein Niederhasli,Niederhasli,PG,,bulk-import,manual CSV import,,e-ee801561f3
+27.06.2026 05:59:05,26.06.2026,CHF,5.5,Auto Parken PG,CC TCS PG,Parking,Herrenacker,Schaffhausen,PG,,bulk-import,manual CSV import,,e-851ed1c400
+27.06.2026 06:00:19,26.06.2026,CHF,10,Restaurants PG,RB PK Plus PG,#DD1,A & A BBQ,Niederhasli,PG,TWINT,bulk-import,manual CSV import,,e-60e219c400
+28.06.2026 06:00:19,27.06.2026,CHF,20,Restaurants PG,RB PK Plus PG,#DD1,A & A BBQ,Niederhasli,PG,TWINT,bulk-import,manual CSV import,,e-ad8167d97e
+27.06.2026 16:15:26,27.06.2026,CHF,9,Life PG,CC TCS PG,Snack,Erlen,Niederhasli,PG,,bulk-import,manual CSV import,,e-acea6d3d2b
+27.06.2026 16:16:13,27.06.2026,CHF,0.5,Auto Parken PG,CC TCS PG,Parking,Refamac,Rümlang,PG,,bulk-import,manual CSV import,,e-281a4af7dc
+27.06.2026 16:17:06,27.06.2026,CHF,13.75,Living Haushalt PG,CC TCS PG,Holz/Grillbürste,Jumbo,Rümlang,PG,,bulk-import,manual CSV import,,e-9fa626111f
+27.06.2026 16:17:37,27.06.2026,CHF,37.9,Living Haushalt PG,CC TCS PG,Gas,SOCAR,Oberglatt,PG,,bulk-import,manual CSV import,,e-bb34b35035
+28.06.2026 21:42:05,27.06.2026,CHF,10,Life PG,CC TCS PG,Drinks & Kaffee,FC Dielsdorf,Niederhasli,PG,,bulk-import,manual CSV import,,e-91a8512d31
+28.06.2026 21:42:35,27.06.2026,CHF,12,Life PG,CC TCS PG,"Snack, Glace",Th. Peter & P.,Niederhasli,PG,,bulk-import,manual CSV import,,e-2c11a5d2f8
+29.06.2026 06:56:52,29.06.2026,CHF,1.8,Life PG,CC TCS PG,Snack,Coop,Winterthur,PG,,bulk-import,manual CSV import,,e-43831c3731
+29.06.2026 17:59:38,29.06.2026,CHF,10.3,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Winterthur-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-8af088312e
+01.07.2026 12:30:34,01.07.2026,CHF,15.8,Restaurants PG,CC TCS PG,#LL1,PwC,Zürich,PG,,bulk-import,manual CSV import,,e-dadd23bc70
+01.07.2026 12:30:51,01.07.2026,CHF,8.5,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Zürich-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-d13d45287d
+02.07.2026 13:47:03,02.07.2026,CHF,8.5,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Zürich-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-5cbadfd8b3
+02.07.2026 13:47:38,02.07.2026,CHF,3.25,Life PG,CC TCS PG,"Drinks & Kaffee, Snack",Migros,Zürich,PG,,bulk-import,manual CSV import,,e-159c2229d0
+03.07.2026 20:14:03,03.07.2026,CHF,148.6,Groceries PG,CC TCS PG,Einkauf Lebensmittel,Coop,Dielsdorf,PG,,bulk-import,manual CSV import,,e-f37cb94ca8
+05.07.2026 05:40:28,04.07.2026,CHF,16.5,Life PG,CC TCS PG,Snack,Amore mio,Oberglatt,PG,,bulk-import,manual CSV import,,e-dc40a234c6
+05.07.2026 16:39:31,05.07.2026,CHF,26,Sport & Hobbies & Leisure PG,CC TCS PG,Eintritt & Liegestuhl,Freibad Bülach,Bülach,PG,,bulk-import,manual CSV import,,e-fe7947d693
+05.07.2026 16:39:56,05.07.2026,CHF,62.6,Restaurants (Family) PG,CC TCS PG,#LL3,Freibad Bülach,Bülach,PG,,bulk-import,manual CSV import,,e-4d43680e2b
+05.07.2026 16:40:15,05.07.2026,CHF,13.9,Life PG,CC TCS PG,Snack,Freibad Bülach,Bülach,VP,,bulk-import,manual CSV import,,e-87c798efb4
+05.07.2026 16:40:32,05.07.2026,CHF,26.15,Groceries PG,CC TCS PG,Einkauf Lebensmittel,Migros,Zürich-Flughafen,PG,,bulk-import,manual CSV import,,e-499dc2469f
+05.07.2026 16:41:13,05.07.2026,CHF,2,Auto Parken PG,CC TCS PG,Parking,Zürich-Flughafen,Zürich-Flughafen,PG,,bulk-import,manual CSV import,,e-b8118d2873
+06.07.2026 14:32:02,06.07.2026,CHF,175,Admin & Transfer PG,CC TCS PG,"PwC Lunch mit, WP-Simulation",Molino,Winterthur,PG,,bulk-import,manual CSV import,,e-0a62d04b4d
+06.07.2026 17:38:31,06.07.2026,CHF,10.3,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Winterthur-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-edf91b87a0
+07.07.2026 11:59:23,07.07.2026,CHF,8.5,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Zürich-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-a9df063d37
+07.07.2026 13:15:04,07.07.2026,CHF,15.1,Life PG,CC TCS PG,Drinks & Kaffee,D-Vino,Zürich,PG,,bulk-import,manual CSV import,,e-4e59a3edee
+07.07.2026 13:15:32,07.07.2026,CHF,21,Restaurants PG,RB PK Plus PG,#LL1,D-Vino,Zürich,PG,TWINT,bulk-import,manual CSV import,,e-a4594c5448
+07.07.2026 13:16:08,07.07.2026,CHF,3.4,Life PG,CC TCS PG,Snack,Stocker,Zürich,PG,,bulk-import,manual CSV import,,e-3cbb17fa8c
+07.07.2026 13:18:37,06.07.2026,CHF,12.85,Restaurants VP,CC TCS VP,#LL1,Coop,Zürich,VP,,bulk-import,manual CSV import,,e-1687bed8d3
+07.07.2026 13:18:57,07.07.2026,CHF,16.75,Restaurants VP,CC TCS VP,#LL1,Coop,Zürich,PG,,bulk-import,manual CSV import,,e-d43d4fe6e2
+07.07.2026 18:11:04,05.07.2026,CHF,2.1,Auto Parken PG,RB PK Plus PG,Parking,Parkingpay,Bülach,PG,,bulk-import,manual CSV import,,e-52145be25e
+08.07.2026 13:52:19,08.07.2026,CHF,18.8,Restaurants PG,CC TCS PG,#LL1,Migros,Zürich,PG,,bulk-import,manual CSV import,,e-6d42b97aed
+08.07.2026 13:52:36,08.07.2026,CHF,8.5,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Zürich-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-35ef07ce23
+09.07.2026 13:08:38,09.07.2026,CHF,80,Admin & Transfer PG,CC TCS PG,"PwC Lunch mit, Ennio Iseli",Strickers,Winterthur,PG,,bulk-import,manual CSV import,,e-2d63ef4321
+09.07.2026 18:36:16,09.07.2026,CHF,10.3,Mobility Expenses PG,Gutschein SBB PG,Niederhasli-Winterthur-Niederhasli,SBB,,PG,,bulk-import,manual CSV import,,e-8b1a7e71b2
+10.07.2026 14:11:39,10.07.2026,CHF,6,Auto Andere PG,CC TCS PG,Auto waschen,Migros,Dielsdorf,PG,,bulk-import,manual CSV import,,e-2da1521a2e
