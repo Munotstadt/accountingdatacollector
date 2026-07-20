@@ -43,6 +43,15 @@
     letter-spacing: 0.02em; margin: 0; text-transform: uppercase;
   }
   .brand span.sub{ font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
+  .tool-links{ display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .tool-link{
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase;
+    letter-spacing: .04em; text-decoration: none; color: var(--text);
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 16px;
+  }
+  .tool-link:hover{ background: var(--text); color: #fff; border-color: var(--text); }
+  .tool-link-primary{ background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tool-link-primary:hover{ background: #b8050f; border-color: #b8050f; }
   .status{
     display: flex; align-items: center; gap: 8px;
     font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--muted);
@@ -188,6 +197,11 @@
       <span class="dot" id="statusDot"></span>
       <span id="statusText">loading…</span>
     </div>
+  </div>
+
+  <div class="tool-links">
+    <a href="accounting-entry-form.html" class="tool-link tool-link-primary">+ Neue Buchung</a>
+    <a href="spending-dashboard.html" class="tool-link">Spending Dashboard</a>
   </div>
 
   <details class="credentials" open>
