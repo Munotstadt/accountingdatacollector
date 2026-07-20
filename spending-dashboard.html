@@ -58,6 +58,15 @@
   @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.45;} }
 
   .meta-header{ padding: 18px 0 6px; }
+  .tool-links{ display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .tool-link{
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase;
+    letter-spacing: .04em; text-decoration: none; color: var(--text);
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 16px;
+  }
+  .tool-link:hover{ background: var(--text); color: #fff; border-color: var(--text); }
+  .tool-link-primary{ background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tool-link-primary:hover{ background: #b8050f; border-color: #b8050f; }
   .meta-header h2{ font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; margin: 0 0 4px; }
   .meta-sub{ font-family: 'Inter', sans-serif; font-size: 14px; color: var(--muted); margin: 0; }
 
@@ -211,11 +220,15 @@
     </div>
   </div>
 
+  <div class="tool-links">
+    <a href="accounting-entry-form.html" class="tool-link tool-link-primary">+ Neue Buchung</a>
+    <a href="accounting-entries-editor.html" class="tool-link">Raw Editor</a>
+  </div>
+
   <div class="meta-header">
     <div class="summary-row" id="summaryRow">
       <div class="stat-box"><span class="stat-label">Total</span><span class="stat-value" id="statTotal">—</span></div>
       <div class="stat-box"><span class="stat-label">Buchungen</span><span class="stat-value" id="statCount">—</span></div>
-      <div class="stat-box"><span class="stat-label">Ø pro Buchung</span><span class="stat-value" id="statAvg">—</span></div>
       <div class="stat-box"><span class="stat-label">Ø pro Tag</span><span class="stat-value" id="statAvgDay">—</span></div>
       <div class="stat-box"><span class="stat-label">PG</span><span class="stat-value" id="statPG">—</span></div>
       <div class="stat-box"><span class="stat-label">VP</span><span class="stat-value" id="statVP">—</span></div>
@@ -223,11 +236,12 @@
   </div>
 
   <div class="range-selector" id="rangeSelector">
-    <button type="button" class="range-btn active" data-range="WEEK">Aktuelle Woche</button>
-    <button type="button" class="range-btn" data-range="10D">10 Tage</button>
+    <button type="button" class="range-btn" data-range="WEEK">Aktuelle Woche</button>
+    <button type="button" class="range-btn" data-range="CM">Aktueller Monat</button>
+    <button type="button" class="range-btn active" data-range="7D">Letzte 7 Tage</button>
+    <button type="button" class="range-btn" data-range="14D">14 Tage</button>
     <button type="button" class="range-btn" data-range="30D">30 Tage</button>
     <button type="button" class="range-btn" data-range="60D">60 Tage</button>
-    <button type="button" class="range-btn" data-range="CM">Aktueller Monat</button>
   </div>
 
   <div class="custom-range">
@@ -357,8 +371,10 @@ function filterByRange(txs, range, now, custom){
   if (range === 'WEEK'){
     start = getMonday(now);
     end = new Date(start); end.setDate(end.getDate() + 7); // exclusive: Mon 00:00 .. next Mon 00:00
-  } else if (range === '10D'){
-    start = new Date(now); start.setDate(start.getDate() - 10); end = new Date(now); end.setDate(end.getDate()+1);
+  } else if (range === '7D'){
+    start = new Date(now); start.setDate(start.getDate() - 7); end = new Date(now); end.setDate(end.getDate()+1);
+  } else if (range === '14D'){
+    start = new Date(now); start.setDate(start.getDate() - 14); end = new Date(now); end.setDate(end.getDate()+1);
   } else if (range === '30D'){
     start = new Date(now); start.setDate(start.getDate() - 30); end = new Date(now); end.setDate(end.getDate()+1);
   } else if (range === '60D'){
@@ -368,7 +384,7 @@ function filterByRange(txs, range, now, custom){
   } else if (range === 'CUSTOM' && custom && custom.from && custom.to){
     start = custom.from; end = new Date(custom.to); end.setDate(end.getDate()+1); // inclusive of "to" day
   } else {
-    start = new Date(now); start.setDate(start.getDate() - 60); end = new Date(now); end.setDate(end.getDate()+1);
+    start = new Date(now); start.setDate(start.getDate() - 7); end = new Date(now); end.setDate(end.getDate()+1);
   }
   return txs.filter(t => t.date >= start && t.date < end);
 }
@@ -393,14 +409,15 @@ function getPeriodDays(range, now, custom, txsInRange){
     const maxDate = txsInRange.reduce((m,t) => t.date > m ? t.date : m, txsInRange[0].date);
     return Math.max(1, maxDate.getDate());
   }
-  if (range === '10D') return 10;
+  if (range === '7D') return 7;
+  if (range === '14D') return 14;
   if (range === '30D') return 30;
   if (range === '60D') return 60;
   if (range === 'CUSTOM' && custom && custom.from && custom.to){
     const ms = custom.to - custom.from;
     return Math.max(1, Math.round(ms / 86400000) + 1);
   }
-  return 60;
+  return 7;
 }
 
 function splitTags(val){
@@ -684,7 +701,7 @@ async function init(){
     statusText.textContent = 'live';
     lastSynced.textContent = 'synced ' + new Date().toLocaleTimeString('de-CH');
 
-    let currentRange = 'WEEK';
+    let currentRange = '7D';
     let customDates = null; // { from: Date, to: Date }
     let chartFilter = null; // { dayKey: 'dd.mm.yyyy', category: string|null }
     let lastTopCats = [];
@@ -693,8 +710,8 @@ async function init(){
     const now = new Date();
 
     const RANGE_LABELS = {
-      WEEK: 'Aktuelle Woche', '10D': '10 Tage', '30D': '30 Tage', '60D': '60 Tage',
-      CM: 'Aktueller Monat', CUSTOM: 'Benutzerdefiniert'
+      WEEK: 'Aktuelle Woche', CM: 'Aktueller Monat', '7D': 'Letzte 7 Tage', '14D': '14 Tage',
+      '30D': '30 Tage', '60D': '60 Tage', CUSTOM: 'Benutzerdefiniert'
     };
 
     function categoryOf(debit){
@@ -753,7 +770,6 @@ async function init(){
 
       const total = expenseTxs.reduce((s,t) => s + t.amt, 0);
       const count = expenseTxs.length;
-      const avg = count > 0 ? total / count : 0;
       const totalPG = expenseTxs.filter(t => (t.ledger||'PG') === 'PG').reduce((s,t) => s + t.amt, 0);
       const totalVP = expenseTxs.filter(t => t.ledger === 'VP').reduce((s,t) => s + t.amt, 0);
       const periodDays = getPeriodDays(currentRange, now, customDates, filtered);
@@ -761,8 +777,7 @@ async function init(){
 
       document.getElementById('statTotal').textContent = fmtCHF0(total);
       document.getElementById('statCount').textContent = count;
-      document.getElementById('statAvg').textContent = fmtCHF(avg);
-      document.getElementById('statAvgDay').textContent = fmtCHF(avgPerDay);
+      document.getElementById('statAvgDay').textContent = fmtCHF0(avgPerDay);
       document.getElementById('statPG').textContent = fmtCHF0(totalPG);
       document.getElementById('statVP').textContent = fmtCHF0(totalVP);
 
