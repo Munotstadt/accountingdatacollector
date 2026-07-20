@@ -54,6 +54,13 @@
     font-size: 12px;
     color: var(--muted);
   }
+  .tool-links{ display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .tool-link{
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase;
+    letter-spacing: .04em; text-decoration: none; color: var(--text);
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 16px;
+  }
+  .tool-link:hover{ background: var(--text); color: #fff; border-color: var(--text); }
   .status{
     display: flex;
     align-items: center;
@@ -235,6 +242,11 @@
       <span class="dot" id="statusDot"></span>
       <span id="statusText">checking ledger…</span>
     </div>
+  </div>
+
+  <div class="tool-links">
+    <a href="spending-dashboard.html" class="tool-link">Spending Dashboard</a>
+    <a href="accounting-entries-editor.html" class="tool-link">Raw Editor</a>
   </div>
 
   <form id="entryForm" autocomplete="off">
