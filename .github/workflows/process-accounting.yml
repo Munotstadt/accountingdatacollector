@@ -22,6 +22,12 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Debug -- show fx_rates.csv as checked out
+        run: |
+          echo "---- fx_rates.csv ----"
+          cat fx_rates.csv || echo "(file missing)"
+          echo "-----------------------"
+
       - name: Run processing script
         run: >
           python scripts/process_accounting.py
