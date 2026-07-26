@@ -2,11 +2,11 @@ name: Collect FX Rates
 
 on:
   schedule:
-    # 06:07 Europe/Zurich
-    # MEZ (UTC+1, winter): 05:07 UTC
-    - cron: '7 5 * * *'
-    # MESZ (UTC+2, summer): 04:07 UTC
+    # 05:07 Europe/Zurich
+    # MEZ (UTC+1, winter): 04:07 UTC
     - cron: '7 4 * * *'
+    # MESZ (UTC+2, summer): 03:07 UTC
+    - cron: '7 3 * * *'
   workflow_dispatch:
 
 permissions:
