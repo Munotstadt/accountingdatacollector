@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'accounting_entries.csv'
+      - 'fx_rates.csv'
   workflow_dispatch:
 
 permissions:
@@ -25,7 +26,7 @@ jobs:
         run: >
           python scripts/process_accounting.py
           accounting_entries.csv
-          https://raw.githubusercontent.com/Munotstadt/financialdatacollector-public/main/all_data.csv
+          fx_rates.csv
           processed-accounting-entries.csv
 
       - name: Commit processed table
