@@ -1,7 +1,5 @@
 # AccountingDataCollector
 
-# AccountingDataCollector
-
 Persönliches Buchhaltungssystem (Double-Entry, CSV-basiert), Teil der Munotstadt-Suite. Erfassung über ein mobiles Formular, automatische Verarbeitung und Fremdwährungsumrechnung via GitHub Actions.
 
 ## Datenfluss
