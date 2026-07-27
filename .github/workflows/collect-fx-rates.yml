@@ -2,11 +2,20 @@ name: Collect FX Rates
 
 on:
   schedule:
-    # 05:07 Europe/Zurich
+    # Primary: 05:07 Europe/Zurich
     # MEZ (UTC+1, winter): 04:07 UTC
     - cron: '7 4 * * *'
     # MESZ (UTC+2, summer): 03:07 UTC
     - cron: '7 3 * * *'
+    # Fallback: 05:52 Europe/Zurich (~45 min later) -- GitHub's `schedule`
+    # trigger is not guaranteed to fire on time and can be delayed by hours
+    # or skipped entirely under load; this catches that case most mornings.
+    # collect_fx_rates.py is idempotent (overwrites same-day rows), so a
+    # double run on a normal morning is harmless.
+    # MEZ (UTC+1, winter): 04:52 UTC
+    - cron: '52 4 * * *'
+    # MESZ (UTC+2, summer): 03:52 UTC
+    - cron: '52 3 * * *'
   workflow_dispatch:
 
 permissions:
