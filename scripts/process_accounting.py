@@ -100,7 +100,7 @@ def process(input_path, fx_source, output_path):
     existing_by_id = {}
     try:
         with open(output_path, encoding="utf-8") as f:
-            existing_reader = csv.DictReader(f)
+            existing_reader = csv.DictReader(f, delimiter=";")
             for row in existing_reader:
                 eid = row.get("EntryID")
                 if eid:
@@ -174,7 +174,7 @@ def process(input_path, fx_source, output_path):
         reprocessed_count += 1
 
     with open(output_path, "w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n", extrasaction="ignore", restval="")
+        writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=";", lineterminator="\n", extrasaction="ignore", restval="")
         writer.writeheader()
         writer.writerows(output_rows)
 
