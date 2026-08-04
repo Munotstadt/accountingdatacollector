@@ -327,8 +327,10 @@ function baseCategory(name){
   return n.trim() || name;
 }
 
-// Robust CSV parser: handles quoted fields, embedded commas/newlines, "" escaping
-function parseCSV(text){
+// Robust CSV parser: handles quoted fields, embedded delimiters/newlines, "" escaping.
+// delimiter defaults to ',' (kept for any future comma-separated source); the
+// processed ledger itself now uses ';' -- see the parseCSV call below.
+function parseCSV(text, delimiter = ','){
   const rows = [];
   let row = [];
   let field = '';
@@ -342,7 +344,7 @@ function parseCSV(text){
       } else field += c;
     } else {
       if (c === '"'){ inQuotes = true; }
-      else if (c === ','){ row.push(field); field = ''; }
+      else if (c === delimiter){ row.push(field); field = ''; }
       else if (c === '\n'){ row.push(field); rows.push(row); row = []; field = ''; }
       else if (c === '\r'){ /* skip */ }
       else field += c;
@@ -646,7 +648,7 @@ async function init(){
     const res = await fetch(DATA_URL, { cache: 'no-store' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
-    const rows = parseCSV(text);
+    const rows = parseCSV(text, ';');
     if (rows.length < 2) throw new Error('Keine Daten in der CSV.');
 
     const header = rows[0];
