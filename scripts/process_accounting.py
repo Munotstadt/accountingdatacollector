@@ -2,11 +2,22 @@
 """
 Processes accounting_entries.csv into processed-accounting-entries.csv:
   - Converts AmtLC to CHF using FX rates logged in fx_rates.csv
-    (collected daily at 06:00 Europe/Zurich from Yahoo Finance by
-    collect_fx_rates.py -- rate on the transaction date, or the last
-    available rate before that date if the exact day is missing)
+    (collected daily by collect_fx_rates.py -- rate on the transaction
+    date, or the last available rate before that date if the exact day
+    is missing)
   - Stores the FX rate used in AmtCry (1 for CHF)
   - Renames Debit/Credit accounts to their VP equivalents when Ledger == "VP"
+
+FX conversion (AmtCry/AmtCHF) is recomputed fresh on EVERY run for EVERY
+row, using whatever fx_rates.csv currently contains -- including rows
+whose raw content hasn't changed. This means a backfilled or corrected
+historical FX rate automatically fixes past entries on the next run.
+(This is a deliberate reversal of the original "no retroactive
+recalculation" rule, which only ever applied to FX.)
+
+Everything else (VP account renaming, RawHash bookkeeping) still only
+happens when a row is new or its raw content changed, via the RawHash
+fingerprint -- that part of the audit-integrity design is unchanged.
 
 Run from the repo root (expects accounting_entries.csv and fx_rates.csv
 alongside this script, or pass paths as CLI args: input, fx_source, output).
@@ -65,8 +76,10 @@ def get_rate(rates_for_currency, target_date):
 
 def raw_hash(raw_row):
     """Fingerprint of a raw row's editable content, used to detect manual edits
-    (e.g. fixing a typo in accounting_entries.csv) so the row gets reprocessed
-    instead of silently carrying forward stale computed values."""
+    (e.g. fixing a typo in accounting_entries.csv) so the row's non-FX derived
+    fields (VP account renaming) get recomputed instead of silently carrying
+    forward stale values. FX conversion is independent of this -- see module
+    docstring."""
     parts = "|".join(str(v) for v in raw_row.values())
     return hashlib.sha256(parts.encode("utf-8")).hexdigest()[:16]
 
@@ -88,15 +101,11 @@ def process(input_path, fx_source, output_path):
 
     # Load already-processed rows (if the output file exists yet), keyed by
     # EntryID -- a stable ID generated once per row at creation time and never
-    # recomputed. Matching is content-aware: if a raw row's fingerprint
-    # (raw_hash) no longer matches what was stored at last processing time,
-    # the row has been manually edited (e.g. fixing a typo) and gets
-    # reprocessed. Rows whose EntryID has disappeared from the raw file
+    # recomputed. Used as the baseline for rows whose raw content is unchanged,
+    # so VP-renaming etc. isn't redone needlessly. FX fields are always
+    # recomputed fresh below, regardless of this baseline -- see module
+    # docstring. Rows whose EntryID has disappeared from the raw file
     # (deleted) are dropped automatically since we only iterate raw_rows.
-    #
-    # Note: this means a row is NOT automatically reprocessed just because a
-    # newer/better FX rate has since appeared in fx_rates.csv for that day --
-    # only edits to the raw row itself trigger recomputation.
     existing_by_id = {}
     try:
         with open(output_path, encoding="utf-8") as f:
@@ -114,7 +123,8 @@ def process(input_path, fx_source, output_path):
     warnings = []
     output_rows = []
     reprocessed_count = 0
-    carried_count = 0
+    fx_updated_count = 0
+    unchanged_count = 0
 
     for raw_row in raw_rows:
         eid = raw_row.get("EntryID")
@@ -122,19 +132,17 @@ def process(input_path, fx_source, output_path):
 
         if not eid:
             warnings.append(f"Row with Timestamp {raw_row.get('Timestamp')} has no EntryID -- processing as new every run until it gets one.")
-        else:
-            existing = existing_by_id.get(eid)
-            if existing is not None and existing.get("RawHash") == current_hash:
-                # Unchanged since last processing -- carry forward as-is.
-                output_rows.append(existing)
-                carried_count += 1
-                continue
 
-        # New row, or an existing row whose raw content changed (edited) -- (re)process it.
-        row = dict(raw_row)
-        currency = (row.get("Currency") or "").strip()
-        amt_lc_raw = (row.get("AmtLC") or "").strip()
-        date_raw = (row.get("Date") or "").strip()
+        existing = existing_by_id.get(eid) if eid else None
+        raw_unchanged = existing is not None and existing.get("RawHash") == current_hash
+
+        # Baseline: previous processed row if raw content is unchanged (keeps
+        # its VP-renamed accounts etc. as-is), otherwise start fresh from raw.
+        row = dict(existing) if raw_unchanged else dict(raw_row)
+
+        currency = (raw_row.get("Currency") or "").strip()
+        amt_lc_raw = (raw_row.get("AmtLC") or "").strip()
+        date_raw = (raw_row.get("Date") or "").strip()
 
         try:
             amt_lc = float(amt_lc_raw) if amt_lc_raw != "" else None
@@ -146,6 +154,10 @@ def process(input_path, fx_source, output_path):
         except ValueError:
             tx_date = None
 
+        old_amt_cry = row.get("AmtCry")
+        old_amt_chf = row.get("AmtCHF")
+
+        # FX conversion: always recomputed, for every row, every run.
         if amt_lc is not None:
             if currency == "CHF":
                 row["AmtCry"] = "1"
@@ -160,18 +172,35 @@ def process(input_path, fx_source, output_path):
             else:
                 warnings.append(f"Unhandled currency '{currency}' — AmtCry/AmtCHF left blank")
 
-        if (row.get("Ledger") or "").strip() == "VP":
-            debit = (row.get("DebitAccount") or "").strip()
-            credit = (row.get("CreditAccount") or "").strip()
-            if debit in VP_RENAME_MAP:
-                row["DebitAccount"] = VP_RENAME_MAP[debit]
-            if credit in VP_RENAME_MAP:
-                row["CreditAccount"] = VP_RENAME_MAP[credit]
+        fx_changed = row.get("AmtCry") != old_amt_cry or row.get("AmtCHF") != old_amt_chf
+
+        if raw_unchanged and not fx_changed:
+            # Nothing at all changed -- carry forward untouched.
+            output_rows.append(row)
+            unchanged_count += 1
+            continue
+
+        if not raw_unchanged:
+            # New row, or raw content edited -- redo VP renaming from raw.
+            row["DebitAccount"] = raw_row.get("DebitAccount", "")
+            row["CreditAccount"] = raw_row.get("CreditAccount", "")
+            if (raw_row.get("Ledger") or "").strip() == "VP":
+                debit = (raw_row.get("DebitAccount") or "").strip()
+                credit = (raw_row.get("CreditAccount") or "").strip()
+                if debit in VP_RENAME_MAP:
+                    row["DebitAccount"] = VP_RENAME_MAP[debit]
+                if credit in VP_RENAME_MAP:
+                    row["CreditAccount"] = VP_RENAME_MAP[credit]
+            row["RawHash"] = current_hash
+            reprocessed_count += 1
+        else:
+            # Raw unchanged, only the FX conversion moved (e.g. a backfilled
+            # historical rate) -- RawHash stays the same, since the raw row
+            # itself wasn't touched.
+            fx_updated_count += 1
 
         row["ProcessingDateTime"] = now_str
-        row["RawHash"] = current_hash
         output_rows.append(row)
-        reprocessed_count += 1
 
     with open(output_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=";", lineterminator="\n", extrasaction="ignore", restval="")
@@ -180,7 +209,7 @@ def process(input_path, fx_source, output_path):
 
     for w in warnings:
         print("WARNING:", w, file=sys.stderr)
-    print(f"{len(output_rows)} total rows, {carried_count} unchanged, {reprocessed_count} (re)processed -> {output_path}")
+    print(f"{len(output_rows)} total rows, {unchanged_count} unchanged, {fx_updated_count} FX-updated, {reprocessed_count} (re)processed -> {output_path}")
 
 
 if __name__ == "__main__":
