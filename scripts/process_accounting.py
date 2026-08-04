@@ -74,7 +74,7 @@ def raw_hash(raw_row):
 PROCESSED_FIELD_ORDER = [
     "Timestamp", "Date", "Currency", "AmtLC", "AmtCry", "AmtCHF",
     "DebitAccount", "CreditAccount", "Comment", "Party", "Location",
-    "Ledger", "Flags", "SubmittedBy", "Device", "IP", "EntryID",
+    "Ledger", "Flags", "SubmittedBy", "IP", "EntryID",
     "ProcessingDateTime", "RawHash",
 ]
 
