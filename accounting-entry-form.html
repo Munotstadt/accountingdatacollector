@@ -295,8 +295,8 @@
     <div class="field">
       <label>Credit Account <span class="req">*</span></label>
       <select id="creditAccount" required>
-        <option value="" disabled selected>Choose</option>
-        <option>CC TCS PG</option><option>Gutschein SBB PG</option><option>Revolut PG</option>
+        <option value="" disabled>Choose</option>
+        <option selected>CC TCS PG</option><option>Gutschein SBB PG</option><option>Revolut PG</option>
         <option>RB PK Plus PG</option><option>Life PG</option><option>Admin & Transfer PG</option>
         <option>Other income PG</option><option>Gutschein REKA & Co PG</option>
         <option>SQ WS CHF PG (#315)</option><option>SQ WS EUR PG (#315)</option>
@@ -773,6 +773,8 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
     document.querySelectorAll('.otherWrap').forEach(w => w.classList.remove('show'));
     document.getElementById('currency').value = 'CHF';
     document.getElementById('ledger').value = 'PG';
+    document.getElementById('creditAccount').value = 'CC TCS PG';
+    setDefaultDate();
     localStorage.setItem(PAT_KEY, pat); // persist on this device for next time
 
   } catch (err){
@@ -782,6 +784,15 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
   }
 });
 
+// Prefills the Date field with today's date (local device time, yyyy-mm-dd
+// as required by <input type=date>), both on initial load and after a
+// successful submit resets the form.
+function setDefaultDate(){
+  const d = new Date();
+  document.getElementById('date').value = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+}
+
+setDefaultDate();
 refreshLedgerNumber();
 </script>
 </body>
