@@ -279,3 +279,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 05.08.2026 06:15:48;05.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;SBB;;PG;;device-a23f52a4;172.225.27.69;e-54ebfadead;05.08.2026 04:15:59;35f8ee8d75ed90b1
 05.08.2026 06:33:22;05.08.2026;CHF;.95;1;0.95;Life PG;CC TCS PG;Drinks & Kaffee;Coop;Zürich;PG;;device-a23f52a4;104.28.54.92;e-28ccb02a03;05.08.2026 04:33:32;9e8f5d80356eff41
 05.08.2026 12:50:47;05.08.2026;CHF;15.8;1;15.8;Restaurants PG;CC TCS PG;#LL1;Migros;Zürich;PG;;device-1892545d;172.226.132.50;e-666517e2b1;05.08.2026 10:50:57;7497566f8c6fd031
+06.08.2026 11:46:39;06.08.2026;CHF;36.7;1;36.7;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Migros;Niederhasli;PG;;device-a23f52a4;104.28.54.92;e-92dfb7878a;06.08.2026 09:46:51;417f2282b8d4615b
