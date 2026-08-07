@@ -284,3 +284,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 06.08.2026 14:59:02;06.08.2026;CHF;8.2;1;8.2;Life PG;CC TCS PG;Snack;Fleischli;Niederglatt;PG;;device-1892545d;172.225.188.255;e-d73d5a9886;06.08.2026 12:59:12;6ee456b73f8ce2c1
 06.08.2026 20:07:22;05.08.2026;CHF;17.6;1;17.6;Restaurants VP;CC TCS VP;#LL1;Hug;Zürich;VP;;device-a23f52a4;172.226.132.51;e-7591fc357e;06.08.2026 19:47:50;e8826705eefe2837
 07.08.2026 06:49:57;07.08.2026;CHF;10.3;1;10.3;Mobility Expenses PG;CC TCS PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-a23f52a4;104.28.54.92;e-d71346c95e;07.08.2026 04:50:08;936c9c61adc4b102
+07.08.2026 15:45:00;07.08.2026;CHF;22.8;1;22.8;Restaurants PG;CC TCS PG;#LL1;RiceUp;Winterthur;PG;;device-1892545d;104.28.54.92;e-29368cc487;07.08.2026 13:45:22;40fd1c299e48e787
