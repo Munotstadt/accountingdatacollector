@@ -287,3 +287,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 07.08.2026 15:45:00;07.08.2026;CHF;22.8;1;22.8;Restaurants PG;CC TCS PG;#LL1;RiceUp;Winterthur;PG;;device-1892545d;104.28.54.92;e-29368cc487;07.08.2026 13:45:22;40fd1c299e48e787
 07.08.2026 15:45:45;07.08.2026;CHF;30;1;30.0;Mobility SE;CC TCS PG;Junior-Karte;SBB;Winterthur;PG;;device-1892545d;104.28.54.92;e-6c06b79ca3;07.08.2026 13:45:56;4f1e38607b24c091
 08.08.2026 15:49:00;08.08.2026;CHF;4;1;4.0;Auto Laden PG;Gutschein REKA & Co PG;Parking;SBB;Schlatt TG;PG;;device-a23f52a4;172.226.132.52;e-aac35199d1;08.08.2026 13:49:10;40ad3c49ba974ca8
+08.08.2026 15:50:37;08.08.2026;CHF;7.6;1;7.6;Mobility Expenses PG;CC TCS PG;Stein am;;;PG;;device-a23f52a4;172.225.27.67;e-f9dd7d70b1;08.08.2026 13:50:52;a9373bd5437b9370
