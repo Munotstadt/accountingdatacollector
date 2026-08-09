@@ -294,3 +294,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 08.08.2026 20:10:04;08.08.2026;CHF;1;1;1.0;Life VP;CC TCS VP;WC;SBB;Stein am Rhein;VP;;device-1892545d;104.28.54.92;e-df5ecfbd9f;08.08.2026 18:10:16;3bfdcc24a0a654c6
 08.08.2026 20:10:31;08.08.2026;CHF;12.05;1;12.05;Life VP;CC TCS VP;Drinks & Kaffee | Snack;avec;Stein am Rhein;VP;;device-1892545d;104.28.54.92;e-c3386fc6f0;08.08.2026 18:10:40;3e4be78766bb84f8
 09.08.2026 06:55:44;09.08.2026;CHF;58.6;1;58.6;Groceries PG;Gutschein REKA & Co PG;100 Kapseln;Nespresso;;PG;;device-1892545d;104.28.54.92;e-7372858e64;09.08.2026 04:55:54;c9b0e5d23e6bbf2b
+09.08.2026 08:55:59;09.08.2026;CHF;12.4;1;12.4;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Fleischli;Niederglatt;PG;;device-1892545d;104.28.54.92;e-c1965b596b;09.08.2026 06:56:16;800adb666f8b376a
