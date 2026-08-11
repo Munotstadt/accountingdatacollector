@@ -298,3 +298,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 10.08.2026 12:54:12;10.08.2026;CHF;15.8;1;15.8;Restaurants PG;CC TCS PG;#LL1;Migros;Zürich;PG;;device-1892545d;104.28.54.92;e-93151a889c;10.08.2026 10:54:32;aabbdaa3663e9cab
 10.08.2026 21:10:10;10.08.2026;EUR;250;0.9345;233.6;Vacation & Leisure PG;SQ WS EUR PG (#315);Campingplatz Anzahlung;Camping Schlosshof;;PG;;device-1892545d;172.226.132.51;e-c2072e1de6;10.08.2026 19:10:20;1ba07a7d90d21115
 11.08.2026 10:36:57;11.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;CC TCS PG;Niederhasli-Zürich-Niederhasli;SBB;;PG;;device-a23f52a4;104.28.54.92;e-6832f2d244;11.08.2026 08:37:08;df3c8ce7407df0a5
+11.08.2026 19:53:29;11.08.2026;CHF;115;1;115.0;Restaurants (Family) PG;CC TCS PG;#DD2;Il Castello;Oberglatt;PG;;device-a23f52a4;104.28.42.101;e-2a7ac7b3ed;11.08.2026 17:53:40;cfd50698ffc377c3
