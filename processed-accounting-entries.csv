@@ -306,3 +306,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 13.08.2026 08:34:10;13.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;CC TCS PG;Niederhasli-Zürich-Niederhasli;SBB;;PG;;device-a23f52a4;104.28.54.92;e-aaf8e49834;13.08.2026 06:34:19;1723bcc8aa230685
 13.08.2026 16:51:35;13.08.2026;CHF;106;1;106.0;Work related expenses (PwC) PG;CC TCS PG;#LL1 | nach Proposal mit Marco Amrein;Countryard;Zürich;PG;;device-1892545d;104.28.54.92;e-19ff07d34b;13.08.2026 14:51:46;1bf1794d0a2b2e83
 13.08.2026 16:52:11;13.08.2026;CHF;97.05;1;97.05;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Coop;Dielsdorf;VP;;device-1892545d;104.28.54.92;e-4635ab627d;13.08.2026 14:52:21;ec16264a539d40b2
+13.08.2026 16:52:43;12.08.2026;CHF;18.45;1;18.45;Restaurants VP;CC TCS VP;#LL1;Coop;Dielsdorf;VP;;device-1892545d;104.28.54.92;e-b7b09caa38;13.08.2026 14:52:53;3b72bc8a20dffc3f
