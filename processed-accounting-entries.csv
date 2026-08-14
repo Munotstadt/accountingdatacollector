@@ -307,6 +307,6 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 13.08.2026 16:51:35;13.08.2026;CHF;106;1;106.0;Work related expenses (PwC) PG;CC TCS PG;#LL1 | nach Proposal mit Marco Amrein;Countryard;Zürich;PG;;device-1892545d;104.28.54.92;e-19ff07d34b;13.08.2026 14:51:46;1bf1794d0a2b2e83
 13.08.2026 16:52:11;12.08.2026;CHF;97.05;1;97.05;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Coop;Dielsdorf;VP;;device-1892545d;104.28.54.92;e-4635ab627d;13.08.2026 14:53:19;00c89cc4fcc7b59c
 13.08.2026 16:52:43;12.08.2026;CHF;18.45;1;18.45;Restaurants VP;CC TCS VP;#LL1;Coop;Dielsdorf;VP;;device-1892545d;104.28.54.92;e-b7b09caa38;13.08.2026 14:52:53;3b72bc8a20dffc3f
-14.08.2026 06:52:19;14.08.2026;CHF;8;1;8.0;Sport & Hobbies & Leisure PG;CC TCS PG;Eintritt;Badi see;Niederhasli;PG;;device-a23f52a4;104.28.54.92;e-27dbd39187;14.08.2026 04:52:32;a7e404e85abe653a
+14.08.2026 06:52:19;14.08.2026;CHF;8;1;8.0;Sport & Hobbies & Leisure PG;CC TCS PG;Eintritt;Sportanlage Erlen;Niederhasli;PG;;device-a23f52a4;104.28.54.92;e-27dbd39187;14.08.2026 18:38:30;e5088ba4af6bb70e
 14.08.2026 12:30:30;14.08.2026;CHF;6.4;1;6.4;Restaurants PG;CC TCS PG;#LL1;Coop;Zürich;PG;;device-a23f52a4;172.225.27.71;e-78380989d3;14.08.2026 10:30:40;0b1e954adc90679b
-14.08.2026 20:37:27;14.08.2026;CHF;6.5;1;6.5;Sport & Hobbies & Leisure PG;CC TCS PG;Eintritt;Sportanlage Erlen;Niederhasli;PG;;device-4441b41d;178.38.204.182;e-588e40006a;14.08.2026 18:37:38;9632023db3f250bc
+14.08.2026 20:37:27;14.08.2026;CHF;6.5;1;6.5;Sport & Hobbies & Leisure PG;CC TCS PG;Eintritt;Sportanlage ErlenErlen;Niederhasli;PG;;device-4441b41d;178.38.204.182;e-588e40006a;14.08.2026 18:38:30;c0cda43b502f04c2
