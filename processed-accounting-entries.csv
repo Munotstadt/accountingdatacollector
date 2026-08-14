@@ -311,3 +311,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 14.08.2026 12:30:30;14.08.2026;CHF;6.4;1;6.4;Restaurants PG;CC TCS PG;#LL1;Coop;Zürich;PG;;device-a23f52a4;172.225.27.71;e-78380989d3;14.08.2026 10:30:40;0b1e954adc90679b
 14.08.2026 20:37:27;14.08.2026;CHF;6.5;1;6.5;Sport & Hobbies & Leisure PG;CC TCS PG;Eintritt;Sportanlage ErlenErlen;Niederhasli;PG;;device-4441b41d;178.38.204.182;e-588e40006a;14.08.2026 18:38:30;c0cda43b502f04c2
 14.08.2026 20:39:16;14.08.2026;CHF;15;1;15.0;Mobility Expenses PG;CC TCS PG;Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt);SBB;;PG;;device-4441b41d;178.38.204.182;e-75eace5bc3;14.08.2026 18:39:29;6c487d258b3fba83
+14.08.2026 20:40:41;14.08.2026;CHF;15;1;15.0;Mobility Expenses PG;CC TCS PG;Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt);SBB;;PG;;device-4441b41d;178.38.204.182;e-f684dee703;14.08.2026 18:40:51;64bb820a0b18aa55
