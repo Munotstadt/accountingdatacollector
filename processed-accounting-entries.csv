@@ -134,7 +134,7 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 27.06.2026 05:59:05;26.06.2026;CHF;5.5;1;5.5;Auto Parken PG;CC TCS PG;Parking;Herrenacker;Schaffhausen;PG;;bulk-import;;e-851ed1c400;04.08.2026 03:58:11;4f069681e433be46
 27.06.2026 06:00:19;26.06.2026;CHF;10;1;10.0;Restaurants PG;RB PK Plus PG;#DD1;A & A BBQ;Niederhasli;PG;TWINT;bulk-import;;e-60e219c400;04.08.2026 03:58:11;1af675cda4af44ce
 28.06.2026 06:00:19;27.06.2026;CHF;20;1;20.0;Restaurants PG;RB PK Plus PG;#DD1;A & A BBQ;Niederhasli;PG;TWINT;bulk-import;;e-ad8167d97e;04.08.2026 03:58:11;2e77e219bfc50085
-27.06.2026 16:15:26;27.06.2026;CHF;9;1;9.0;Life PG;CC TCS PG;Snack;Erlen;Niederhasli;PG;;bulk-import;;e-acea6d3d2b;04.08.2026 03:58:11;9bdd19149572eb9e
+27.06.2026 16:15:26;27.06.2026;CHF;9;1;9.0;Life PG;CC TCS PG;Snack;Sportanlage Erlen;Niederhasli;PG;;bulk-import;;e-acea6d3d2b;14.08.2026 18:37:57;47c642fea31db3ab
 27.06.2026 16:16:13;27.06.2026;CHF;0.5;1;0.5;Auto Parken PG;CC TCS PG;Parking;Refamac;Rümlang;PG;;bulk-import;;e-281a4af7dc;04.08.2026 03:58:11;1e09b363254c4792
 27.06.2026 16:17:06;27.06.2026;CHF;13.75;1;13.75;Living Haushalt PG;CC TCS PG;Holz/Grillbürste;Jumbo;Rümlang;PG;;bulk-import;;e-9fa626111f;04.08.2026 03:58:11;bb8f1d53d568a5e1
 27.06.2026 16:17:37;27.06.2026;CHF;37.9;1;37.9;Living Haushalt PG;CC TCS PG;Gas;SOCAR;Oberglatt;PG;;bulk-import;;e-bb34b35035;04.08.2026 03:58:11;b6348c5e3f38d7ce
