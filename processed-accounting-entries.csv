@@ -315,3 +315,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 15.08.2026 19:44:17;15.08.2026;CHF;50;1;50.0;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Fleischli;Rümlang;VP;;device-1892545d;104.28.54.92;e-2e2e1f0d3f;15.08.2026 17:44:27;8f15b1642a36a129
 15.08.2026 19:44:45;15.08.2026;CHF;7.1;1;7.1;Life VP;CC TCS VP;Snack;Honold;Küsnacht;VP;;device-1892545d;104.28.54.92;e-3845d52c1d;15.08.2026 17:44:55;f9535263e99b1c21
 17.08.2026 12:51:03;17.08.2026;CHF;25;1;25.0;Restaurants PG;CC TCS PG;#LL1;D-Vino;Zürich;PG;;device-a23f52a4;172.226.132.51;e-c3996e236a;17.08.2026 10:51:12;4e244e35e162cbab
+17.08.2026 12:51:38;17.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;SBB;;PG;;device-a23f52a4;172.226.132.51;e-f2e88a081e;17.08.2026 10:51:49;2307954161d98309
