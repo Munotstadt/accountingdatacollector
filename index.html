@@ -909,6 +909,7 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
     setStatus('ok', `Posted → ${REPO}/${FILE_PATH}\n${row}`);
     btn.classList.add('success');
     e.target.reset();
+    document.getElementById('pat').value = pat; // reset() also clears this since it lives inside the form -- restore it
     document.querySelectorAll('.otherWrap').forEach(w => w.classList.remove('show'));
     document.getElementById('currency').value = 'CHF';
     document.getElementById('ledger').value = 'PG';
