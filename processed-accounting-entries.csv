@@ -319,3 +319,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 18.08.2026 08:24:46;18.08.2026;CHF;51;1;51.0;IT Apps;CC TCS PG;Domain gnae.info;HOSTPOINT;;PG;;device-a23f52a4;104.28.54.92;e-c8c69e51f6;18.08.2026 06:24:57;8881746a423d0e87
 18.08.2026 10:16:29;18.08.2026;CHF;1;1;1.0;TEST;TEST;#Superpunkte;;;PG;;device-2fd33396;172.226.132.54;e-ac7b6d89cf;18.08.2026 08:16:42;f2fe761543c3103f
 18.08.2026 12:50:41;18.08.2026;CHF;29;1;29.0;Restaurants PG;CC TCS PG;#LL1;Nuu‘s;Winterthur;PG;;device-2fd33396;172.226.132.55;e-80f3ba4061;18.08.2026 10:50:53;6e4b30b2542a9fcb
+18.08.2026 12:52:51;18.08.2026;CHF;10.3;1;10.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-2fd33396;172.226.132.52;e-3e3c4e8210;18.08.2026 10:53:01;c173d73f4f6dba29
