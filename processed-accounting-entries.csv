@@ -274,7 +274,6 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 04.08.2026 13:46:26;04.08.2026;CHF;28.05;1;28.05;Restaurants PG;CC TCS PG;#LL1;Migros;Dietlikon;PG;;device-1892545d;104.28.54.92;e-b5c5a087e4;04.08.2026 11:46:37;c2f5c39c8e3ae81e
 04.08.2026 13:47:01;04.08.2026;CHF;80.2;1;80.2;Restaurants (Family) PG;CC TCS VP;#DD2;Miss Miu;;VP;;device-1892545d;104.28.54.92;e-c00bf3646a;04.08.2026 11:47:11;39a81dfcbcf7a15a
 04.08.2026 13:47:30;04.08.2026;CHF;4.4;1;4.4;Life VP;CC TCS VP;Snack;Migros;Zürich-Altstetten;VP;;device-1892545d;104.28.54.92;e-d4dc0bcec2;04.08.2026 11:47:41;e436394d41ef6a98
-04.08.2026 15:29:08;04.08.2026;USD;25;0.8097;20.2;Restaurants PG;CC TCS PG;überschall, ä, ü, ö;test;test;PG;;device-4441b41d;178.38.204.182;e-af9e4c64c3;04.08.2026 13:29:54;88f0a1f4dddc01f1
 04.08.2026 21:46:11;04.08.2026;CHF;7.55;1;7.55;Life PG;Gutschein SBB PG;Snack und Bändeli;Migros;Niederhasli;PG;;device-a23f52a4;104.28.54.92;e-2ebe69674c;04.08.2026 19:46:24;ac4a51b50b6f5623
 05.08.2026 06:15:48;05.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;SBB;;PG;;device-a23f52a4;172.225.27.69;e-54ebfadead;05.08.2026 04:15:59;35f8ee8d75ed90b1
 05.08.2026 06:33:22;05.08.2026;CHF;.95;1;0.95;Life PG;CC TCS PG;Drinks & Kaffee;Coop;Zürich;PG;;device-a23f52a4;104.28.54.92;e-28ccb02a03;05.08.2026 04:33:32;9e8f5d80356eff41
@@ -317,6 +316,5 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 17.08.2026 12:51:03;17.08.2026;CHF;25;1;25.0;Restaurants PG;CC TCS PG;#LL1;D-Vino;Zürich;PG;;device-a23f52a4;172.226.132.51;e-c3996e236a;17.08.2026 10:51:12;4e244e35e162cbab
 17.08.2026 12:51:38;17.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;SBB;;PG;;device-a23f52a4;172.226.132.51;e-f2e88a081e;17.08.2026 10:51:49;2307954161d98309
 18.08.2026 08:24:46;18.08.2026;CHF;51;1;51.0;IT Apps;CC TCS PG;Domain gnae.info;HOSTPOINT;;PG;;device-a23f52a4;104.28.54.92;e-c8c69e51f6;18.08.2026 06:24:57;8881746a423d0e87
-18.08.2026 10:16:29;18.08.2026;CHF;1;1;1.0;TEST;TEST;#Superpunkte;;;PG;;device-2fd33396;172.226.132.54;e-ac7b6d89cf;18.08.2026 08:16:42;f2fe761543c3103f
 18.08.2026 12:50:41;18.08.2026;CHF;29;1;29.0;Restaurants PG;CC TCS PG;#LL1;Nuu‘s;Winterthur;PG;;device-2fd33396;172.226.132.55;e-80f3ba4061;18.08.2026 10:50:53;6e4b30b2542a9fcb
 18.08.2026 12:52:51;18.08.2026;CHF;10.3;1;10.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-2fd33396;172.226.132.52;e-3e3c4e8210;18.08.2026 10:53:01;c173d73f4f6dba29
