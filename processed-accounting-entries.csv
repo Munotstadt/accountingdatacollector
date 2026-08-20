@@ -320,3 +320,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 18.08.2026 12:52:51;18.08.2026;CHF;10.3;1;10.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-2fd33396;172.226.132.52;e-3e3c4e8210;18.08.2026 10:53:01;c173d73f4f6dba29
 18.08.2026 21:14:45;18.08.2026;CHF;25;1;25.0;Life PG;RB PK Plus PG;Drinks mit Sutti;Fredis;Winterthur;PG;;device-8d66a942;104.28.54.92;e-24deec6758;18.08.2026 19:15:03;7e90067a1c6e3458
 18.08.2026 21:15:39;18.08.2026;CHF;12.7;1;12.7;Life PG;CC TCS PG;Snack;Brezelkönig;Winterthur;PG;;device-8d66a942;104.28.54.92;e-010fd94acf;18.08.2026 19:15:48;ecde5e8378bd7636
+20.08.2026 10:56:15;20.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;;;PG;;device-8d66a942;172.225.188.253;e-84e7549f86;20.08.2026 08:56:25;c235151353edf4e0
