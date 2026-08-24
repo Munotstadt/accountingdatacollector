@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Prices - Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#fff;--panel:#F7F8FA;--line:#E3E6EA;--text:#1A1D22;--muted:#767E8A;--accent:#E30613; }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;padding:32px 16px 80px;}
+  .wrap{max-width:none;width:100%;}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;letter-spacing:.02em;border-bottom:2px solid var(--accent);padding-bottom:14px;}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:16px 0 8px;}
+  input[type=text], select, input[type=number]{font-family:'Inter',sans-serif;font-size:14px;padding:8px 9px;border:1px solid var(--line);border-radius:3px;background:var(--panel);color:var(--text);outline:none;}
+  #filterSecurity{min-width:220px;}
+  #searchText{min-width:160px;}
+  .date-range{display:flex;gap:6px;align-items:center;}
+  .date-range label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+  .date-range input[type=date]{width:140px;}
+  button{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:8px 14px;border-radius:3px;border:1px solid var(--line);background:none;cursor:pointer;color:var(--text);}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+  button:hover{border-color:var(--text);}
+  button:disabled, a.disabled{opacity:.4;cursor:not-allowed;pointer-events:none;}
+  .count-line{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);margin:0 0 14px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+  th{text-align:left;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px;border-bottom:1px solid var(--line);background:var(--panel);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  th[data-sort]{cursor:pointer;user-select:none;}
+  th[data-sort]:hover{color:var(--text);}
+  th .arrow{color:var(--accent);margin-left:2px;}
+  td{padding:0 6px;border-bottom:1px solid var(--line);vertical-align:middle;line-height:1.05;}
+  td input, td select{width:100%;padding:2px 6px;font-size:12px;}
+  tr.new-row td{background:rgba(227,6,19,0.04);}
+  .status{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);margin-top:10px;}
+  .status.error{color:#C0293D;} .status.ok{color:#1F8A6E;}
+  .settings{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:14px;margin-top:12px;display:none;gap:8px;}
+  .settings.show{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;}
+  .settings label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);display:block;margin-bottom:3px;}
+  .note{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin:24px 0 0;padding-top:14px;border-top:1px solid var(--line);}
+  .table-wrap{overflow-x:auto;max-height:60vh;overflow-y:auto;}
+  .footer{margin-top:14px;}
+  .improvement-input{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text);background:#fff;border:1px solid var(--line);border-radius:3px;padding:6px 10px;min-width:200px;vertical-align:middle;}
+  .improvement-input::placeholder{color:var(--muted);}
+  #improvementSaveBtn{font-family:'IBM Plex Mono',monospace;font-size:12px;}
+  .topnav{display:flex;gap:4px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;align-items:center;max-width:960px;width:100%;margin:0 auto 24px;padding:0 0 10px;border-bottom:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:12px;scrollbar-width:none;}
+  .topnav::-webkit-scrollbar{display:none;}
+  .topnav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:3px;border:1px solid transparent;white-space:nowrap;}
+  .topnav a:hover{color:var(--text);border-color:var(--line);}
+  .nav-dropdown{position:relative;}
+  .nav-dropdown>.dd-toggle{background:none;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:3px;border:1px solid transparent;white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:12px;cursor:pointer;}
+  .nav-dropdown>.dd-toggle:hover,.nav-dropdown.open>.dd-toggle{color:var(--text);border-color:var(--line);}
+  .nav-dropdown.active-group>.dd-toggle{color:var(--text);font-weight:600;border-color:var(--accent);background:rgba(227,6,19,0.06);}
+  .dd-menu{position:fixed;background:#fff;border:1px solid var(--line);border-radius:4px;min-width:180px;display:none;flex-direction:column;box-shadow:0 6px 16px rgba(0,0,0,.09);z-index:1000;padding:4px;}
+  .dd-menu.show{display:flex;}
+  .dd-menu a{padding:8px 10px;border-radius:3px;color:var(--muted);text-decoration:none;white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:12px;}
+  .dd-menu a:hover{background:var(--panel);color:var(--text);}
+  .dd-menu a.active{color:var(--text);font-weight:600;background:rgba(227,6,19,0.06);}
+  .topnav a.active{color:var(--text);font-weight:600;border-color:var(--accent);background:rgba(227,6,19,0.06);}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a href="index.html">🏠 Home</a>
+  <a href="dashboard.html">📊 Dashboard</a>
+  <a href="listing.html">📃 Listing</a>
+  <a href="portfolio.html">💼 Portfolio</a>
+  <a href="analyser.html">🔬 Analyser</a>
+  <a href="asset_comparison.html">🆚 Comparison</a>
+  <a href="tasks.html">✅ Tasks</a>
+  <div class="nav-dropdown active-group" id="editorsDropdown">
+    <button type="button" class="dd-toggle" id="editorsToggle">🗂 Editors ▾</button>
+    <div class="dd-menu" id="editorsMenu">
+      <a href="master_editor.html">🗂 Master Data</a>
+      <a href="price_editor.html" class="active">✏️ Prices</a>
+      <a href="transactions_editor.html">📋 Transactions</a>
+      <a href="distribution_editor.html">💰 Distributions</a>
+      <a href="parameters_editor.html">⚙️ Parameters</a>
+      <a href="security_data.html">🔎 Security Data</a>
+      <a href="admin.html">⚙️ Admin</a>
+    </div>
+  </div>
+</nav>
+<script>
+(function(){
+  var dd = document.getElementById('editorsDropdown');
+  if(!dd) return;
+  var toggle = document.getElementById('editorsToggle');
+  var menu = document.getElementById('editorsMenu');
+  // Move the menu to <body> so it can never be trapped inside an ancestor's
+  // stacking/clipping context (e.g. the horizontally-scrolling topnav).
+  document.body.appendChild(menu);
+  function positionMenu(){
+    var r = toggle.getBoundingClientRect();
+    menu.style.top = (r.bottom + 4) + 'px';
+    menu.style.left = r.left + 'px';
+  }
+  function closeMenu(){ dd.classList.remove('open'); menu.classList.remove('show'); }
+  function openMenu(){ positionMenu(); dd.classList.add('open'); menu.classList.add('show'); }
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    if(menu.classList.contains('show')) closeMenu(); else openMenu();
+  });
+  document.addEventListener('click', function(e){
+    if(!dd.contains(e.target) && !menu.contains(e.target)) closeMenu();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeMenu();
+  });
+  window.addEventListener('resize', function(){ if(menu.classList.contains('show')) positionMenu(); });
+  window.addEventListener('scroll', function(){ if(menu.classList.contains('show')) positionMenu(); }, true);
+})();
+</script>
+<div class="wrap">
+  <h1>Security Prices · Editor</h1>
+  <div class="toolbar">
+    <input type="text" id="searchText" placeholder="Suche (Source, Price)…">
+    <select id="filterSecurity"><option value="">– Security wählen –</option></select>
+    <div class="date-range">
+      <label for="dateFrom">Von</label>
+      <input type="date" id="dateFrom">
+      <label for="dateTo">Bis</label>
+      <input type="date" id="dateTo">
+      <button id="dateApplyBtn">Apply</button>
+    </div>
+    <a id="linkSecurityForm" class="disabled"><button disabled id="btnSecurityForm">📈 View Security</button></a>
+    <a id="linkDistributions" class="disabled"><button disabled id="btnDistributions">💰 View Distributions</button></a>
+    <button id="addBtn" disabled>+ New Price</button>
+    <button id="saveBtn" class="primary">Save</button>
+  </div>
+  <div class="count-line" id="countLine">Loading…</div>
+
+  <div class="table-wrap">
+  <table>
+    <colgroup>
+      <col style="width:260px">
+      <col style="width:100px">
+      <col style="width:170px">
+      <col>
+      <col style="width:36px">
+    </colgroup>
+    <thead><tr id="headerRow">
+      <th data-sort="SecurityName">Security</th>
+      <th data-sort="Price">Price</th>
+      <th data-sort="PriceDate">PriceDate</th>
+      <th data-sort="Source">Source</th>
+      <th></th>
+    </tr></thead>
+    <tbody id="body"><tr><td colspan="5">Loading…</td></tr></tbody>
+  </table>
+  </div>
+  <div class="status" id="status"></div>
+  <p class="note">Bitte zuerst oben eine Security auswählen — ohne Auswahl werden keine Preise geladen oder angezeigt. Geladen werden die letzten 90 Einträge der gewählten Security (neueste zuerst), um die Datenbankabfrage schlank zu halten. Der Collector schreibt weiterhin regelmässig neue Zeilen in die DB; hier können einzelne Kurse manuell korrigiert oder ergänzt werden. Neu hinzugefügte Zeilen erscheinen immer zuoberst.</p>
+
+  <div class="footer">
+    <input type="text" id="improvementInput" class="improvement-input" placeholder="Improvement">
+    <button type="button" id="improvementSaveBtn">💡 Save</button>
+    <button id="settingsBtn">⚙ Repo/Token</button>
+  </div>
+  <div class="settings" id="settingsPanel">
+    <form id="tursoCredForm" autocomplete="on" onsubmit="return false;" style="display:contents;">
+      <div><label>Turso Database URL</label><input type="text" id="cfgUrl" name="username" autocomplete="username" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="https://…turso.io"></div>
+      <div><label>Auth Token</label><input type="password" id="cfgToken" name="password" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="eyJ…"></div>
+      <div style="align-self:end;"><button id="cfgSave" type="submit" class="primary">Apply</button></div>
+    </form>
+  </div>
+</div>
+
+<script src="assets/turso-data.js"></script>
+<script>
+// Safety net: define the shared schema-guard helpers locally if the loaded
+// assets/turso-data.js doesn't have them yet (e.g. stale cached copy). Avoids
+// a hard "X is not defined" crash; the real versions in turso-data.js take
+// over automatically once that file is up to date (session-cached there).
+if (typeof ensureSecurityMasterSchema === 'undefined') {
+  window.ensureSecurityMasterSchema = async function(){
+    try { await tursoRun('ALTER TABLE security_master ADD COLUMN DateLaunch TEXT'); } catch(e) {}
+    try { await tursoRun('ALTER TABLE security_master ADD COLUMN DateTerminated TEXT'); } catch(e) {}
+    try { await tursoRun('ALTER TABLE security_master ADD COLUMN Status INTEGER'); } catch(e) {}
+    try { await tursoRun('ALTER TABLE security_master ADD COLUMN Comments TEXT'); } catch(e) {}
+  };
+}
+if (typeof ensureSecurityTasksSchema === 'undefined') {
+  window.ensureSecurityTasksSchema = async function(){
+    try {
+      await tursoRun(`CREATE TABLE IF NOT EXISTS security_tasks (
+        TaskID INTEGER PRIMARY KEY AUTOINCREMENT,
+        TaskName TEXT NOT NULL,
+        TaskDescription TEXT,
+        SecurityID INTEGER,
+        DateDue TEXT,
+        Recurring TEXT,
+        Completed INTEGER DEFAULT 0,
+        CompletedAt TEXT,
+        created_at TEXT
+      )`);
+    } catch(e) {}
+    try { await tursoRun('ALTER TABLE security_tasks ADD COLUMN TaskTypeID INTEGER'); } catch(e) {}
+    try { await tursoRun('ALTER TABLE security_tasks ADD COLUMN Priority TEXT'); } catch(e) {}
+    try {
+      await tursoRun(`CREATE TABLE IF NOT EXISTS security_task_completions (
+        CompletionID INTEGER PRIMARY KEY AUTOINCREMENT,
+        TaskID INTEGER,
+        TaskName TEXT,
+        SecurityID INTEGER,
+        DateDue TEXT,
+        CompletedAt TEXT
+      )`);
+    } catch(e) {}
+  };
+}
+if (typeof ensureSecurityDataSchema === 'undefined') {
+  window.ensureSecurityDataSchema = async function(){
+    try { await tursoRun('ALTER TABLE security_data ADD COLUMN Source TEXT'); } catch(e) {}
+  };
+}
+if (typeof ensureAssetComparisonSchema === 'undefined') {
+  window.ensureAssetComparisonSchema = async function(){
+    try { await tursoRun(`CREATE TABLE IF NOT EXISTS asset_comparison_group (
+      GroupID INTEGER PRIMARY KEY AUTOINCREMENT,
+      GroupName TEXT NOT NULL,
+      created_at TEXT
+    )`); } catch(e) {}
+    try { await tursoRun(`CREATE TABLE IF NOT EXISTS asset_comparison_member (
+      GroupID INTEGER NOT NULL,
+      SecurityID INTEGER NOT NULL,
+      created_at TEXT,
+      PRIMARY KEY (GroupID, SecurityID)
+    )`); } catch(e) {}
+  };
+}
+</script>
+<script>
+let rows = [];
+let masterRows = [];
+let deleteQueue = [];
+let sortField = 'PriceDate';
+let sortDir = 'desc';
+let currentSecId = '';
+const PRICE_LOAD_LIMIT = 90; // cap per security — keeps the query/table small and fast
+
+function masterName(secId){ const m = masterRows.find(x => String(x.SecurityID)===String(secId)); return m ? m.SecurityName : ''; }
+// Native <input type="date"> always yields ISO yyyy-mm-dd (or '').
+function parseIsoDateInput(str){
+  if(!str) return null;
+  const m = String(str).trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m) return null;
+  const dt = new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
+  return isNaN(dt) ? null : dt;
+}
+// The date filter only takes effect when "Apply" is pressed (or Enter is
+// pressed in one of the fields) — not on every keystroke/selection — so the
+// user can finish entering both dates before the table re-filters.
+let activeDateFrom = null;
+let activeDateTo = null;
+function applyDateFilter(){
+  activeDateFrom = parseIsoDateInput(document.getElementById('dateFrom').value);
+  activeDateTo = parseIsoDateInput(document.getElementById('dateTo').value);
+  renderAll(document.getElementById('filterSecurity').value);
+}
+function secOptions(selected) {
+  return masterRows.map(m => `<option value="${m.SecurityID}" ${String(m.SecurityID)===String(selected)?'selected':''}>${m.SecurityName} · ${m.SecurityID}</option>`).join('');
+}
+function renderRow(row, idx) {
+  return `<tr data-idx="${idx}" class="${row._new?'new-row':''}">
+    <td><select data-field="SecurityID">${secOptions(row.SecurityID)}</select></td>
+    <td><input type="number" step="any" data-field="Price" value="${row.Price??''}"></td>
+    <td><input type="text" data-field="PriceDate" value="${row.PriceDate||''}" placeholder="dd.mm.yyyy hh:mm:ss"></td>
+    <td><input type="text" data-field="Source" value="${row.Source||''}"></td>
+    <td><button data-del="${idx}">✕</button></td>
+  </tr>`;
+}
+function updateSelectionLinks(secId) {
+  const linkSecurityForm = document.getElementById('linkSecurityForm');
+  const linkDistributions = document.getElementById('linkDistributions');
+  const btnSecurityForm = document.getElementById('btnSecurityForm');
+  const btnDistributions = document.getElementById('btnDistributions');
+  if (secId) {
+    linkSecurityForm.href = `security.html?id=${encodeURIComponent(secId)}`;
+    linkDistributions.href = `distribution_editor.html?id=${encodeURIComponent(secId)}`;
+    linkSecurityForm.classList.remove('disabled'); linkDistributions.classList.remove('disabled');
+    btnSecurityForm.disabled = false; btnDistributions.disabled = false;
+  } else {
+    linkSecurityForm.removeAttribute('href'); linkDistributions.removeAttribute('href');
+    linkSecurityForm.classList.add('disabled'); linkDistributions.classList.add('disabled');
+    btnSecurityForm.disabled = true; btnDistributions.disabled = true;
+  }
+}
+function compareRows(a, b, field) {
+  let av, bv;
+  switch (field) {
+    case 'SecurityName': av = masterName(a.SecurityID); bv = masterName(b.SecurityID); return String(av).toLowerCase().localeCompare(String(bv).toLowerCase());
+    case 'Price': return (Number(a.Price)||0) - (Number(b.Price)||0);
+    case 'PriceDate': return (parseSwissDateTime(a.PriceDate)||0) - (parseSwissDateTime(b.PriceDate)||0);
+    default: av = a[field]||''; bv = b[field]||''; return String(av).toLowerCase().localeCompare(String(bv).toLowerCase());
+  }
+}
+function updateSortIndicators() {
+  document.querySelectorAll('#headerRow th[data-sort]').forEach(th => {
+    th.innerHTML = th.textContent.replace(/\s*[▲▼]$/, '');
+    if (th.dataset.sort === sortField) th.innerHTML += ` <span class="arrow">${sortDir === 'asc' ? '▲' : '▼'}</span>`;
+  });
+}
+
+function renderAll(filterSecId=currentSecId) {
+  const body = document.getElementById('body');
+  const addBtn = document.getElementById('addBtn');
+
+  updateSelectionLinks(filterSecId);
+  updateSortIndicators();
+
+  if (!filterSecId) {
+    // No security selected: show no prices at all (avoids loading/rendering the whole table).
+    document.getElementById('countLine').textContent = 'Bitte zuerst eine Security auswählen.';
+    body.innerHTML = '<tr><td colspan="5">Bitte oben eine Security auswählen, um Preise zu laden.</td></tr>';
+    addBtn.disabled = true;
+    return;
+  }
+  addBtn.disabled = false;
+
+  const search = (document.getElementById('searchText').value || '').toLowerCase().trim();
+  const dateFrom = activeDateFrom;
+  const dateToEnd = activeDateTo ? new Date(activeDateTo.getFullYear(), activeDateTo.getMonth(), activeDateTo.getDate(), 23,59,59) : null;
+
+  let filtered = rows.map((r,i)=>({r,i}))
+    .filter(({r}) => !search || (r.Source||'').toLowerCase().includes(search) || String(r.Price??'').toLowerCase().includes(search))
+    .filter(({r}) => { if(!dateFrom) return true; const dt = parseSwissDateTime(r.PriceDate); return dt && dt >= dateFrom; })
+    .filter(({r}) => { if(!dateToEnd) return true; const dt = parseSwissDateTime(r.PriceDate); return dt && dt <= dateToEnd; });
+
+  // New (unsaved) rows always pinned to top; the rest sorted by the active column.
+  const newOnes = filtered.filter(({r}) => r._new);
+  const existingOnes = filtered.filter(({r}) => !r._new)
+    .sort((a,b) => { const cmp = compareRows(a.r, b.r, sortField); return sortDir === 'asc' ? cmp : -cmp; });
+  const ordered = [...newOnes, ...existingOnes];
+
+  const dates = filtered.map(({r}) => parseSwissDateTime(r.PriceDate)).filter(Boolean);
+  let rangeText = '';
+  if (dates.length) {
+    const minD = new Date(Math.min(...dates)), maxD = new Date(Math.max(...dates));
+    rangeText = ` · ${toSwissDate(minD)} – ${toSwissDate(maxD)}`;
+  }
+  document.getElementById('countLine').textContent = `Geladen ${rows.length} (max ${PRICE_LOAD_LIMIT}) · ${filtered.length} angezeigt${rangeText}`;
+
+  body.innerHTML = ordered.length ? ordered.map(({r,i}) => renderRow(r,i)).join('') : '<tr><td colspan="5">No entries.</td></tr>';
+
+  body.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('change', () => {
+      const idx = Number(el.closest('tr').dataset.idx);
+      rows[idx][el.dataset.field] = el.value;
+      rows[idx]._dirty = true;
+    });
+  });
+  body.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.dataset.del);
+      if (!confirm('Delete this price entry?')) return;
+      if (!rows[idx]._new) deleteQueue.push(rows[idx].id);
+      rows.splice(idx,1);
+      renderAll(document.getElementById('filterSecurity').value);
+    });
+  });
+}
+
+// Idempotent — keeps the SecurityID+PriceDate lookup below fast (index-only
+// scan instead of a full-table scan) without needing a separate migration step.
+let priceIndexReady = false;
+async function ensurePriceIndex() {
+  if (priceIndexReady) return;
+  try { await tursoRun('CREATE INDEX IF NOT EXISTS idx_security_prices_secid_date ON security_prices(SecurityID, PriceDate)'); } catch (e) {}
+  priceIndexReady = true;
+}
+
+// Loads only the selected security's most recent PRICE_LOAD_LIMIT rows — never
+// the whole security_prices table — to keep both the DB read and the render light.
+async function selectSecurity(secId) {
+  currentSecId = secId;
+  rows = [];
+  deleteQueue = [];
+  if (!secId) { renderAll(''); return; }
+  document.getElementById('countLine').textContent = 'Lade…';
+  document.getElementById('body').innerHTML = '<tr><td colspan="5">Loading…</td></tr>';
+  try {
+    await ensurePriceIndex();
+    const priceRows = await tursoQuery(
+      'SELECT id, SecurityID, Price, PriceDate, Source FROM security_prices WHERE SecurityID=? ORDER BY PriceDate DESC LIMIT ?',
+      [secId, PRICE_LOAD_LIMIT]
+    );
+    rows = priceRows.map(r => ({ ...r, PriceDate: toSwissDateTime(parseSwissDateTime(r.PriceDate)) || r.PriceDate, _dirty:false, _new:false }));
+  } catch (e) {
+    document.getElementById('body').innerHTML = `<tr><td colspan="5">Error: ${e.message}</td></tr>`;
+    return;
+  }
+  renderAll(secId);
+}
+
+async function load() {
+  if (!tursoConfigured()) {
+    document.getElementById('body').innerHTML = `<tr><td colspan="5">Bitte ⚙ Repo/Token setzen.</td></tr>`;
+    document.getElementById('settingsPanel').classList.add('show');
+    return;
+  }
+  try {
+    const master = await tursoQuery('SELECT SecurityID, SecurityName FROM security_master ORDER BY SecurityName COLLATE NOCASE ASC', [], 3600000);
+    masterRows = master;
+    rows = [];
+    deleteQueue = [];
+
+    const sel = document.getElementById('filterSecurity');
+    sel.innerHTML = '<option value="">– Security wählen –</option>' + secOptions('');
+
+    const urlId = new URLSearchParams(location.search).get('id');
+    if (urlId && masterRows.some(m => String(m.SecurityID) === urlId)) {
+      sel.value = urlId;
+      await selectSecurity(urlId);
+    } else {
+      currentSecId = '';
+      renderAll('');
+    }
+    if (new URLSearchParams(location.search).get('add') === '1') { document.getElementById('addBtn').click(); }
+  } catch (e) {
+    document.getElementById('body').innerHTML = `<tr><td colspan="5">Error: ${e.message}</td></tr>`;
+  }
+}
+function setStatus(msg, cls) { const s = document.getElementById('status'); s.textContent = msg; s.className = 'status ' + (cls||''); }
+
+document.getElementById('filterSecurity').addEventListener('change', (e) => selectSecurity(e.target.value));
+document.getElementById('searchText').addEventListener('input', () => renderAll(document.getElementById('filterSecurity').value));
+document.getElementById('dateApplyBtn').addEventListener('click', applyDateFilter);
+document.getElementById('dateFrom').addEventListener('keydown', (e) => { if (e.key === 'Enter') applyDateFilter(); });
+document.getElementById('dateTo').addEventListener('keydown', (e) => { if (e.key === 'Enter') applyDateFilter(); });
+
+document.querySelectorAll('#headerRow th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const field = th.dataset.sort;
+    if (sortField === field) { sortDir = sortDir === 'asc' ? 'desc' : 'asc'; }
+    else { sortField = field; sortDir = field === 'PriceDate' ? 'desc' : 'asc'; }
+    renderAll(document.getElementById('filterSecurity').value);
+  });
+});
+
+document.getElementById('addBtn').addEventListener('click', () => {
+  if (!currentSecId) { setStatus('Bitte zuerst eine Security auswählen.', 'error'); return; }
+  rows.push({ id:null, SecurityID: currentSecId, Price:'', PriceDate: nowZurichString(), Source:'manual', _dirty:true, _new:true });
+  renderAll(currentSecId);
+});
+
+document.getElementById('saveBtn').addEventListener('click', async () => {
+  if (!tursoConfigured()) { setStatus('Bitte ⚙ Repo/Token setzen.', 'error'); document.getElementById('settingsPanel').classList.add('show'); return; }
+  for (const r of rows) {
+    if (r.PriceDate && !parseSwissDateTime(r.PriceDate)) { setStatus(`Ungültiges PriceDate "${r.PriceDate}" für SecurityID ${r.SecurityID} - erwartet dd.mm.yyyy hh:mm:ss.`, 'error'); return; }
+  }
+  const stmts = []; const newRowIdxs = [];
+  rows.forEach((r,i) => {
+    if (!r._dirty) return;
+    const isoDate = toIsoDateTime(parseSwissDateTime(r.PriceDate));
+    if (r._new) {
+      stmts.push({ sql:`INSERT INTO security_prices (SecurityID, Price, PriceDate, Source, created_at) VALUES (?,?,?,?,?)`,
+        args:[r.SecurityID, r.Price||null, isoDate, r.Source, nowZurichString()] });
+      newRowIdxs.push(i);
+    } else {
+      stmts.push({ sql:`UPDATE security_prices SET SecurityID=?, Price=?, PriceDate=?, Source=? WHERE id=?`,
+        args:[r.SecurityID, r.Price||null, isoDate, r.Source, r.id] });
+    }
+  });
+  for (const id of deleteQueue) stmts.push({ sql:`DELETE FROM security_prices WHERE id=?`, args:[id] });
+
+  if (!stmts.length) { setStatus('Keine Änderungen.', 'ok'); return; }
+  try {
+    setStatus('Speichere…');
+    const results = await tursoBatch(stmts);
+    let seen = 0;
+    for (let ri=0; ri<stmts.length; ri++) {
+      if (stmts[ri].sql.startsWith('INSERT')) { rows[newRowIdxs[seen++]].id = results[ri].lastInsertRowid; rows[newRowIdxs[seen-1]]._new = false; }
+    }
+    rows.forEach(r => r._dirty=false);
+    deleteQueue = [];
+    renderAll(document.getElementById('filterSecurity').value);
+    setStatus('Gespeichert ✓ ' + nowZurichString(), 'ok');
+  } catch (e) { setStatus('Fehler beim Speichern: ' + e.message, 'error'); }
+});
+
+document.getElementById('settingsBtn').addEventListener('click', () => {
+  document.getElementById('cfgUrl').value = TURSO.url;
+  document.getElementById('cfgToken').value = TURSO.token;
+  document.getElementById('settingsPanel').classList.toggle('show');
+});
+document.getElementById('cfgSave').addEventListener('click', () => {
+  tursoSaveConfig({ url: document.getElementById('cfgUrl').value.trim(), token: document.getElementById('cfgToken').value.trim() });
+  document.getElementById('settingsPanel').classList.remove('show');
+  load();
+});
+
+load();
+
+// ============ Improvement quick-capture (footer) ============
+(function(){
+  var btn = document.getElementById('improvementSaveBtn');
+  if(!btn) return;
+  btn.addEventListener('click', async function(){
+    var input = document.getElementById('improvementInput');
+    var text = input.value.trim();
+    if(!text){ return; }
+    if(!tursoConfigured()){ alert('Bitte zuerst ⚙ Repo/Token setzen.'); return; }
+    var original = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Speichere…';
+    try {
+      await ensureSecurityTasksSchema();
+      var pageName = (location.pathname.split('/').pop() || 'index.html');
+      var todayDate = (typeof nowZurichIsoDateString === 'function') ? new Date(nowZurichIsoDateString()+'T00:00:00')
+        : (typeof zurichParts === 'function' ? (function(){ var p = zurichParts(new Date()); return new Date(p.year+'-'+p.month+'-'+p.day+'T00:00:00'); })() : new Date());
+      var due = new Date(todayDate); due.setDate(due.getDate()+10);
+      var dueIso = due.toISOString().slice(0,10);
+      var nowIso = (typeof nowZurichString === 'function') ? nowZurichString() : new Date().toISOString();
+      await tursoRun(
+        `INSERT INTO security_tasks (TaskName, TaskDescription, SecurityID, DateDue, Recurring, TaskTypeID, Completed, created_at) VALUES (?,?,?,?,?,?,0,?)`,
+        ['Improvement ' + pageName, text, null, dueIso, 'n/a', 140, nowIso]
+      );
+      input.value = '';
+      alert('Improvement-Task erstellt (fällig ' + dueIso.split('-').reverse().join('.') + ').');
+    } catch(e) {
+      alert('Fehler: ' + e.message);
+    } finally {
+      btn.disabled = false; btn.textContent = original;
+    }
+  });
+})();
+</script>
+</body>
+</html>
