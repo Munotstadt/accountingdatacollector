@@ -328,3 +328,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 22.08.2026 20:26:07;22.08.2026;CHF;47.1;1;47.1;Groceries PG;CC TCS PG;Einkauf Lebensmittel;SPAR;Niederhasli;PG;;device-4442d926;178.38.204.182;e-8fad5078cc;22.08.2026 18:26:18;c1a8540992cc9c34
 23.08.2026 17:34:29;23.08.2026;CHF;5.1;1;5.1;Life PG;CC TCS PG;Snack;Coop;Dielsdorf;PG;;device-8d66a942;104.28.54.92;e-5b0cc4a6bb;23.08.2026 15:34:39;dcabae404ede90d1
 23.08.2026 20:59:28;22.08.2026;USD;97.29;0.8008;77.9;IT: Software & Apps PG;SQ WS USD PG (#315);;;Anthropic;PG;;device-8bb3cff2;178.38.204.182;e-ebfc05d99a;23.08.2026 18:59:39;a9f2953010a481fd
+24.08.2026 07:15:59;24.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-2fd33396;140.248.36.39;e-2ea1f638d4;24.08.2026 05:16:15;1571fd2c8b9c17b5
