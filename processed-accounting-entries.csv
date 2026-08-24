@@ -320,13 +320,13 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 18.08.2026 12:52:51;18.08.2026;CHF;10.3;1;10.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-2fd33396;172.226.132.52;e-3e3c4e8210;18.08.2026 10:53:01;c173d73f4f6dba29
 18.08.2026 21:14:45;18.08.2026;CHF;25;1;25.0;Life PG;RB PK Plus PG;Drinks mit Sutti;Fredis;Winterthur;PG;;device-8d66a942;104.28.54.92;e-24deec6758;18.08.2026 19:15:03;7e90067a1c6e3458
 18.08.2026 21:15:39;18.08.2026;CHF;12.7;1;12.7;Life PG;CC TCS PG;Snack;Brezelkönig;Winterthur;PG;;device-8d66a942;104.28.54.92;e-010fd94acf;18.08.2026 19:15:48;ecde5e8378bd7636
-20.08.2026 10:56:15;20.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;;;PG;;device-8d66a942;172.225.188.253;e-84e7549f86;20.08.2026 08:56:25;c235151353edf4e0
+20.08.2026 10:56:15;20.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;SBB;;PG;;device-8d66a942;172.225.188.253;e-84e7549f86;24.08.2026 16:24:29;9c72f5236e956d5c
 20.08.2026 12:20:50;20.08.2026;CHF;23.5;1;23.5;Restaurants PG;CC TCS PG;#LL1;Angkor;Zürich;PG;;device-8d66a942;172.225.27.65;e-545ead22e1;20.08.2026 10:21:01;f4faafc1f507baa5
 21.08.2026 12:52:17;21.08.2026;CHF;18.8;1;18.8;Restaurants PG;CC TCS PG;#LL1;Migros;Zürich;PG;;device-2fd33396;172.226.132.51;e-63ffa84489;21.08.2026 10:52:28;f1d936df2bba3fab
-21.08.2026 12:52:43;21.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;;;PG;;device-2fd33396;172.226.132.51;e-e2ae9b7860;21.08.2026 10:52:52;5c16e375297acbfb
+21.08.2026 12:52:43;21.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;SBB;;PG;;device-2fd33396;172.226.132.51;e-e2ae9b7860;24.08.2026 16:24:29;a8d402c8c61583f1
 22.08.2026 20:25:49;22.08.2026;CHF;6.9;1;6.9;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Migros;Niederhasli;PG;;device-4442d926;178.38.204.182;e-4f3e876241;22.08.2026 18:26:01;7b86a075616b9530
 22.08.2026 20:26:07;22.08.2026;CHF;47.1;1;47.1;Groceries PG;CC TCS PG;Einkauf Lebensmittel;SPAR;Niederhasli;PG;;device-4442d926;178.38.204.182;e-8fad5078cc;22.08.2026 18:26:18;c1a8540992cc9c34
 23.08.2026 17:34:29;23.08.2026;CHF;5.1;1;5.1;Life PG;CC TCS PG;Snack;Coop;Dielsdorf;PG;;device-8d66a942;104.28.54.92;e-5b0cc4a6bb;23.08.2026 15:34:39;dcabae404ede90d1
-23.08.2026 20:59:28;22.08.2026;USD;97.29;0.8008;77.9;IT: Software & Apps PG;SQ WS USD PG (#315);;Anthropic;Anthropic;PG;;device-8bb3cff2;178.38.204.182;e-ebfc05d99a;24.08.2026 16:23:05;989718b809123868
+23.08.2026 20:59:28;22.08.2026;USD;97.29;0.8008;77.9;IT: Software & Apps PG;SQ WS USD PG (#315);;Anthropic;;PG;;device-8bb3cff2;178.38.204.182;e-ebfc05d99a;24.08.2026 16:24:29;5a4c8079ddc718ce
 24.08.2026 07:15:59;24.08.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-2fd33396;140.248.36.39;e-2ea1f638d4;24.08.2026 05:16:15;1571fd2c8b9c17b5
 24.08.2026 12:33:42;24.08.2026;CHF;21.5;1;21.5;Groceries PG;CC TCS PG;#LL1;TinyFisch;Zürich;PG;;device-8d66a942;104.28.54.92;e-c79cca9088;24.08.2026 10:33:53;993e5342223881e9
