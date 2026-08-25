@@ -336,3 +336,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 25.08.2026 15:07:31;25.08.2026;CHF;10.3;1;10.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-9b19bf3f;172.226.132.55;e-e2d30754b6;25.08.2026 13:07:41;089a1816a9fb8300
 25.08.2026 17:15:07;24.08.2026;CHF;18.8;1;18.8;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Migros;Niederhasli;PG;;device-ca0a008c;140.248.36.38;e-47452e51c0;25.08.2026 15:15:17;32b4b15f05e9d319
 25.08.2026 20:21:14;25.08.2026;CHF;62;1;62.0;Sport & Hobbies & Leisure PG;Gutschein REKA;5-Seen-Wanderung Pizol (Bergbahn und SBB);SBB;;PG;;device-ca0a008c;104.28.54.92;e-89e085bcb4;25.08.2026 18:21:24;ab2bf5076c4e2c26
+25.08.2026 20:21:51;25.08.2026;CHF;33.2;1;33.2;Mobility Expenses PG;Sport & Freizeit;Niederhasli-Wangs-Niederhasli;SBB;;PG;Reclass;device-ca0a008c;104.28.54.92;e-872cf96380;25.08.2026 18:22:04;8c08de3a0b4debdf
