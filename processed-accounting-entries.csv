@@ -341,3 +341,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 27.08.2026 05:31:16;26.08.2026;CHF;95;1;95.0;Restaurants PG;CC TCS PG;#DD1;Restaurant Hofwiesen;Zürich;PG;;device-c58588e5;178.38.204.182;e-bbe8af1c0b;27.08.2026 03:31:25;5532b16af858e0cc
 27.08.2026 12:40:50;27.08.2026;CHF;21.5;1;21.5;Restaurants PG;CC TCS PG;#LL1;Tiny Fish;Zürich;PG;;device-ca0a008c;104.28.54.92;e-a21f6e3dd8;27.08.2026 10:41:01;7b3a3bc9bec5c5df
 28.08.2026 06:43:45;28.08.2026;USD;4.35;0.8035;3.5;IT: Software & Apps PG;SQ WS USD PG (#315);Abo Plus;Cloudflare;;PG;;device-9b19bf3f;104.28.54.92;e-a3e3c2ae05;28.08.2026 04:43:56;65d1f14714de0409
+28.08.2026 06:44:12;28.08.2026;CHF;10.2;1;10.2;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-9b19bf3f;104.28.54.92;e-9105192a8f;28.08.2026 04:44:22;4a35ad86c3d0026d
