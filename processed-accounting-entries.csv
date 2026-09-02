@@ -356,3 +356,5 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 31.08.2026 06:33:44;29.08.2026;EUR;26.2;0.9374;24.6;Admin;SQ WS EUR PG (#315);Tollbird;Tollbird;;PG;;device-c58588e5;178.38.204.182;e-e9255effeb;31.08.2026 04:33:53;43298f7108c41a28
 31.08.2026 12:19:38;31.08.2026;CHF;15.8;1;15.8;Restaurants PG;CC TCS PG;#LL1;Migros;Zürich;PG;;device-ca0a008c;172.225.188.248;e-f0df403091;31.08.2026 10:19:50;ac27a45f2ec71db2
 01.09.2026 14:38:23;01.09.2026;CHF;15.65;1;15.65;Restaurants PG;CC TCS PG;#LL1;MantaBar;Winterthur;PG;;device-9b19bf3f;104.28.54.92;e-4a5613eb20;01.09.2026 12:38:36;b85b5c1ff967e6fb
+01.09.2026 14:39:20;01.09.2026;CHF;4.25;1;4.25;Life PG;CC TCS PG;Snack;BP Tankstelle;Kreuzlingen;PG;;device-9b19bf3f;104.28.54.92;e-e773cd944c;02.09.2026 05:05:59;9b7c94563b57bed2
+02.09.2026 07:05:49;02.09.2026;CHF;9.9;1;9.9;Work related expenses (PwC) PG;CC TCS PG;Geschenk Anna Wyler;Lyner;Winterthur;PG;;device-ca0a008c;172.226.132.50;e-3d60ebee57;02.09.2026 05:05:59;19abf9a408c4c4db
