@@ -362,3 +362,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 02.09.2026 15:36:54;02.09.2026;CHF;2.75;1;2.75;Life PG;CC TCS PG;Snack;avec;Zürich;PG;;device-9b19bf3f;140.248.36.38;e-e6f1d5d2b5;02.09.2026 13:37:09;85019ae923f51944
 02.09.2026 15:57:08;02.09.2026;CHF;12.3;1;12.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur, Zürich-Niederhasli;SBB;;PG;;device-ca0a008c;172.225.27.70;e-6d71eac922;02.09.2026 13:57:20;fe744a7645f206d2
 03.09.2026 05:53:29;02.09.2026;EUR;3.03;0.9429;2.9;IT services;SQ WS USD PG (#315);Server;Render;;PG;;device-c58588e5;178.38.204.182;e-18be7e4379;03.09.2026 03:53:40;dca71b8b16f37863
+03.09.2026 06:21:04;02.09.2026;EUR;28.2;0.9429;26.6;Admin & Transfer PG;SQ WS EUR PG (#315);Autobahn;Tollbird;;PG;;device-c58588e5;178.38.204.182;e-b2b13569f3;03.09.2026 04:21:15;74302f7c26d6e2cc
