@@ -366,3 +366,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 03.09.2026 16:50:33;03.09.2026;CHF;21;1;21.0;Restaurants PG;CC TCS PG;#LL1;RiceUp;Winterthur;PG;;device-ca0a008c;104.28.54.92;e-39fbdad315;03.09.2026 14:50:44;025dfa6db4d60890
 03.09.2026 21:56:29;03.09.2026;CHF;10.3;1;10.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-9b19bf3f;172.225.188.252;e-3f08187391;03.09.2026 19:56:41;9affaa76d4d2f5ff
 04.09.2026 18:45:33;04.09.2026;USD;21.62;0.8089;17.5;It apps;SQ WS USD PG (#315);Claude;Antropic;;PG;;device-9b19bf3f;172.225.27.74;e-55df9c6415;04.09.2026 16:45:45;7c59ed5b6143cbf4
+04.09.2026 18:46:11;04.09.2026;EUR;15.2;0.9401;14.3;Life PG;SQ WS EUR PG (#315);Snack | Drinks & Kaffee;Europa-Park;DE-Rust;PG;;device-9b19bf3f;172.225.27.74;e-7724947a19;04.09.2026 16:46:22;768cde795a8c0695
