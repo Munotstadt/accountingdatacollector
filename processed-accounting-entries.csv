@@ -365,9 +365,10 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 03.09.2026 06:21:04;02.09.2026;EUR;28.2;0.9429;26.6;Admin & Transfer PG;SQ WS EUR PG (#315);Autobahn;Tollbird;;PG;;device-c58588e5;178.38.204.182;e-b2b13569f3;03.09.2026 04:21:15;74302f7c26d6e2cc
 03.09.2026 16:50:33;03.09.2026;CHF;21;1;21.0;Restaurants PG;CC TCS PG;#LL1;RiceUp;Winterthur;PG;;device-ca0a008c;104.28.54.92;e-39fbdad315;03.09.2026 14:50:44;025dfa6db4d60890
 03.09.2026 21:56:29;03.09.2026;CHF;10.3;1;10.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-9b19bf3f;172.225.188.252;e-3f08187391;03.09.2026 19:56:41;9affaa76d4d2f5ff
-04.09.2026 18:45:33;04.09.2026;USD;21.62;0.8089;17.5;It apps;SQ WS USD PG (#315);Claude;Antropic;;PG;;device-9b19bf3f;172.225.27.74;e-55df9c6415;04.09.2026 16:45:45;7c59ed5b6143cbf4
+04.09.2026 18:45:33;04.09.2026;USD;21.62;0.809;17.5;It apps;SQ WS USD PG (#315);Claude;Antropic;;PG;;device-9b19bf3f;172.225.27.74;e-55df9c6415;05.09.2026 16:07:17;7c59ed5b6143cbf4
 04.09.2026 18:46:11;04.09.2026;EUR;15.2;0.9401;14.3;Life PG;SQ WS EUR PG (#315);Snack | Drinks & Kaffee;Europa-Park;DE-Rust;PG;;device-9b19bf3f;172.225.27.74;e-7724947a19;04.09.2026 16:46:22;768cde795a8c0695
 04.09.2026 18:46:47;04.09.2026;EUR;3.5;0.9401;3.3;Life PG;SQ WS EUR PG (#315);Drinks & Kaffee;Europa-Park;DE-Rust;PG;;device-9b19bf3f;172.225.27.74;e-f98de65c33;04.09.2026 16:47:10;6d651052ae630929
 04.09.2026 18:47:33;04.09.2026;EUR;4.05;0.9401;3.8;Life PG;SQ WS EUR PG (#315);Drinks & Kaffee;Europa-Park;DE-Rust;PG;;device-9b19bf3f;172.225.27.74;e-13bdef44b8;04.09.2026 16:47:43;db891e2c58d3804c
 04.09.2026 18:48:17;04.09.2026;EUR;16.8;0.9401;15.8;Life PG;SQ WS EUR PG (#315);Snack | Drinks & Kaffee;Europa-Park;DE-Rust;PG;;device-9b19bf3f;172.225.27.74;e-13385cb3e1;04.09.2026 16:48:28;3d8bc727f5b56f29
 05.09.2026 07:04:06;04.09.2026;EUR;3.4;0.9401;3.2;maut;CC TCS PG;;Tollbird;;PG;;device-ca0a008c;172.225.188.251;e-fb3c425e22;05.09.2026 05:04:18;8eb0161dce659be8
+05.09.2026 18:07:07;05.09.2026;CHF;40;1;40.0;Sport & Hobbies & Leisure PG;Sport SE;Eintritt;Erlen;Niederhasli;PG;;device-9b19bf3f;172.226.132.48;e-bb3b68692e;05.09.2026 16:07:17;5865b4e54b00819c
