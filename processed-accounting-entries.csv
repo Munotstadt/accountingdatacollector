@@ -374,6 +374,7 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 05.09.2026 18:07:07;05.09.2026;CHF;40;1;40.0;Sport & Hobbies & Leisure PG;Sport SE;Eintritt;Erlen;Niederhasli;PG;;device-9b19bf3f;172.226.132.48;e-bb3b68692e;05.09.2026 16:07:17;5865b4e54b00819c
 06.09.2026 15:11:15;06.09.2026;CHF;19.4;1;19.4;Gifts PG;CC TCS PG;Geburi Meinrad;Fleischli;;PG;;device-9b19bf3f;104.28.54.92;e-10ab31b422;06.09.2026 13:11:25;e4bf92555275e66a
 07.09.2026 20:34:16;09.09.2026;CHF;22.6;1;22.6;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Arosa;SBB;;PG;;device-c58588e5;178.38.204.182;e-46c6910e90;07.09.2026 18:34:26;bbc2cb1e25c0249a
-08.09.2026 06:22:47;08.09.2026;EUR;9.9;0.9401;9.3;Vacation & Leisure PG;CC TCS PG;Jahresgebühr;Tollbird;;PG;;device-9b19bf3f;104.28.54.92;e-ec25c13aa3;08.09.2026 04:22:57;fbff58f8d2c5b8b6
+08.09.2026 06:22:47;08.09.2026;EUR;9.9;0.9427;9.3;Vacation & Leisure PG;CC TCS PG;Jahresgebühr;Tollbird;;PG;;device-9b19bf3f;104.28.54.92;e-ec25c13aa3;08.09.2026 10:26:16;fbff58f8d2c5b8b6
 08.09.2026 06:24:50;08.09.2026;CHF;199;1;199.0;Clothes PH;SQ WS CHF PG (#315);Veston Hacket London;Hackett;;PG;;device-9b19bf3f;104.28.54.92;e-173406c137;08.09.2026 04:24:59;1905087756689af7
-08.09.2026 07:56:53;08.09.2026;EUR;59.02;0.9401;55.5;IT Electronic;SQ WS EUR PG (#315);Shelly H&T Gen 3 sensors;amazon.de;;PG;;device-ca0a008c;104.28.54.92;e-c8e56e8d9f;08.09.2026 05:57:04;b18f4bb36aeee60d
+08.09.2026 07:56:53;08.09.2026;EUR;59.02;0.9427;55.6;IT Electronic;SQ WS EUR PG (#315);Shelly H&T Gen 3 sensors;amazon.de;;PG;;device-ca0a008c;104.28.54.92;e-c8e56e8d9f;08.09.2026 10:26:16;b18f4bb36aeee60d
+08.09.2026 12:26:04;08.09.2026;CHF;19.5;1;19.5;Restaurants PG;CC TCS PG;#LL1;Inder;Winterthur;PG;;device-ca0a008c;172.225.27.64;e-3fbdd5a9fb;08.09.2026 10:26:16;308e995cef0d5dfd
