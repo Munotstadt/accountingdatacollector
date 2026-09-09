@@ -379,3 +379,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 08.09.2026 07:56:53;08.09.2026;EUR;59.02;0.9427;55.6;IT Electronic;SQ WS EUR PG (#315);Shelly H&T Gen 3 sensors;amazon.de;;PG;;device-ca0a008c;104.28.54.92;e-c8e56e8d9f;08.09.2026 10:26:16;b18f4bb36aeee60d
 08.09.2026 12:26:04;08.09.2026;CHF;19.5;1;19.5;Restaurants PG;CC TCS PG;#LL1;Inder;Winterthur;PG;;device-ca0a008c;172.225.27.64;e-3fbdd5a9fb;08.09.2026 10:26:16;308e995cef0d5dfd
 08.09.2026 17:35:34;08.09.2026;CHF;10.3;1;10.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-9b19bf3f;104.28.54.92;e-8ad075d758;08.09.2026 15:35:46;fdc1c53312c3b3e5
+09.09.2026 10:32:48;09.09.2026;CHF;26.8;1;26.8;Restaurants PG;CC TCS PG;#LL1;Sprüngli;Zürich;PG;;device-9b19bf3f;172.226.132.55;e-d24a5a28b4;09.09.2026 08:32:59;892fe0601807673a
