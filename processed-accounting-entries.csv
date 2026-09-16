@@ -396,3 +396,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 14.09.2026 18:44:23;14.09.2026;CHF;144.9;1;144.9;Chlothes;CC TCS PG;Schuhe Reperatur 2x vorne/hinten;Mister Mint;Winterthur;PG;;device-9b19bf3f;172.225.188.254;e-34c97aa451;14.09.2026 16:44:33;152d388a02ec363e
 14.09.2026 18:45:01;14.09.2026;CHF;17;1;17.0;Restaurants PG;CC TCS PG;#LL1;BBalls;Winterthur;PG;;device-9b19bf3f;172.225.188.254;e-a4e2428dce;14.09.2026 16:45:12;9b0e25eff45102e5
 15.09.2026 12:47:26;15.09.2026;CHF;13;1;13.0;Restaurants PG;CC TCS PG;#LL1;Il Fumine;Niederhasli;PG;;device-9b19bf3f;172.225.27.71;e-23f70e65c4;15.09.2026 10:47:36;15eb64c4e42483e0
+16.09.2026 12:31:52;16.09.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;SBB;;PG;;device-ca0a008c;104.28.54.92;e-7e47cd8074;16.09.2026 10:32:02;447f226abc4215cf
