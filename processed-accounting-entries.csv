@@ -402,3 +402,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 17.09.2026 12:51:52;17.09.2026;CHF;25.4;1;25.4;Restaurants PG;CC TCS PG;#LL1;Tenz Momo;Winterthur;PG;;device-9b19bf3f;172.225.188.255;e-b44552d21b;17.09.2026 10:52:02;8027bdcc9735d0a5
 17.09.2026 13:30:12;17.09.2026;CHF;2.3;1;2.3;Life PG;CC TCS PG;Snack;Coop;Winterthur;PG;;device-ca0a008c;172.225.27.74;e-7b7381eb16;17.09.2026 11:30:24;8e3b160198266633
 18.09.2026 18:42:36;18.09.2026;CHF;16.2;1;16.2;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt);SBB;;PG;;device-9b19bf3f;104.28.54.92;e-dfba892754;18.09.2026 16:42:46;4454a2b48fe10394
+18.09.2026 18:42:55;18.09.2026;CHF;18.8;1;18.8;Restaurants PG;CC TCS PG;#LL1;Migros;;PG;;device-9b19bf3f;104.28.54.92;e-ae676bb168;18.09.2026 16:43:05;130dd35286fdbd8f
