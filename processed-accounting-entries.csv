@@ -408,3 +408,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 19.09.2026 21:15:35;19.09.2026;CHF;34.5;1;34.5;Living Haushalt;CC TCS PG;Abfallsäcke;Migros;Niederhasli;PG;;device-c58588e5;178.38.204.182;e-5e001ec79e;19.09.2026 19:15:45;5482478f8f59bdc5
 19.09.2026 21:15:49;19.09.2026;CHF;4.45;1;4.45;Life PG;CC TCS PG;Snack;Migros;Zurzach;PG;;device-c58588e5;178.38.204.182;e-f3490124fa;19.09.2026 19:15:59;291e6829a948bec6
 19.09.2026 21:16:14;19.09.2026;CHF;7.9;1;7.9;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Fleischli;Niederglatt;PG;;device-c58588e5;178.38.204.182;e-5f41ddff97;19.09.2026 19:16:23;b5b691a8a37c3978
+19.09.2026 21:16:41;19.09.2026;CHF;22.9;1;22.9;Restaurants (Family) PG;CC TCS PG;#BB3;Fleischli;Niederglatt;PG;;device-c58588e5;178.38.204.182;e-8cd058bd2a;19.09.2026 19:16:51;dca5c0f618e5b5e9
