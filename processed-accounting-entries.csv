@@ -435,3 +435,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 28.09.2026 14:41:39;28.09.2026;CHF;76.4;1;76.4;Health Expenses PG;CC TCS PG;Pretuval / Echinacine Forte;Coop Vitality;Zürich;PG;;device-9b19bf3f;104.28.54.92;e-4a8e3a40bd;28.09.2026 12:41:51;31ad1550628c8837
 29.09.2026 17:54:28;29.09.2026;CHF;1.8;1;1.8;Life PG;CC TCS PG;Snack;Coop;Winterthur;PG;;device-9b19bf3f;172.225.188.255;e-b6c5b0dc6a;29.09.2026 15:54:40;f400e664e59e8ac3
 29.09.2026 17:54:50;29.09.2026;CHF;40;1;40.0;Restaurants PG;CC TCS PG;#LL1;Strickers;Winterthur;PG;;device-9b19bf3f;172.225.188.255;e-e4f8733ec8;29.09.2026 15:55:03;e99868692ccc8031
+29.09.2026 17:55:37;29.09.2026;CHF;25.85;1;25.85;Gifts PG;CC TCS PG;Kaffee für Helene;Galaxus;;PG;;device-9b19bf3f;172.225.188.255;e-cdaba5c966;29.09.2026 15:55:49;8cc57856b18cfc86
