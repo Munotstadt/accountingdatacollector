@@ -441,3 +441,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 30.09.2026 18:17:57;30.09.2026;CHF;44.4;1;44.4;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Migros;Niederhasli;PG;;device-9b19bf3f;172.225.27.64;e-0231043720;30.09.2026 16:18:08;73b3029c5fff2cee
 01.10.2026 13:17:35;01.10.2026;CHF;1.6;1;1.6;Life PG;CC TCS PG;Snack;Lyner;Winterthur;PG;;device-ca0a008c;172.225.27.65;e-3412c472c4;01.10.2026 11:17:46;dfbbf9caa13e477c
 01.10.2026 13:18:03;01.10.2026;CHF;16.55;1;16.55;Restaurants PG;CC TCS PG;#LL1;Hotz;Winterthur;PG;;device-ca0a008c;172.225.27.65;e-c18cf93514;01.10.2026 11:18:12;a4614570654b6ad9
+01.10.2026 19:25:03;27.09.2026;EUR;1.5;0.9432;1.4;Life PG;SQ WS EUR PG (#315);Drinks & Kaffee;OVEROLL INTRA DE;GR-Athens;PG;;device-c58588e5;178.38.204.182;e-1be14008fa;01.10.2026 17:25:15;9cdeba5040485491
