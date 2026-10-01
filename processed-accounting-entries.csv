@@ -440,3 +440,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 29.09.2026 18:39:08;29.09.2026;CHF;5.1;1;5.1;Gifts PG;CC TCS PG;Schorle für Helene;Migros;Oberglatt;PG;;device-9b19bf3f;104.28.54.92;e-fd89ecaf58;29.09.2026 16:39:19;52a60773492b3ffe
 30.09.2026 18:17:57;30.09.2026;CHF;44.4;1;44.4;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Migros;Niederhasli;PG;;device-9b19bf3f;172.225.27.64;e-0231043720;30.09.2026 16:18:08;73b3029c5fff2cee
 01.10.2026 13:17:35;01.10.2026;CHF;1.6;1;1.6;Life PG;CC TCS PG;Snack;Lyner;Winterthur;PG;;device-ca0a008c;172.225.27.65;e-3412c472c4;01.10.2026 11:17:46;dfbbf9caa13e477c
+01.10.2026 13:18:03;01.10.2026;CHF;16.55;1;16.55;Restaurants PG;CC TCS PG;#LL1;Hotz;Winterthur;PG;;device-ca0a008c;172.225.27.65;e-c18cf93514;01.10.2026 11:18:12;a4614570654b6ad9
