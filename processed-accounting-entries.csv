@@ -446,3 +446,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 02.10.2026 20:30:10;02.10.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;;;PG;;device-9b19bf3f;172.225.188.255;e-65a980a0d3;02.10.2026 18:30:22;581cbf2e9b4c801b
 03.10.2026 09:43:33;03.10.2026;CHF;38.45;1;38.45;Groceries PG;CC TCS PG;;Migros;Niederhasli;PG;;device-9b19bf3f;104.28.54.92;e-0bebd2989d;03.10.2026 07:43:44;d18d6f6a218dbce4
 04.10.2026 06:21:44;04.10.2026;EUR;40;0.9321;37.3;Sundry PG;Revolut PG;Parkbusse Austria vom 31.07.2026/11 km/h;Bezirkshauptmannschaft Bludenz;;PG;;device-c58588e5;178.38.204.182;e-6f92bc2a71;04.10.2026 04:21:53;9578fdc6b106d09e
+04.10.2026 12:01:46;04.10.2026;USD;21.62;0.8285;17.9;IT: Software & Apps PG;SQ WS USD PG (#315);Claude;Antropic;;PG;;device-c58588e5;178.38.204.182;e-cf5ce8f872;04.10.2026 10:01:54;082953620ae51471
