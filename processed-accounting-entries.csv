@@ -448,3 +448,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 04.10.2026 06:21:44;04.10.2026;EUR;40;0.9321;37.3;Sundry PG;Revolut PG;Parkbusse Austria vom 31.07.2026/11 km/h;Bezirkshauptmannschaft Bludenz;;PG;;device-c58588e5;178.38.204.182;e-6f92bc2a71;04.10.2026 04:21:53;9578fdc6b106d09e
 04.10.2026 12:01:46;04.10.2026;USD;21.62;0.8285;17.9;IT: Software & Apps PG;SQ WS USD PG (#315);Claude;Antropic;;PG;;device-c58588e5;178.38.204.182;e-cf5ce8f872;04.10.2026 10:01:54;082953620ae51471
 05.10.2026 16:33:09;05.10.2026;CHF;17.35;1;17.35;Restaurants PG;CC TCS PG;#LL1;Hotz;Winterthur;PG;;device-ca0a008c;172.226.132.54;e-659b189239;05.10.2026 14:33:21;660e813cd57cac52
+06.10.2026 05:44:26;05.10.2026;CHF;16.2;1;16.2;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt);SBB;;PG;;device-c58588e5;178.38.204.182;e-a162492a22;06.10.2026 03:44:36;c6e615c682c78dca
