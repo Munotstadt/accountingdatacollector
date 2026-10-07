@@ -453,3 +453,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 06.10.2026 13:11:27;06.10.2026;CHF;19.7;1;19.7;Restaurants PG;CC TCS PG;#LL1;Coop;Dielsdorf;PG;;device-c58588e5;178.38.204.182;e-9eac3319b9;06.10.2026 11:11:36;4453ab1091421eb1
 06.10.2026 18:36:46;06.10.2026;CHF;30.45;1;30.45;Life SE;CC TCS PG;Ferngesteuertes Auto;Jumbo;Rümlang;PG;;device-9b19bf3f;104.28.54.92;e-3b52e7b305;06.10.2026 16:36:57;add31c1bd833263b
 07.10.2026 19:38:10;07.10.2026;CHF;50;1;50.0;Gifts PG;CC TCS PG;Blumen Helene;Klinik Schloss Mammern;Mammern;PG;;device-9b19bf3f;104.28.54.92;e-2469c2d7a0;07.10.2026 17:38:21;61259153b7765d1f
+07.10.2026 19:39:13;07.10.2026;CHF;55.6;1;55.6;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Volg;La Punt;VP;;device-9b19bf3f;104.28.135.81;e-feae348b00;07.10.2026 17:39:23;8c323a8c7239999e
