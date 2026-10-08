@@ -1,0 +1,191 @@
+/* Shared stylesheet for acc.munot.app (index / editor / spending).
+   Base = Seestrasse 52B design (Munotstadt/seestrasse52b), plus accounting additions. */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --red:#E30613;
+  --ink:#1a1a1a;
+  --grey-900:#2b2b2b;
+  --grey-600:#666;
+  --grey-300:#d8d8d8;
+  --grey-100:#f4f4f4;
+  --bg:#ffffff;
+  --green:#1e7a34;
+  --radius:6px;
+  /* aliases used by the page-specific styles of editor.html / spending.html */
+  --panel:var(--grey-100);
+  --line:var(--grey-300);
+  --text:var(--ink);
+  --muted:var(--grey-600);
+  --accent:var(--red);
+  --gain:var(--green);
+  --loss:var(--red);
+}
+*{box-sizing:border-box;}
+[hidden]{display:none !important;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-size:15px;
+  line-height:1.45;
+}
+h1,h2,h3{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600;
+  margin:0 0 .4em 0;
+}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+/* ---------- top bar (same as 52b) ---------- */
+header.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  padding:14px 20px;border-bottom:2px solid var(--ink);
+}
+header.topbar .brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;}
+header.topbar .brand span{color:var(--red);}
+nav.tabs{display:flex;gap:4px;}
+nav.tabs a{
+  text-decoration:none;color:var(--ink);font-size:13px;font-weight:500;
+  padding:7px 12px;border-radius:var(--radius);
+}
+nav.tabs a.active,nav.tabs a:hover{background:var(--grey-100);}
+
+main{max-width:1080px;margin:0 auto;padding:24px 20px 60px;}
+main.narrow{max-width:760px;}
+main.wide{max-width:1280px;}
+
+.page-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px;}
+.page-head h1{margin:0;}
+main h2.sec{font-size:17px;margin:24px 0 10px;}
+
+.card{
+  border:1px solid var(--grey-300);border-radius:var(--radius);
+  padding:16px 18px;background:var(--bg);
+}
+
+/* ---------- forms ---------- */
+label{display:block;font-size:12px;font-weight:500;color:var(--grey-600);margin-bottom:4px;}
+label .req{color:var(--red);}
+label .hint,.hint{font-weight:400;color:var(--grey-600);font-size:12px;}
+input,select,textarea{
+  width:100%;padding:8px 10px;border:1px solid var(--grey-300);border-radius:var(--radius);
+  font-family:'Inter',sans-serif;font-size:14px;background:var(--bg);color:var(--ink);
+}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--red);outline-offset:1px;}
+.field{margin-bottom:12px;}
+.field:last-child{margin-bottom:0;}
+.row{display:flex;gap:12px;flex-wrap:wrap;}
+.row>.field{flex:1;min-width:150px;}
+.otherWrap{margin-top:8px;display:none;}
+.otherWrap.show{display:block;}
+
+/* tag / account chips (checkbox + radio) */
+.chips{
+  display:flex;flex-wrap:wrap;gap:8px;
+  padding:12px;background:var(--grey-100);border:1px solid var(--grey-300);border-radius:var(--radius);
+}
+.chips label{
+  display:flex;align-items:center;gap:6px;margin:0;
+  font-size:13px;font-weight:500;color:var(--ink);cursor:pointer;
+  background:var(--bg);border:1px solid var(--grey-300);padding:5px 10px;border-radius:var(--radius);
+}
+.chips label:hover{border-color:var(--grey-600);}
+.chips input[type=checkbox],.chips input[type=radio]{width:auto;margin:0;accent-color:var(--red);}
+.chips label:has(input:checked){border-color:var(--red);background:#fdeceb;}
+.chips .chip-meta{color:var(--grey-600);font-weight:400;font-size:11px;}
+.inline-input{margin-top:10px;}
+.flags{display:flex;gap:16px;flex-wrap:wrap;padding-top:2px;}
+.flags label{display:flex;align-items:center;gap:6px;margin:0;font-size:13px;color:var(--ink);}
+.flags input[type=checkbox]{width:auto;accent-color:var(--red);}
+
+/* ---------- buttons ---------- */
+button, .btn{
+  font-family:'Inter',sans-serif;font-weight:600;font-size:13px;
+  padding:8px 14px;border-radius:var(--radius);border:1px solid var(--ink);
+  background:var(--ink);color:#fff;cursor:pointer;
+}
+button.secondary{background:#fff;color:var(--ink);}
+button.danger{background:#fff;color:var(--red);border-color:var(--red);}
+button.small{padding:4px 9px;font-size:12px;}
+button.block{width:100%;padding:12px 14px;font-size:14px;}
+button:hover{opacity:.85;}
+button:disabled{opacity:.5;cursor:wait;}
+button.success{background:var(--green);border-color:var(--green);}
+.actions-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;}
+.actions-row button{flex:1 1 200px;}
+
+.seg-group{display:inline-flex;border:1px solid var(--grey-300);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;}
+.seg-btn{
+  font-family:'Inter',sans-serif;font-weight:500;font-size:13px;
+  padding:7px 14px;border:none;border-radius:0;background:#fff;color:var(--ink);cursor:pointer;
+  border-right:1px solid var(--grey-300);
+}
+.seg-btn:last-child{border-right:none;}
+.seg-btn.active{background:var(--ink);color:#fff;}
+.seg-btn:hover:not(.active){background:var(--grey-100);opacity:1;}
+
+/* ---------- messages / status ---------- */
+.msg{padding:10px 14px;border-radius:var(--radius);font-size:13px;margin-bottom:14px;}
+.msg.err{background:#fdeceb;color:var(--red);border:1px solid var(--red);}
+.msg.ok{background:#e6f4ea;color:var(--green);border:1px solid var(--green);}
+#status{
+  margin-top:14px;font-size:13px;padding:10px 14px;border-radius:var(--radius);
+  display:none;white-space:pre-wrap;font-family:'IBM Plex Mono',monospace;border:1px solid transparent;
+}
+#status.ok{display:block;background:#e6f4ea;color:var(--green);border-color:var(--green);}
+#status.err{display:block;background:#fdeceb;color:var(--red);border-color:var(--red);}
+#status.pending{display:block;background:var(--grey-100);color:var(--grey-600);border-color:var(--grey-300);}
+.empty{color:var(--grey-600);font-size:13px;padding:20px 0;text-align:center;}
+
+.status{
+  display:flex;align-items:center;gap:8px;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--grey-600);
+}
+.dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 0 3px rgba(30,122,52,.15);
+  animation:pulse 2.4s ease-in-out infinite;flex-shrink:0;
+}
+.dot.stale{background:var(--grey-600);box-shadow:none;animation:none;}
+.dot.error{background:var(--red);box-shadow:0 0 0 3px rgba(227,6,19,.15);animation:none;}
+@media (prefers-reduced-motion:reduce){.dot{animation:none;}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.45;}}
+
+/* ---------- tables ---------- */
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--grey-300);}
+th{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em;color:var(--grey-600);}
+tr:hover td{background:var(--grey-100);}
+td.num{font-family:'IBM Plex Mono',monospace;}
+
+/* ---------- dialog (same as 52b) ---------- */
+dialog{border:none;border-radius:var(--radius);padding:0;max-width:520px;width:92%;}
+dialog::backdrop{background:rgba(0,0,0,.35);}
+dialog .card{border:none;padding:20px;}
+dialog .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;}
+
+/* ---------- footer / token ---------- */
+.foot{
+  margin-top:34px;padding-top:14px;border-top:1px solid var(--grey-300);
+  display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--grey-600);
+}
+.foot code{font-family:'IBM Plex Mono',monospace;background:var(--grey-100);border:1px solid var(--grey-300);border-radius:4px;padding:1px 6px;color:var(--ink);}
+.foot .foot-row{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.foot a{color:var(--grey-600);}
+.credentials{margin-top:8px;}
+.credentials summary{cursor:pointer;font-size:12px;color:var(--grey-600);}
+.credentials .field{margin-top:10px;}
+
+/* ---------- login ---------- */
+.login-card{max-width:380px;margin:60px auto 0;text-align:center;}
+.login-card p{color:var(--grey-600);font-size:13px;margin:0 0 14px;}
+.login-card form{display:flex;flex-direction:column;gap:10px;}
+
+@media (max-width:560px){
+  header.topbar{padding:12px 14px;}
+  main{padding:16px 14px 48px;}
+  .row>.field{min-width:100%;}
+  input,select,textarea{font-size:16px;} /* prevents iOS Safari auto-zoom on focus */
+}
