@@ -1,3 +1,23 @@
 {
-  "templates": []
+  "templates": [
+    {
+      "id": "tpl-79ca92d0bc",
+      "name": "SBB – Niederhasli-Zürich-Niederhasli",
+      "withAmount": true,
+      "amount": "8.5",
+      "currency": "CHF",
+      "debit": "Mobility Expenses PG",
+      "credit": "Gutschein SBB PG",
+      "comment": [
+        "Niederhasli-Zürich-Niederhasli"
+      ],
+      "party": [
+        "SBB"
+      ],
+      "location": [],
+      "ledger": "PG",
+      "flags": [],
+      "flagsOther": ""
+    }
+  ]
 }
