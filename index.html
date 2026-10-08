@@ -3,456 +3,269 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accounting - Entry</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #FFFFFF;
-    --panel: #F7F8FA;
-    --line: #E3E6EA;
-    --text: #1A1D22;
-    --muted: #767E8A;
-    --accent: #E30613;
-    --gain: #1F8A6E;
-    --loss: #C0293D;
-    --radius: 3px;
-  }
-  * { box-sizing: border-box; }
-  body{
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', system-ui, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 48px 20px 80px;
-  }
-  .sheet{ width: 100%; max-width: 720px; }
-
-  .eyebrow{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 18px;
-    border-bottom: 2px solid var(--accent);
-  }
-  .brand{ display: flex; align-items: baseline; gap: 10px; }
-  .brand h1{
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    letter-spacing: 0.02em;
-    margin: 0;
-    text-transform: uppercase;
-  }
-  .brand span.sub{
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .tool-links{ display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-  .tool-link{
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase;
-    letter-spacing: .04em; text-decoration: none; color: var(--text);
-    border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 16px;
-  }
-  .tool-link:hover{ background: var(--text); color: #fff; border-color: var(--text); }
-  .status{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    color: var(--muted);
-    text-align: right;
-  }
-  .dot{
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--gain);
-    box-shadow: 0 0 0 3px rgba(31,138,110,0.15);
-    animation: pulse 2.4s ease-in-out infinite;
-    flex-shrink: 0;
-  }
-  .dot.stale{ background: var(--muted); box-shadow: none; animation: none; }
-  .dot.error{ background: var(--loss); box-shadow: 0 0 0 3px rgba(192,41,61,0.15); animation: none; }
-  @media (prefers-reduced-motion: reduce){ .dot{ animation: none; } }
-  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.45;} }
-
-  .meta-header{ padding: 18px 0 22px; border-bottom: 1px solid var(--line); }
-  .meta-header h2{
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 22px;
-    margin: 0 0 4px;
-  }
-  .meta-sub{ font-family: 'Inter', sans-serif; font-size: 13px; color: var(--muted); margin: 0; }
-  .target-bar{
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 10px;
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  .target-bar code{
-    background: var(--panel);
-    border: 1px solid var(--line);
-    padding: 1px 6px;
-    border-radius: var(--radius);
-    color: var(--text);
-  }
-
-  .history-title{
-    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--accent); margin: 28px 0 10px;
-  }
-
-  fieldset{ border:none; margin:0; padding:0; }
-  .row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
-  .field{ margin-bottom:18px; }
-  label{
-    display:flex; justify-content:space-between;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size:11px; text-transform:uppercase; letter-spacing:.06em;
-    color:var(--muted); margin-bottom:7px;
-  }
-  label .req{ color:var(--accent); }
-  label .hint{ text-transform:none; letter-spacing:0; color:var(--muted); font-family:'Inter',sans-serif; }
-
-  input, select, textarea{
-    width:100%;
-    font-family:'Inter', sans-serif;
-    font-size:14px;
-    color:var(--text);
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:10px 12px;
-    outline:none;
-    transition:border-color .15s;
-  }
-  input:focus, select:focus, textarea:focus{ border-color:var(--accent); }
-  select{
-    cursor:pointer; appearance:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23767E8A'/%3E%3C/svg%3E");
-    background-repeat:no-repeat; background-position:right 12px center;
-  }
-
-  .otherWrap{ margin-top:8px; display:none; }
-  .otherWrap.show{ display:block; }
-
-  .checks{
-    display:flex; flex-wrap:wrap; gap:8px;
-    padding:12px; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
-  }
-  .checks label{
-    display:flex; align-items:center; gap:6px;
-    text-transform:none; letter-spacing:0; font-family:'Inter',sans-serif;
-    font-size:13px; color:var(--text);
-    background:var(--bg); border:1px solid var(--line);
-    padding:5px 10px; border-radius:var(--radius);
-  }
-  .checks input[type=checkbox]{ width:auto; accent-color:var(--accent); margin:0; }
-  .checks input[type=radio]{ width:auto; accent-color:var(--accent); margin:0; }
-  .checks label:has(input:checked){ border-color:var(--accent); background:rgba(227,6,19,0.06); }
-
-  #loginGate{
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    min-height:50vh; gap:16px; text-align:center; padding-top:20px;
-  }
-  #loginGate h2{
-    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:22px; margin:0;
-  }
-  #loginGate p{
-    font-family:'Inter', sans-serif; font-size:13px; color:var(--muted); margin:0; max-width:320px;
-  }
-  #loginGate form{ width:100%; max-width:320px; display:flex; flex-direction:column; gap:12px; }
-
-  .flags{ display:flex; gap:16px; flex-wrap:wrap; padding-top:2px; }
-  .flags label{
-    display:flex; align-items:center; gap:6px;
-    text-transform:none; letter-spacing:0; font-family:'Inter',sans-serif;
-    font-size:13px; color:var(--text);
-  }
-  .flags input[type=checkbox]{ width:auto; accent-color:var(--accent); }
-
-  .credentials{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:14px 16px;
-    margin:24px 0 28px;
-    font-size:12px;
-  }
-  .credentials summary{
-    cursor:pointer; color:var(--muted);
-    font-family:'IBM Plex Mono', monospace;
-    text-transform:uppercase; letter-spacing:.06em; font-size:11px;
-  }
-  .credentials .field{ margin:14px 0 0; }
-
-  button{
-    font-family:'IBM Plex Mono', monospace;
-    font-weight:600; font-size:13px; letter-spacing:.04em; text-transform:uppercase;
-    background:var(--text); color:#fff;
-    border:none; border-radius:var(--radius);
-    padding:14px 28px; cursor:pointer; width:100%;
-    transition:background .15s;
-  }
-  button:hover{ background:var(--accent); }
-  button:disabled{ background:var(--muted); cursor:wait; }
-  button.success{ background:var(--gain); }
-  button.success:hover{ background:var(--gain); }
-
-  #status{
-    margin-top:14px; font-size:13px; padding:12px 14px;
-    border-left:3px solid transparent; border-radius:var(--radius);
-    display:none; white-space:pre-wrap;
-    font-family:'IBM Plex Mono', monospace;
-  }
-  #status.ok{ display:block; border-color:var(--gain); background:rgba(31,138,110,.08); color:var(--gain); }
-  #status.err{ display:block; border-color:var(--loss); background:rgba(192,41,61,.08); color:var(--loss); }
-  #status.pending{ display:block; border-color:var(--muted); background:var(--panel); color:var(--muted); }
-
-  .footer{
-    margin-top:26px;
-    display:flex; flex-direction:column; gap:14px;
-    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--muted);
-    padding-top:16px; border-top:1px solid var(--line);
-  }
-  .footer-title{
-    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:16px; color:var(--text);
-  }
-  .footer-sub{ font-family:'Inter', sans-serif; font-size:12px; color:var(--muted); margin-top:2px; }
-  .footer .target-bar{ margin-top:8px; }
-  .footer-sync{
-    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;
-  }
-
-  @media (max-width:560px){
-    body{ padding:24px 16px 56px; }
-    .row{ grid-template-columns:1fr; }
-    .eyebrow{ flex-wrap:wrap; row-gap:8px; }
-    .brand h1{ font-size:17px; }
-    .footer-sync{ flex-direction:column; align-items:flex-start; }
-    input, select, textarea{ font-size:16px; } /* prevents iOS Safari auto-zoom on focus */
-  }
-</style>
+<title>Accounting · Buchung</title>
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-<div class="sheet">
+<header class="topbar">
+  <div class="brand">Accounting <span>Collector</span></div>
+  <nav class="tabs">
+    <a href="index.html" class="active">Buchung</a>
+    <a href="editor.html">Editor</a>
+    <a href="spending.html">Spending</a>
+  </nav>
+</header>
 
-  <div class="eyebrow">
-    <div class="brand">
-      <h1>Accounting</h1>
-      <span class="sub">- Entry</span>
-    </div>
-    <div class="status">
-      <span class="dot" id="statusDot"></span>
-      <span id="statusText">checking ledger…</span>
-    </div>
-  </div>
-
-  <div id="loginGate">
+<main class="narrow" id="loginGate">
+  <div class="card login-card">
     <h2>Login</h2>
-    <p>GitHub Personal Access Token — wird nur lokal auf diesem Gerät gespeichert, nie irgendwo sonst übertragen.</p>
+    <p>GitHub Personal Access Token. Wird nur lokal auf diesem Gerät gespeichert.</p>
     <form id="loginForm" autocomplete="off">
       <input type="password" id="loginToken" placeholder="ghp_..." required>
-      <button type="submit">Login</button>
+      <button type="submit" class="block">Login</button>
     </form>
   </div>
+</main>
 
-  <div id="appBody" style="display:none;">
+<main class="narrow" id="appBody" hidden>
 
-  <div class="tool-links">
-    <a href="spending.html" class="tool-link">Spending Dashboard</a>
-    <a href="editor.html" class="tool-link">Raw Editor</a>
+  <div class="page-head">
+    <h1>Neue Buchung</h1>
+    <div class="status"><span class="dot stale" id="statusDot"></span><span id="statusText">checking ledger…</span></div>
+  </div>
+  <div class="hint">Buchung Nr. <span id="entryNo">—</span></div>
+
+  <h2 class="sec">Vorlage</h2>
+  <div class="card">
+    <div class="row" style="align-items:flex-end;">
+      <div class="field" style="margin-bottom:0;">
+        <label for="tplSelect">Vorlage auswählen</label>
+        <select id="tplSelect"><option value="">– keine Vorlage –</option></select>
+      </div>
+      <div class="field" style="flex:0 0 auto;min-width:0;margin-bottom:0;">
+        <button type="button" class="danger" id="tplDeleteBtn" hidden>Löschen</button>
+      </div>
+    </div>
+    <div class="hint" id="tplHint" style="margin-top:8px;">Füllt Währung, Konten und Tags aus. Das Datum bleibt heute.</div>
   </div>
 
   <form id="entryForm" autocomplete="off">
 
-    <div class="history-title">Basics</div>
-    <div class="row">
-      <div class="field">
-        <label>Amount (LC) <span class="req">*</span></label>
-        <input type="number" step="0.01" id="amtLC" placeholder="0.00" required style="text-align:right;">
-      </div>
-      <div class="field">
-        <label>Currency <span class="req">*</span></label>
-        <select id="currency" required>
-          <option value="CHF" selected>CHF</option>
-          <option value="EUR">EUR</option>
-          <option value="USD">USD</option>
-          <option value="__other__">XXX (other)</option>
-        </select>
-        <div class="otherWrap" id="currencyOtherWrap"><input type="text" id="currencyOther" placeholder="currency code..."></div>
-      </div>
-    </div>
-    <div class="field">
-      <label>Date <span class="req">*</span></label>
-      <input type="date" id="date" required>
-    </div>
-
-    <div class="history-title">Accounts</div>
-    <div class="field">
-      <label>Debit Account <span class="req">*</span></label>
-      <div class="checks" id="debitAccountChecks">
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Life PG" required>Life PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Mobility Expenses PG">Mobility Expenses PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Restaurants PG">Restaurants PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Restaurants (Family) PG">Restaurants (Family) PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Groceries PG">Groceries PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Auto Laden PG">Auto Laden PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Auto Parken PG">Auto Parken PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Auto Andere PG">Auto Andere PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Gifts PG">Gifts PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Vacation & Leisure PG">Vacation & Leisure PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Sport & Hobbies & Leisure PG">Sport & Hobbies & Leisure PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Living Haushalt PG">Living Haushalt PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Kleider Chemische Reinigung">Kleider Chemische Reinigung</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="IT: Software & Apps PG">IT: Software & Apps PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Health Expenses PG">Health Expenses PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Cash CHF">Cash CHF</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Revolut PG">Revolut PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Culture PG">Culture PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="RB PK Plus PG">RB PK Plus PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="InfoCom Other PG">InfoCom Other PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Admin & Transfer PG">Admin & Transfer PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Sundry PG">Sundry PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="Work related expenses (PwC) PG">Work related expenses (PwC) PG</label>
-        <label><input type="radio" name="debitAccount" class="acct-debit" value="__other__">OTHERS</label>
-      </div>
-      <div class="otherWrap" id="debitAccountOtherWrap"><input type="text" id="debitAccountOther" placeholder="specify..."></div>
-    </div>
-
-    <div class="field">
-      <label>Credit Account <span class="req">*</span></label>
-      <div class="checks" id="creditAccountChecks">
-        <label><input type="radio" name="creditAccount" class="acct-credit" value="CC TCS PG" checked>CC TCS PG</label>
-        <label><input type="radio" name="creditAccount" class="acct-credit" value="Gutschein SBB PG">Gutschein SBB PG</label>
-        <label><input type="radio" name="creditAccount" class="acct-credit" value="Revolut PG">Revolut PG</label>
-        <label><input type="radio" name="creditAccount" class="acct-credit" value="RB PK Plus PG">RB PK Plus PG</label>
-        <label><input type="radio" name="creditAccount" class="acct-credit" value="Life PG">Life PG</label>
-        <label><input type="radio" name="creditAccount" class="acct-credit" value="Admin & Transfer PG">Admin & Transfer PG</label>
-        <label><input type="radio" name="creditAccount" class="acct-credit" value="Other income PG">Other income PG</label>
-        <label><input type="radio" name="creditAccount" class="acct-credit" value="Gutschein REKA & Co PG">Gutschein REKA & Co PG</label>
-        <label><input type="radio" name="creditAccount" class="acct-credit" value="SQ WS CHF PG (#315)">SQ WS CHF PG (#315)</label>
-        <label><input type="radio" name="creditAccount" class="acct-credit" value="SQ WS EUR PG (#315)">SQ WS EUR PG (#315)</label>
-        <label><input type="radio" name="creditAccount" class="acct-credit" value="__other__">OTHERS</label>
-      </div>
-      <div class="otherWrap" id="creditAccountOtherWrap"><input type="text" id="creditAccountOther" placeholder="specify..."></div>
-    </div>
-
-    <div class="history-title">Tags</div>
-    <div class="field">
-      <label>Comment <span class="hint">(multiple)</span></label>
-      <div class="checks" id="commentChecks">
-        <label><input type="checkbox" class="chk-comment" value="#LL1">#LL1</label>
-        <label><input type="checkbox" class="chk-comment" value="#LL2">#LL2</label>
-        <label><input type="checkbox" class="chk-comment" value="#LL3">#LL3</label>
-        <label><input type="checkbox" class="chk-comment" value="#DD1">#DD1</label>
-        <label><input type="checkbox" class="chk-comment" value="#DD2">#DD2</label>
-        <label><input type="checkbox" class="chk-comment" value="#DD3">#DD3</label>
-        <label><input type="checkbox" class="chk-comment" value="Einkauf Lebensmittel">Einkauf Lebensmittel</label>
-        <label><input type="checkbox" class="chk-comment" value="Parking">Parking</label>
-        <label><input type="checkbox" class="chk-comment" value="Cash">Cash</label>
-        <label><input type="checkbox" class="chk-comment" value="Drinks & Kaffee">Drinks & Kaffee</label>
-        <label><input type="checkbox" class="chk-comment" value="Snack">Snack</label>
-        <label><input type="checkbox" class="chk-comment" value="PwC Lunch mit">PwC Lunch mit</label>
-        <label><input type="checkbox" class="chk-comment" value="Niederhasli-Zürich-Niederhasli">Niederhasli-Zürich-Niederhasli</label>
-        <label><input type="checkbox" class="chk-comment" value="Niederhasli-Winterthur-Niederhasli">Niederhasli-Winterthur-Niederhasli</label>
-        <label><input type="checkbox" class="chk-comment" value="Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt)">Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt)</label>
-        <label><input type="checkbox" class="chk-comment" value="#Takeout">#Takeout</label>
-        <label><input type="checkbox" class="chk-comment" value="#Superpunkte">#Superpunkte</label>
-      </div>
-      <input type="text" id="commentOther" placeholder="other comment (optional, freetext)" style="margin-top:10px;">
-    </div>
-
-    <div class="field">
-      <label>Party <span class="hint">(multiple)</span></label>
-      <div class="checks" id="partyChecks">
-        <label><input type="checkbox" class="chk-party" value="Coop">Coop</label>
-        <label><input type="checkbox" class="chk-party" value="Migros">Migros</label>
-        <label><input type="checkbox" class="chk-party" value="Volg">Volg</label>
-        <label><input type="checkbox" class="chk-party" value="PwC">PwC</label>
-        <label><input type="checkbox" class="chk-party" value="FAIRTIQ">FAIRTIQ</label>
-        <label><input type="checkbox" class="chk-party" value="SBB">SBB</label>
-        <label><input type="checkbox" class="chk-party" value="_Gastro">_Gastro</label>
-        <label><input type="checkbox" class="chk-party" value="_Stores">_Stores</label>
-        <label><input type="checkbox" class="chk-party" value="_Transfers">_Transfers</label>
-      </div>
-      <input type="text" id="partyOther" placeholder="other party (optional, freetext)" style="margin-top:10px;">
-    </div>
-
-    <div class="field">
-      <label>Location <span class="hint">(multiple)</span></label>
-      <div class="checks" id="locationChecks">
-        <label><input type="checkbox" class="chk-location" value="Zürich">Zürich</label>
-        <label><input type="checkbox" class="chk-location" value="Winterthur">Winterthur</label>
-        <label><input type="checkbox" class="chk-location" value="Dielsdorf">Dielsdorf</label>
-        <label><input type="checkbox" class="chk-location" value="Niederhasli">Niederhasli</label>
-        <label><input type="checkbox" class="chk-location" value="Rümlang">Rümlang</label>
-      </div>
-      <input type="text" id="locationOther" placeholder="other location (optional, freetext)" style="margin-top:10px;">
-    </div>
-
-    <div class="history-title">Other</div>
-    <div class="row">
-      <div class="field">
-        <label>Ledger</label>
-        <select id="ledger">
-          <option value="PG" selected>PG</option>
-          <option value="VP">VP</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Flags</label>
-        <div class="flags">
-          <label><input type="checkbox" value="TRUE" class="flagBox"> TRUE</label>
-          <label><input type="checkbox" value="TWINT" class="flagBox"> TWINT</label>
+    <h2 class="sec">Betrag</h2>
+    <div class="card">
+      <div class="row">
+        <div class="field">
+          <label for="amtLC">Betrag (LC) <span class="req">*</span></label>
+          <input type="number" step="0.01" id="amtLC" placeholder="0.00" required style="text-align:right;">
+        </div>
+        <div class="field">
+          <label for="currency">Währung <span class="req">*</span></label>
+          <select id="currency" required>
+            <option value="CHF" selected>CHF</option>
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+            <option value="__other__">XXX (other)</option>
+          </select>
+          <div class="otherWrap" id="currencyOtherWrap"><input type="text" id="currencyOther" placeholder="currency code..."></div>
+        </div>
+        <div class="field">
+          <label for="date">Datum <span class="req">*</span></label>
+          <input type="date" id="date" required>
         </div>
       </div>
     </div>
-    <div class="field">
-      <input type="text" id="flagsOther" placeholder="additional flag/comment (optional)">
+
+    <h2 class="sec">Konten</h2>
+    <div class="card">
+      <div class="field">
+        <label>Debit Account <span class="req">*</span></label>
+        <div class="chips" id="debitAccountChecks">
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Life PG">Life PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Mobility Expenses PG">Mobility Expenses PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Restaurants PG">Restaurants PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Restaurants (Family) PG">Restaurants (Family) PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Groceries PG">Groceries PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Auto Laden PG">Auto Laden PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Auto Parken PG">Auto Parken PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Auto Andere PG">Auto Andere PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Gifts PG">Gifts PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Vacation &amp; Leisure PG">Vacation &amp; Leisure PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Sport &amp; Hobbies &amp; Leisure PG">Sport &amp; Hobbies &amp; Leisure PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Living Haushalt PG">Living Haushalt PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Kleider Chemische Reinigung">Kleider Chemische Reinigung</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="IT: Software &amp; Apps PG">IT: Software &amp; Apps PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Health Expenses PG">Health Expenses PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Cash CHF">Cash CHF</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Revolut PG">Revolut PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Culture PG">Culture PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="RB PK Plus PG">RB PK Plus PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="InfoCom Other PG">InfoCom Other PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Admin &amp; Transfer PG">Admin &amp; Transfer PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Sundry PG">Sundry PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="Work related expenses (PwC) PG">Work related expenses (PwC) PG</label>
+          <label><input type="radio" name="debitAccount" class="acct-debit" value="__other__">OTHERS</label>
+        </div>
+        <div class="otherWrap" id="debitAccountOtherWrap"><input type="text" id="debitAccountOther" placeholder="specify..."></div>
+      </div>
+      <div class="field">
+        <label>Credit Account <span class="req">*</span></label>
+        <div class="chips" id="creditAccountChecks">
+          <label><input type="radio" name="creditAccount" class="acct-credit" value="CC TCS PG" checked>CC TCS PG</label>
+          <label><input type="radio" name="creditAccount" class="acct-credit" value="Gutschein SBB PG">Gutschein SBB PG</label>
+          <label><input type="radio" name="creditAccount" class="acct-credit" value="Revolut PG">Revolut PG</label>
+          <label><input type="radio" name="creditAccount" class="acct-credit" value="RB PK Plus PG">RB PK Plus PG</label>
+          <label><input type="radio" name="creditAccount" class="acct-credit" value="Life PG">Life PG</label>
+          <label><input type="radio" name="creditAccount" class="acct-credit" value="Admin &amp; Transfer PG">Admin &amp; Transfer PG</label>
+          <label><input type="radio" name="creditAccount" class="acct-credit" value="Other income PG">Other income PG</label>
+          <label><input type="radio" name="creditAccount" class="acct-credit" value="Gutschein REKA &amp; Co PG">Gutschein REKA &amp; Co PG</label>
+          <label><input type="radio" name="creditAccount" class="acct-credit" value="SQ WS CHF PG (#315)">SQ WS CHF PG (#315)</label>
+          <label><input type="radio" name="creditAccount" class="acct-credit" value="SQ WS EUR PG (#315)">SQ WS EUR PG (#315)</label>
+          <label><input type="radio" name="creditAccount" class="acct-credit" value="__other__">OTHERS</label>
+        </div>
+        <div class="otherWrap" id="creditAccountOtherWrap"><input type="text" id="creditAccountOther" placeholder="specify..."></div>
+      </div>
     </div>
 
-    <details class="credentials" open>
-      <summary>GitHub access (saved on this device only)</summary>
+    <h2 class="sec">Tags</h2>
+    <div class="card">
       <div class="field">
-        <label>Personal Access Token <span class="req">*</span></label>
-        <input type="password" id="pat" placeholder="ghp_...">
+        <label>Comment <span class="hint">(mehrere)</span></label>
+        <div class="chips" id="commentChecks">
+          <label><input type="checkbox" class="chk-comment" value="#LL1">#LL1</label>
+          <label><input type="checkbox" class="chk-comment" value="#LL2">#LL2</label>
+          <label><input type="checkbox" class="chk-comment" value="#LL3">#LL3</label>
+          <label><input type="checkbox" class="chk-comment" value="#DD1">#DD1</label>
+          <label><input type="checkbox" class="chk-comment" value="#DD2">#DD2</label>
+          <label><input type="checkbox" class="chk-comment" value="#DD3">#DD3</label>
+          <label><input type="checkbox" class="chk-comment" value="Einkauf Lebensmittel">Einkauf Lebensmittel</label>
+          <label><input type="checkbox" class="chk-comment" value="Parking">Parking</label>
+          <label><input type="checkbox" class="chk-comment" value="Cash">Cash</label>
+          <label><input type="checkbox" class="chk-comment" value="Drinks &amp; Kaffee">Drinks &amp; Kaffee</label>
+          <label><input type="checkbox" class="chk-comment" value="Snack">Snack</label>
+          <label><input type="checkbox" class="chk-comment" value="PwC Lunch mit">PwC Lunch mit</label>
+          <label><input type="checkbox" class="chk-comment" value="Niederhasli-Zürich-Niederhasli">Niederhasli-Zürich-Niederhasli</label>
+          <label><input type="checkbox" class="chk-comment" value="Niederhasli-Winterthur-Niederhasli">Niederhasli-Winterthur-Niederhasli</label>
+          <label><input type="checkbox" class="chk-comment" value="Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt)">Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt)</label>
+          <label><input type="checkbox" class="chk-comment" value="#Takeout">#Takeout</label>
+          <label><input type="checkbox" class="chk-comment" value="#Superpunkte">#Superpunkte</label>
+        </div>
+        <input type="text" id="commentOther" class="inline-input" placeholder="other comment (optional, freetext)">
       </div>
-      <div style="margin-top:8px;">
-        <a href="#" id="clearTokenLink" style="font-size:11px; color:var(--muted); font-family:'IBM Plex Mono', monospace;">log out / clear saved token</a>
+      <div class="field">
+        <label>Party <span class="hint">(mehrere)</span></label>
+        <div class="chips" id="partyChecks">
+          <label><input type="checkbox" class="chk-party" value="Coop">Coop</label>
+          <label><input type="checkbox" class="chk-party" value="Migros">Migros</label>
+          <label><input type="checkbox" class="chk-party" value="Volg">Volg</label>
+          <label><input type="checkbox" class="chk-party" value="PwC">PwC</label>
+          <label><input type="checkbox" class="chk-party" value="FAIRTIQ">FAIRTIQ</label>
+          <label><input type="checkbox" class="chk-party" value="SBB">SBB</label>
+          <label><input type="checkbox" class="chk-party" value="_Gastro">_Gastro</label>
+          <label><input type="checkbox" class="chk-party" value="_Stores">_Stores</label>
+          <label><input type="checkbox" class="chk-party" value="_Transfers">_Transfers</label>
+        </div>
+        <input type="text" id="partyOther" class="inline-input" placeholder="other party (optional, freetext)">
       </div>
-    </details>
+      <div class="field">
+        <label>Location <span class="hint">(mehrere)</span></label>
+        <div class="chips" id="locationChecks">
+          <label><input type="checkbox" class="chk-location" value="Zürich">Zürich</label>
+          <label><input type="checkbox" class="chk-location" value="Winterthur">Winterthur</label>
+          <label><input type="checkbox" class="chk-location" value="Dielsdorf">Dielsdorf</label>
+          <label><input type="checkbox" class="chk-location" value="Niederhasli">Niederhasli</label>
+          <label><input type="checkbox" class="chk-location" value="Rümlang">Rümlang</label>
+        </div>
+        <input type="text" id="locationOther" class="inline-input" placeholder="other location (optional, freetext)">
+      </div>
+    </div>
 
-    <button type="submit" id="submitBtn">Post entry to ledger</button>
+    <h2 class="sec">Weitere Angaben</h2>
+    <div class="card">
+      <div class="row">
+        <div class="field">
+          <label for="ledger">Ledger</label>
+          <select id="ledger">
+            <option value="PG" selected>PG</option>
+            <option value="VP">VP</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Flags</label>
+          <div class="flags">
+            <label><input type="checkbox" value="TRUE" class="flagBox"> TRUE</label>
+            <label><input type="checkbox" value="TWINT" class="flagBox"> TWINT</label>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <input type="text" id="flagsOther" placeholder="additional flag/comment (optional)">
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <button type="submit" id="submitBtn">Buchung speichern</button>
+      <button type="button" class="secondary" id="saveTplBtn">Als Vorlage speichern</button>
+    </div>
     <div id="status"></div>
   </form>
 
-  <div class="footer">
-    <div class="footer-meta">
-      <div class="footer-title">New Entry — Ledger No. <span id="entryNo">—</span></div>
-      <div class="footer-sub">Double-entry accounting form, posts directly to GitHub</div>
-      <div class="target-bar">
-        writes to <code id="targetRepoLabel">Munotstadt/AccountingDataCollector</code> · file <code>accounting_entries.csv</code> · branch <code>main</code>
+  <div class="foot">
+    <div>Schreibt nach <code>Munotstadt/AccountingDataCollector</code> · <code>accounting_entries.csv</code> · Branch <code>main</code></div>
+    <div class="foot-row"><span>Vorlagen: <code>templates.json</code></span><span id="lastSynced">—</span></div>
+    <details class="credentials">
+      <summary>GitHub access (nur auf diesem Gerät gespeichert)</summary>
+      <div class="field">
+        <label for="pat">Personal Access Token</label>
+        <input type="password" id="pat" placeholder="ghp_...">
       </div>
+      <a href="#" id="clearTokenLink">Abmelden / Token löschen</a>
+    </details>
+  </div>
+</main>
+
+<dialog id="tplDialog">
+  <div class="card">
+    <h2>Als Vorlage speichern</h2>
+    <div id="tplMsg" class="msg err" style="display:none;"></div>
+
+    <div class="field">
+      <label for="tplName">Name <span class="req">*</span></label>
+      <input id="tplName" type="text" placeholder="z.B. SBB Billett Zürich">
     </div>
-    <div class="footer-sync">
-      <span>Daten: accounting_entries.csv · Munotstadt/AccountingDataCollector</span>
-      <span id="lastSynced">—</span>
+
+    <div class="field">
+      <label>Betrag</label>
+      <div class="seg-group">
+        <button type="button" class="seg-btn active" data-mode="with">Mit Betrag</button>
+        <button type="button" class="seg-btn" data-mode="without">Ohne Betrag</button>
+      </div>
+      <div id="tplAmountRow">
+        <input id="tplAmount" type="number" step="0.01" placeholder="0.00" style="text-align:right;">
+        <div class="hint" id="tplAmountHint" style="margin-top:4px;"></div>
+      </div>
+      <div class="hint" id="tplNoAmountHint" hidden>Der Betrag wird beim Anwenden der Vorlage frei eingegeben (z.B. Mittagessen).</div>
+    </div>
+
+    <div class="field">
+      <label>Vorgeschlagene Konten-Kombination</label>
+      <div class="chips" id="tplCombos"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label for="tplDebit">Debit <span class="req">*</span></label><select id="tplDebit"></select></div>
+      <div class="field"><label for="tplCredit">Credit <span class="req">*</span></label><select id="tplCredit"></select></div>
+    </div>
+
+    <div class="field">
+      <label>Wird mitgespeichert</label>
+      <div class="hint" id="tplSummary"></div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="secondary" id="tplCancelBtn">Abbrechen</button>
+      <button type="button" id="tplSaveBtn">Speichern</button>
     </div>
   </div>
-
-  </div><!-- /#appBody -->
-</div><!-- /.sheet -->
+</dialog>
 
 <script>
 const REPO = "Munotstadt/AccountingDataCollector";
@@ -592,9 +405,10 @@ function reorderChecksByFrequency(containerId, freqMap){
   if (!container) return;
   const labels = Array.from(container.querySelectorAll('label'));
   labels.sort((a, b) => {
-    const fa = freqMap[a.querySelector('input').value] || 0;
-    const fb = freqMap[b.querySelector('input').value] || 0;
-    return fb - fa; // stable sort keeps original relative order for ties
+    const va = a.querySelector('input').value, vb = b.querySelector('input').value;
+    const fa = va === '__other__' ? -1 : (freqMap[va] || 0);
+    const fb = vb === '__other__' ? -1 : (freqMap[vb] || 0);
+    return fb - fa; // stable sort keeps original relative order for ties; OTHERS always last
   });
   labels.forEach(l => container.appendChild(l));
 }
@@ -636,6 +450,7 @@ async function refreshLedgerNumber(){
       const content = b64DecodeUnicode(data.content.replace(/\n/g,''));
       const rows = parseCSV(content);
       entryCount = Math.max(0, rows.length - 1); // minus header row
+      ledgerRows = rows;
       const freq = computeTagFrequencies(rows);
       const acctScores = computeAccountScores(rows);
       addTopUsedOptions('partyChecks', freq.Party, 10, { type: 'checkbox', className: 'chk-party' });
@@ -673,12 +488,12 @@ async function refreshLedgerNumber(){
 const PAT_KEY = 'accountingLedger_pat';
 
 function showApp(){
-  document.getElementById('loginGate').style.display = 'none';
-  document.getElementById('appBody').style.display = 'block';
+  document.getElementById('loginGate').hidden = true;
+  document.getElementById('appBody').hidden = false;
 }
 function showLogin(){
-  document.getElementById('loginGate').style.display = 'flex';
-  document.getElementById('appBody').style.display = 'none';
+  document.getElementById('loginGate').hidden = false;
+  document.getElementById('appBody').hidden = true;
   document.getElementById('loginToken').value = '';
 }
 
@@ -697,6 +512,7 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
   localStorage.setItem(PAT_KEY, token);
   document.getElementById('pat').value = token;
   showApp();
+  loadTemplates();
 });
 
 // Save on every change, not just after a successful post -- otherwise a failed
@@ -868,7 +684,15 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
       existingContent = HEADER + '\n';
     } else {
       const errBody = await getRes.text();
-      throw new Error(`GET failed (${getRes.status}): ${errBody}`);
+      const err = new Error(`GET failed (${getRes.status}): ${errBody}`);
+      err.status = getRes.status;
+      throw err;
+    }
+
+    // Duplicate guard: if an earlier attempt returned a 5xx but GitHub actually
+    // saved the row, the fresh GET already contains our EntryID -- don't append twice.
+    if (existingContent.includes(entryId)) {
+      return new Response(null, { status: 200 });
     }
 
     const newContent = existingContent + row + '\n';
@@ -888,13 +712,26 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
   }
 
   try {
-    let putRes = await attemptPost();
-
-    if (putRes.status === 409) {
-      // Someone/something else changed the file between our GET and PUT
-      // (stale sha) -- re-fetch the latest version and try once more.
-      setStatus('pending', 'Ledger changed in the meantime, retrying…');
-      putRes = await attemptPost();
+    // Up to 4 attempts. Retries on 409 (stale sha, file changed in the meantime)
+    // and on GitHub-side 5xx errors (500/502/503/504 are usually transient),
+    // with a short growing pause. Each retry re-fetches the latest file first.
+    const MAX_ATTEMPTS = 4;
+    let putRes = null;
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++){
+      let retryable = false;
+      try {
+        putRes = await attemptPost();
+        retryable = putRes.status === 409 || putRes.status >= 500;
+      } catch (err) {
+        // GET failed: retry only for 5xx or network errors, not for 401/403/etc.
+        if (err.status && err.status < 500) throw err;
+        retryable = true;
+        putRes = null;
+        if (attempt === MAX_ATTEMPTS) throw err;
+      }
+      if (!retryable || attempt === MAX_ATTEMPTS) break;
+      setStatus('pending', `GitHub busy, retrying (${attempt}/${MAX_ATTEMPTS - 1})…`);
+      await new Promise(r => setTimeout(r, 1000 * attempt));
     }
 
     if (!putRes.ok) {
@@ -909,7 +746,10 @@ document.getElementById('entryForm').addEventListener('submit', async (e) => {
     setStatus('ok', `Posted → ${REPO}/${FILE_PATH}\n${row}`);
     btn.classList.add('success');
     e.target.reset();
-    document.getElementById('pat').value = pat; // reset() also clears this since it lives inside the form -- restore it
+    document.getElementById('pat').value = pat; // defensive: keep the token field filled after reset
+    document.getElementById('tplSelect').value = '';
+    document.getElementById('tplDeleteBtn').hidden = true;
+    tplHint('Füllt Währung, Konten und Tags aus. Das Datum bleibt heute.');
     document.querySelectorAll('.otherWrap').forEach(w => w.classList.remove('show'));
     document.getElementById('currency').value = 'CHF';
     document.getElementById('ledger').value = 'PG';
@@ -932,6 +772,409 @@ function setDefaultDate(){
   const d = new Date();
   document.getElementById('date').value = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 }
+
+
+// =====================================================================
+// Vorlagen (Templates)
+// Gespeichert in templates.json im Repo, damit sie auf allen Geräten
+// verfügbar sind. Schreiben mit demselben GitHub-Token wie die Buchungen.
+// =====================================================================
+const TEMPLATES_PATH = 'templates.json';
+const TPL_CACHE_KEY = 'accountingLedger_templates';
+let templates = [];
+let ledgerRows = []; // parsed accounting_entries.csv, set by refreshLedgerNumber()
+
+function getPat(){ return (document.getElementById('pat').value || '').trim(); }
+
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function tplHint(text, isError){
+  const el = document.getElementById('tplHint');
+  el.textContent = text;
+  el.style.color = isError ? 'var(--red)' : '';
+}
+
+function parseTemplates(text){
+  try {
+    const obj = JSON.parse(text);
+    const list = Array.isArray(obj) ? obj : (obj.templates || []);
+    return list.filter(t => t && t.id && t.name);
+  } catch (e) { return []; }
+}
+
+// ---- option helpers (a template may reference accounts/tags not yet in the chip lists)
+function ensureOption(containerId, kind, name, className, value){
+  const container = document.getElementById(containerId);
+  const existing = Array.from(container.querySelectorAll('input')).find(i => i.value === value);
+  if (existing) return existing;
+  const label = document.createElement('label');
+  const input = document.createElement('input');
+  input.type = kind;
+  if (name) input.name = name;
+  input.className = className;
+  input.value = value;
+  label.appendChild(input);
+  label.appendChild(document.createTextNode(value));
+  const other = Array.from(container.querySelectorAll('input')).find(i => i.value === '__other__');
+  if (other) container.insertBefore(label, other.closest('label')); else container.appendChild(label);
+  if (kind === 'radio') wireOtherRadioSingle(input, document.getElementById(name + 'OtherWrap'));
+  return input;
+}
+function setRadio(name, containerId, className, value){
+  const input = ensureOption(containerId, 'radio', name, className, value);
+  input.checked = true;
+  input.dispatchEvent(new Event('change'));
+}
+function setTags(containerId, className, values){
+  (values || []).forEach(v => { ensureOption(containerId, 'checkbox', null, className, v).checked = true; });
+}
+
+// ---- read the current form state
+function collectFormSnapshot(){
+  const checked = cls => Array.from(document.querySelectorAll('.' + cls + ':checked')).map(c => c.value);
+  const withOther = (cls, otherId) => {
+    const arr = checked(cls);
+    const o = document.getElementById(otherId).value.trim();
+    if (o) arr.push(o);
+    return arr;
+  };
+  return {
+    amount: document.getElementById('amtLC').value,
+    currency: resolveValue('currency', 'currencyOther'),
+    debit: resolveRadio('debitAccount', 'debitAccountOther'),
+    credit: resolveRadio('creditAccount', 'creditAccountOther'),
+    comment: withOther('chk-comment', 'commentOther'),
+    party: withOther('chk-party', 'partyOther'),
+    location: withOther('chk-location', 'locationOther'),
+    ledger: document.getElementById('ledger').value,
+    flags: checked('flagBox'),
+    flagsOther: document.getElementById('flagsOther').value.trim()
+  };
+}
+
+// ---- apply a template to the form
+function clearTagsAndFlags(){
+  document.querySelectorAll('.chk-comment, .chk-party, .chk-location, .flagBox').forEach(c => { c.checked = false; });
+  ['commentOther','partyOther','locationOther','flagsOther'].forEach(id => { document.getElementById(id).value = ''; });
+}
+
+function applyTemplate(t){
+  clearTagsAndFlags();
+
+  const cur = document.getElementById('currency');
+  if (t.currency){
+    if (Array.from(cur.options).some(o => o.value === t.currency)){
+      cur.value = t.currency;
+      document.getElementById('currencyOtherWrap').classList.remove('show');
+    } else {
+      cur.value = '__other__';
+      document.getElementById('currencyOther').value = t.currency;
+      document.getElementById('currencyOtherWrap').classList.add('show');
+    }
+  }
+
+  const amt = document.getElementById('amtLC');
+  if (t.withAmount && t.amount !== '' && t.amount != null) amt.value = t.amount;
+
+  if (t.debit)  setRadio('debitAccount',  'debitAccountChecks',  'acct-debit',  t.debit);
+  if (t.credit) setRadio('creditAccount', 'creditAccountChecks', 'acct-credit', t.credit);
+
+  setTags('commentChecks',  'chk-comment',  t.comment);
+  setTags('partyChecks',    'chk-party',    t.party);
+  setTags('locationChecks', 'chk-location', t.location);
+
+  const extraFlags = [];
+  (t.flags || []).forEach(v => {
+    const box = Array.from(document.querySelectorAll('.flagBox')).find(b => b.value === v);
+    if (box) box.checked = true; else extraFlags.push(v);
+  });
+  if (t.flagsOther) extraFlags.push(t.flagsOther);
+  document.getElementById('flagsOther').value = extraFlags.join(' | ');
+
+  if (t.ledger) document.getElementById('ledger').value = t.ledger;
+
+  if (t.withAmount && t.amount) {
+    tplHint(`Vorlage «${t.name}» angewendet.`);
+  } else {
+    tplHint(`Vorlage «${t.name}» angewendet. Betrag noch eingeben.`);
+    amt.focus();
+  }
+}
+
+// ---- template dropdown
+function renderTemplateSelect(selectedId){
+  const sel = document.getElementById('tplSelect');
+  const keep = selectedId !== undefined ? selectedId : sel.value;
+  const sorted = templates.slice().sort((a, b) => a.name.localeCompare(b.name, 'de'));
+  sel.innerHTML = '<option value="">– keine Vorlage –</option>' + sorted.map(t => {
+    const suffix = t.withAmount && t.amount ? ` · ${t.amount} ${t.currency || ''}`.trimEnd() : '';
+    return `<option value="${escapeHtml(t.id)}">${escapeHtml(t.name + suffix)}</option>`;
+  }).join('');
+  sel.value = sorted.some(t => t.id === keep) ? keep : '';
+  document.getElementById('tplDeleteBtn').hidden = !sel.value;
+}
+
+document.getElementById('tplSelect').addEventListener('change', (e) => {
+  const t = templates.find(x => x.id === e.target.value);
+  document.getElementById('tplDeleteBtn').hidden = !t;
+  if (t) applyTemplate(t);
+  else tplHint('Füllt Währung, Konten und Tags aus. Das Datum bleibt heute.');
+});
+
+// ---- load / write templates.json
+async function loadTemplates(){
+  const pat = getPat();
+  const url = `https://api.github.com/repos/${REPO}/contents/${TEMPLATES_PATH}?ref=${BRANCH}`;
+  const base = { 'Accept': 'application/vnd.github+json' };
+  try {
+    let res = await fetch(url, { headers: pat ? { ...base, 'Authorization': `Bearer ${pat}` } : base, cache: 'no-store' });
+    if (res.status === 401) res = await fetch(url, { headers: base, cache: 'no-store' });
+    if (res.status === 404) {
+      templates = [];
+    } else if (res.ok) {
+      const data = await res.json();
+      templates = parseTemplates(b64DecodeUnicode(data.content.replace(/\n/g, '')));
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+    try { localStorage.setItem(TPL_CACHE_KEY, JSON.stringify(templates)); } catch (e) {}
+  } catch (e) {
+    try { templates = JSON.parse(localStorage.getItem(TPL_CACHE_KEY) || '[]'); } catch (_) { templates = []; }
+    tplHint('Vorlagen konnten nicht geladen werden. Zuletzt gespeicherter Stand wird verwendet.', true);
+  }
+  renderTemplateSelect();
+}
+
+// Read-modify-write on templates.json with retry (409 = file changed meanwhile, 5xx = GitHub hiccup).
+async function updateTemplatesFile(mutate, message){
+  const pat = getPat();
+  if (!pat) throw new Error('Nicht angemeldet (Token fehlt).');
+  const apiUrl = `https://api.github.com/repos/${REPO}/contents/${TEMPLATES_PATH}`;
+  const headers = { 'Authorization': `Bearer ${pat}`, 'Accept': 'application/vnd.github+json' };
+  const MAX_ATTEMPTS = 4;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++){
+    try {
+      let sha = null, current = [];
+      const getRes = await fetch(`${apiUrl}?ref=${BRANCH}`, { headers, cache: 'no-store' });
+      if (getRes.status === 200) {
+        const d = await getRes.json();
+        sha = d.sha;
+        current = parseTemplates(b64DecodeUnicode(d.content.replace(/\n/g, '')));
+      } else if (getRes.status !== 404) {
+        const e = new Error(`GET failed (${getRes.status})`); e.status = getRes.status; throw e;
+      }
+      const next = mutate(current);
+      const body = {
+        message,
+        content: b64EncodeUnicode(JSON.stringify({ templates: next }, null, 2) + '\n'),
+        branch: BRANCH
+      };
+      if (sha) body.sha = sha;
+      const putRes = await fetch(apiUrl, {
+        method: 'PUT', headers: { ...headers, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body), cache: 'no-store'
+      });
+      if (putRes.ok) return next;
+      const e = new Error(`PUT failed (${putRes.status}): ${await putRes.text()}`); e.status = putRes.status; throw e;
+    } catch (err) {
+      const retryable = !err.status || err.status === 409 || err.status >= 500;
+      if (!retryable || attempt === MAX_ATTEMPTS) throw err;
+      await new Promise(r => setTimeout(r, 1000 * attempt));
+    }
+  }
+}
+
+// ---- delete
+document.getElementById('tplDeleteBtn').addEventListener('click', async () => {
+  const id = document.getElementById('tplSelect').value;
+  const t = templates.find(x => x.id === id);
+  if (!t) return;
+  if (!confirm(`Vorlage «${t.name}» löschen?`)) return;
+  const btn = document.getElementById('tplDeleteBtn');
+  btn.disabled = true;
+  try {
+    templates = await updateTemplatesFile(list => list.filter(x => x.id !== id), `Delete template ${t.name}`);
+    try { localStorage.setItem(TPL_CACHE_KEY, JSON.stringify(templates)); } catch (e) {}
+    renderTemplateSelect('');
+    tplHint(`Vorlage «${t.name}» gelöscht.`);
+  } catch (err) {
+    tplHint('Löschen fehlgeschlagen: ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// ---- "save as template" dialog
+const tplDialog = document.getElementById('tplDialog');
+let tplMode = 'with';
+let tplSnapshot = null;
+let tplCombosList = [];
+
+// Suggests Debit/Credit combinations from the existing ledger: frequency + recency,
+// with a strong boost for combinations that were used with the same Party/Comment tags.
+function computeCombos(rows, snap){
+  if (!rows || rows.length < 2) return [];
+  const h = rows[0];
+  const iD = h.indexOf('DebitAccount'), iC = h.indexOf('CreditAccount');
+  const iP = h.indexOf('Party'), iM = h.indexOf('Comment');
+  if (iD < 0 || iC < 0) return [];
+  const partySet = new Set(snap.party), commentSet = new Set(snap.comment);
+  const splitTags = v => (v || '').split('|').map(s => s.trim()).filter(Boolean);
+  const total = rows.length - 1;
+  const map = {};
+  for (let r = 1; r < rows.length; r++){
+    const cols = rows[r];
+    const d = (cols[iD] || '').trim(), c = (cols[iC] || '').trim();
+    if (!d || !c) continue;
+    const key = d + '\u0000' + c;
+    const e = map[key] || (map[key] = { debit: d, credit: c, count: 0, last: 0, match: 0 });
+    e.count += 1;
+    e.last = r;
+    const matchesParty = iP >= 0 && splitTags(cols[iP]).some(p => partySet.has(p));
+    const matchesComment = iM >= 0 && splitTags(cols[iM]).some(p => commentSet.has(p));
+    if (matchesParty || matchesComment) e.match += 1;
+  }
+  return Object.values(map)
+    .map(e => ({ ...e, score: e.count + (e.last / total) * 5 + e.match * 10 }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 6);
+}
+
+function allAccountValues(containerId){
+  return Array.from(document.querySelectorAll('#' + containerId + ' input'))
+    .map(i => i.value).filter(v => v && v !== '__other__');
+}
+
+function fillSelect(selectEl, values, selected){
+  const set = Array.from(new Set(values.concat(selected ? [selected] : [])));
+  selectEl.innerHTML = set.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+  if (selected) selectEl.value = selected;
+}
+
+function setTplMode(mode){
+  tplMode = mode;
+  document.querySelectorAll('#tplDialog .seg-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  document.getElementById('tplAmountRow').hidden = mode !== 'with';
+  document.getElementById('tplNoAmountHint').hidden = mode === 'with';
+}
+
+function tplDialogError(text){
+  const el = document.getElementById('tplMsg');
+  el.textContent = text || '';
+  el.style.display = text ? 'block' : 'none';
+}
+
+function openSaveTemplate(){
+  const snap = collectFormSnapshot();
+  tplSnapshot = snap;
+  tplDialogError('');
+
+  document.getElementById('tplName').value = [snap.party[0], snap.comment[0]].filter(Boolean).join(' – ');
+  document.getElementById('tplAmount').value = snap.amount || '';
+  document.getElementById('tplAmountHint').textContent = snap.currency ? `Währung: ${snap.currency}` : '';
+  setTplMode(snap.amount ? 'with' : 'without');
+
+  // combination suggestions: current selection first (if complete), then ledger-based ones
+  const combos = computeCombos(ledgerRows, snap);
+  tplCombosList = [];
+  if (snap.debit && snap.credit) tplCombosList.push({ debit: snap.debit, credit: snap.credit, note: 'aktuelle Auswahl' });
+  combos.forEach(c => {
+    if (tplCombosList.some(x => x.debit === c.debit && x.credit === c.credit)) return;
+    tplCombosList.push({ debit: c.debit, credit: c.credit, note: `${c.count}×` + (c.match ? ` · ${c.match} passend` : '') });
+  });
+
+  const box = document.getElementById('tplCombos');
+  if (tplCombosList.length === 0) {
+    box.innerHTML = '<span class="hint">Keine Vorschläge verfügbar. Konten unten wählen.</span>';
+  } else {
+    box.innerHTML = tplCombosList.map((c, i) =>
+      `<label><input type="radio" name="tplCombo" value="${i}"${i === 0 ? ' checked' : ''}>${escapeHtml(c.debit)} → ${escapeHtml(c.credit)} <span class="chip-meta">${escapeHtml(c.note)}</span></label>`
+    ).join('');
+  }
+
+  const first = tplCombosList[0] || { debit: '', credit: '' };
+  fillSelect(document.getElementById('tplDebit'),  allAccountValues('debitAccountChecks'),  first.debit);
+  fillSelect(document.getElementById('tplCredit'), allAccountValues('creditAccountChecks'), first.credit);
+
+  const parts = [];
+  if (snap.comment.length)  parts.push('Comment: ' + snap.comment.join(', '));
+  if (snap.party.length)    parts.push('Party: ' + snap.party.join(', '));
+  if (snap.location.length) parts.push('Location: ' + snap.location.join(', '));
+  parts.push('Ledger: ' + snap.ledger);
+  const allFlags = snap.flags.concat(snap.flagsOther ? [snap.flagsOther] : []);
+  if (allFlags.length) parts.push('Flags: ' + allFlags.join(', '));
+  document.getElementById('tplSummary').textContent = parts.join(' · ');
+
+  tplDialog.showModal();
+  document.getElementById('tplName').focus();
+}
+
+document.getElementById('saveTplBtn').addEventListener('click', openSaveTemplate);
+document.getElementById('tplCancelBtn').addEventListener('click', () => tplDialog.close());
+document.querySelectorAll('#tplDialog .seg-btn').forEach(b => b.addEventListener('click', () => setTplMode(b.dataset.mode)));
+
+document.getElementById('tplCombos').addEventListener('change', (e) => {
+  if (e.target.name !== 'tplCombo') return;
+  const c = tplCombosList[Number(e.target.value)];
+  if (!c) return;
+  fillSelect(document.getElementById('tplDebit'),  allAccountValues('debitAccountChecks'),  c.debit);
+  fillSelect(document.getElementById('tplCredit'), allAccountValues('creditAccountChecks'), c.credit);
+});
+// manual change of the selects deselects the suggestion chips
+['tplDebit','tplCredit'].forEach(id => document.getElementById(id).addEventListener('change', () => {
+  document.querySelectorAll('input[name="tplCombo"]').forEach(r => { r.checked = false; });
+}));
+
+document.getElementById('tplSaveBtn').addEventListener('click', async () => {
+  const name = document.getElementById('tplName').value.trim();
+  const debit = document.getElementById('tplDebit').value;
+  const credit = document.getElementById('tplCredit').value;
+  const withAmount = tplMode === 'with';
+  const amount = document.getElementById('tplAmount').value.trim();
+
+  if (!name) { tplDialogError('Bitte einen Namen eingeben.'); return; }
+  if (!debit || !credit) { tplDialogError('Bitte Debit und Credit wählen.'); return; }
+  if (withAmount && !amount) { tplDialogError('Bitte einen Betrag eingeben oder «Ohne Betrag» wählen.'); return; }
+
+  const snap = tplSnapshot;
+  const existing = templates.find(t => t.name.toLowerCase() === name.toLowerCase());
+  if (existing && !confirm(`Vorlage «${existing.name}» existiert bereits. Überschreiben?`)) return;
+
+  const tpl = {
+    id: existing ? existing.id : 'tpl-' + (crypto.randomUUID ? crypto.randomUUID().replace(/-/g, '').slice(0, 10) : Math.random().toString(16).slice(2, 12)),
+    name,
+    withAmount,
+    amount: withAmount ? amount : '',
+    currency: snap.currency,
+    debit, credit,
+    comment: snap.comment, party: snap.party, location: snap.location,
+    ledger: snap.ledger,
+    flags: snap.flags, flagsOther: snap.flagsOther
+  };
+
+  const btn = document.getElementById('tplSaveBtn');
+  btn.disabled = true;
+  tplDialogError('');
+  try {
+    templates = await updateTemplatesFile(list => {
+      const i = list.findIndex(t => t.id === tpl.id);
+      if (i >= 0) list[i] = tpl; else list.push(tpl);
+      return list;
+    }, `Save template ${name}`);
+    try { localStorage.setItem(TPL_CACHE_KEY, JSON.stringify(templates)); } catch (e) {}
+    renderTemplateSelect(tpl.id);
+    tplHint(`Vorlage «${name}» gespeichert.`);
+    tplDialog.close();
+  } catch (err) {
+    tplDialogError('Speichern fehlgeschlagen: ' + err.message);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+if (getPat()) loadTemplates();
 
 setDefaultDate();
 refreshLedgerNumber();

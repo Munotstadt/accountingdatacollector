@@ -3,69 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accounting - Raw Editor</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<title>Accounting · Editor</title>
+<link rel="stylesheet" href="assets/style.css">
 <style>
-  :root{
-    --bg: #FFFFFF;
-    --panel: #F7F8FA;
-    --line: #E3E6EA;
-    --text: #1A1D22;
-    --muted: #767E8A;
-    --accent: #E30613;
-    --gain: #1F8A6E;
-    --loss: #C0293D;
-    --radius: 3px;
-  }
-  * { box-sizing: border-box; }
-  body{
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', system-ui, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 48px 20px 80px;
-  }
-  .sheet{ width: 100%; max-width: 1200px; }
-
-  .eyebrow{
-    display: flex; align-items: center; justify-content: space-between;
-    padding-bottom: 18px; border-bottom: 2px solid var(--accent);
-  }
-  .brand{ display: flex; align-items: baseline; gap: 10px; }
-  .brand h1{
-    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px;
-    letter-spacing: 0.02em; margin: 0; text-transform: uppercase;
-  }
-  .brand span.sub{ font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
-  .tool-links{ display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-  .tool-link{
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase;
-    letter-spacing: .04em; text-decoration: none; color: var(--text);
-    border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 16px;
-  }
-  .tool-link:hover{ background: var(--text); color: #fff; border-color: var(--text); }
-  .tool-link-primary{ background: var(--accent); color: #fff; border-color: var(--accent); }
-  .tool-link-primary:hover{ background: #b8050f; border-color: #b8050f; }
-  .status{
-    display: flex; align-items: center; gap: 8px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--muted);
-  }
-  .dot{
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--gain); box-shadow: 0 0 0 3px rgba(31,138,110,0.15);
-    animation: pulse 2.4s ease-in-out infinite; flex-shrink: 0;
-  }
-  .dot.stale{ background: var(--muted); box-shadow: none; animation: none; }
-  .dot.error{ background: var(--loss); box-shadow: 0 0 0 3px rgba(192,41,61,0.15); animation: none; }
-  @media (prefers-reduced-motion: reduce){ .dot{ animation: none; } }
-  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.45;} }
-
   .toolbar{
     display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
     margin: 20px 0 4px;
@@ -77,26 +17,6 @@
     padding: 10px 12px;
   }
   .search-input:focus{ outline: none; border-color: var(--accent); }
-
-  .credentials{
-    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 14px 16px; margin: 16px 0; font-size: 12px;
-  }
-  .credentials summary{
-    cursor: pointer; color: var(--muted); font-family: 'IBM Plex Mono', monospace;
-    text-transform: uppercase; letter-spacing: .06em; font-size: 11px;
-  }
-  .credentials .field{ margin: 14px 0 0; }
-  .credentials label{
-    display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px;
-    text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 6px;
-  }
-  .credentials input[type=password]{
-    width: 100%; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text);
-    background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 10px 12px;
-  }
-
   .table-wrap{ overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: var(--radius); }
   table{ width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 1180px; }
   thead th{
@@ -112,7 +32,6 @@
   tbody tr.hidden{ display: none; }
   tbody tr.linked{ background: rgba(31, 111, 168, 0.08); }
   tbody tr.linked td:first-child{ box-shadow: inset 3px 0 0 #1F6FA8; }
-
   td input, td select{
     width: 100%; min-width: 90px;
     font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--text);
@@ -124,7 +43,6 @@
   td input[type=number]{ text-align: right; }
   td.readonly{ color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 11px; white-space: nowrap; }
   td.rownum{ color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-align: right; width: 32px; }
-
   .row-actions{ display: flex; gap: 6px; align-items: center; white-space: nowrap; }
   .row-save-btn{
     font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; text-transform: uppercase;
@@ -134,7 +52,6 @@
   tr.dirty .row-save-btn{ display: inline-block; }
   .row-save-btn:hover{ background: #b8050f; }
   .row-save-btn:disabled{ background: var(--muted); cursor: wait; }
-
   .row-delete-btn{
     font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; text-transform: uppercase;
     background: transparent; color: var(--muted); border: 1px solid var(--line); border-radius: var(--radius);
@@ -142,69 +59,30 @@
   }
   .row-delete-btn:hover{ background: var(--loss); border-color: var(--loss); color: #fff; }
   .row-delete-btn:disabled{ opacity: 0.5; cursor: wait; }
-
   .summary-bar{
     display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
     margin-top: 14px;
   }
   .count-label{ font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
-
-  button.save-all{
-    font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 13px;
-    letter-spacing: .04em; text-transform: uppercase;
-    background: var(--text); color: #fff; border: none; border-radius: var(--radius);
-    padding: 10px 20px; cursor: pointer;
-  }
-  button.save-all:hover{ background: var(--accent); }
-  button.save-all:disabled{ background: var(--muted); cursor: wait; }
-
-  #status{
-    margin-top: 14px; font-size: 13px; padding: 12px 14px;
-    border-left: 3px solid transparent; border-radius: var(--radius);
-    display: none; white-space: pre-wrap; font-family: 'IBM Plex Mono', monospace;
-  }
-  #status.ok{ display: block; border-color: var(--gain); background: rgba(31,138,110,.08); color: var(--gain); }
-  #status.err{ display: block; border-color: var(--loss); background: rgba(192,41,61,.08); color: var(--loss); }
-  #status.pending{ display: block; border-color: var(--muted); background: var(--panel); color: var(--muted); }
-
-  .footer{
-    margin-top: 26px;
-    display: flex; flex-direction: column; gap: 14px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted);
-    padding-top: 16px; border-top: 1px solid var(--line);
-  }
-  .footer-title{ font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; color: var(--text); }
-  .footer-sub{ font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .footer-sync{ display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
-
-  @media (max-width: 560px){
-    body{ padding: 24px 16px 56px; }
-    .brand h1{ font-size: 17px; }
-    .footer-sync{ flex-direction: column; align-items: flex-start; }
-    .credentials input[type=password]{ font-size: 16px; } /* prevents iOS Safari auto-zoom */
-  }
 </style>
 </head>
 <body>
 
-<div class="sheet">
-  <div class="eyebrow">
-    <div class="brand">
-      <h1>Accounting</h1>
-      <span class="sub">/ Raw Editor</span>
-    </div>
-    <div class="status">
-      <span class="dot" id="statusDot"></span>
-      <span id="statusText">loading…</span>
-    </div>
+<header class="topbar">
+  <div class="brand">Accounting <span>Collector</span></div>
+  <nav class="tabs">
+    <a href="index.html">Buchung</a>
+    <a href="editor.html" class="active">Editor</a>
+    <a href="spending.html">Spending</a>
+  </nav>
+</header>
+<main class="wide">
+  <div class="page-head">
+    <h1>Raw Editor</h1>
+    <div class="status"><span class="dot stale" id="statusDot"></span><span id="statusText">loading…</span></div>
   </div>
 
-  <div class="tool-links">
-    <a href="index.html" class="tool-link tool-link-primary">+ Neue Buchung</a>
-    <a href="spending.html" class="tool-link">Spending Dashboard</a>
-  </div>
-
-  <details class="credentials" open>
+  <details class="credentials card" open>
     <summary>GitHub access (saved on this device only)</summary>
     <div class="field">
       <label>Personal Access Token</label>
@@ -250,17 +128,11 @@
   </div>
   <div id="status"></div>
 
-  <div class="footer">
-    <div class="footer-meta">
-      <div class="footer-title">Raw Data Editor</div>
-      <div class="footer-sub">Bearbeitet accounting_entries.csv direkt — EntryID bleibt beim Speichern unverändert, damit das Processing-Skript die Änderung sauber erkennt.</div>
-    </div>
-    <div class="footer-sync">
-      <span>Daten: accounting_entries.csv · Munotstadt/AccountingDataCollector</span>
-      <span id="lastSynced">—</span>
-    </div>
+  <div class="foot">
+    <div>Bearbeitet accounting_entries.csv direkt — EntryID bleibt beim Speichern unverändert, damit das Processing-Skript die Änderung sauber erkennt.</div>
+    <div class="foot-row"><span>Daten: accounting_entries.csv · Munotstadt/AccountingDataCollector</span><span id="lastSynced">—</span></div>
   </div>
-</div>
+</main>
 
 <script>
 const REPO = "Munotstadt/AccountingDataCollector";

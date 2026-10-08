@@ -3,73 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accounting - Spending Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<title>Accounting · Spending</title>
+<link rel="stylesheet" href="assets/style.css">
 <style>
-  :root{
-    --bg: #FFFFFF;
-    --panel: #F7F8FA;
-    --line: #E3E6EA;
-    --text: #1A1D22;
-    --muted: #767E8A;
-    --accent: #E30613;
-    --gain: #1F8A6E;
-    --loss: #C0293D;
-    --radius: 3px;
-  }
-  * { box-sizing: border-box; }
-  body{
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', system-ui, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 48px 20px 80px;
-  }
-  .sheet{ width: 100%; max-width: 880px; }
-
-  .eyebrow{
-    display: flex; align-items: center; justify-content: space-between;
-    padding-bottom: 18px; border-bottom: 2px solid var(--accent);
-  }
-  .brand{ display: flex; align-items: baseline; gap: 10px; }
-  .brand h1{
-    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px;
-    letter-spacing: 0.02em; margin: 0; text-transform: uppercase;
-  }
-  .brand span.sub{ font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
-  .status{
-    display: flex; align-items: center; gap: 8px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--muted);
-  }
-  .dot{
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--gain); box-shadow: 0 0 0 3px rgba(31,138,110,0.15);
-    animation: pulse 2.4s ease-in-out infinite; flex-shrink: 0;
-  }
-  .dot.stale{ background: var(--muted); box-shadow: none; animation: none; }
-  .dot.error{ background: var(--loss); box-shadow: 0 0 0 3px rgba(192,41,61,0.15); animation: none; }
-  @media (prefers-reduced-motion: reduce){ .dot{ animation: none; } }
-  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.45;} }
-
   .meta-header{ padding: 18px 0 6px; }
-  .tool-links{ display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-  .tool-link{
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase;
-    letter-spacing: .04em; text-decoration: none; color: var(--text);
-    border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 16px;
-  }
-  .tool-link:hover{ background: var(--text); color: #fff; border-color: var(--text); }
-  .tool-link-primary{ background: var(--accent); color: #fff; border-color: var(--accent); }
-  .tool-link-primary:hover{ background: #b8050f; border-color: #b8050f; }
   .meta-header h2{ font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; margin: 0 0 4px; }
   .meta-sub{ font-family: 'Inter', sans-serif; font-size: 14px; color: var(--muted); margin: 0; }
-
   .summary-row{ display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
   .stat-box{
     display: flex; flex-direction: column; gap: 4px;
@@ -81,7 +20,6 @@
     text-transform: uppercase; color: var(--muted);
   }
   .stat-value{ font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; }
-
   .range-selector{ display: flex; gap: 6px; margin-top: 26px; flex-wrap: wrap; }
   .range-btn{
     background: none; border: 1px solid var(--line); color: var(--muted);
@@ -92,12 +30,10 @@
   .range-btn:hover{ border-color: var(--muted); color: var(--text); }
   .range-btn.active{ background: var(--text); border-color: var(--text); color: var(--bg); font-weight: 600; }
   .range-btn:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
-
   .history-title{
-    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--accent); margin: 32px 0 12px;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px;
+    margin: 28px 0 10px;
   }
-
   .rank-list{ display: flex; flex-direction: column; gap: 10px; }
   .rank-row{ display: flex; align-items: center; gap: 12px; }
   .rank-num{
@@ -112,7 +48,6 @@
   .rank-avg{ font-family: 'IBM Plex Mono', monospace; color: var(--muted); font-size: 11px; white-space: nowrap; }
   .rank-track{ height: 6px; background: var(--panel); border-radius: 3px; overflow: hidden; }
   .rank-fill{ height: 100%; background: var(--accent); border-radius: 3px; }
-
   .search-input{
     width: 100%;
     font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text);
@@ -126,14 +61,12 @@
     padding: 3px 8px; white-space: nowrap;
   }
   .edit-link:hover{ background: var(--text); color: #fff; border-color: var(--text); }
-
   .chart-wrap{
     margin: 0 0 8px; background: var(--panel); border: 1px solid var(--line);
     border-radius: var(--radius); padding: 20px 16px 12px;
   }
   .chart-wrap svg{ display: block; width: 100%; height: auto; }
   .chart-empty{ padding: 40px 10px; text-align: center; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
-
   table{ width: 100%; border-collapse: collapse; margin-top: 4px; }
   thead th{
     text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 11px;
@@ -150,21 +83,6 @@
   }
   .empty, .error{ padding: 40px 10px; text-align: center; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
   .error{ color: var(--loss); }
-
-  .footer{
-    margin-top: 26px;
-    display: flex; flex-direction: column; gap: 14px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted);
-    padding-top: 16px; border-top: 1px solid var(--line);
-  }
-  .footer-title{
-    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; color: var(--text);
-  }
-  .footer-sub{ font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .footer-sync{
-    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;
-  }
-
   .custom-range{
     display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; margin-top: 14px;
   }
@@ -184,45 +102,38 @@
     border-radius: var(--radius); cursor: pointer;
   }
   .custom-range button:hover{ border-color: var(--accent); color: var(--accent); }
-
   .history-title .hint{
-    text-transform: none; letter-spacing: 0; color: var(--muted); font-family: 'Inter', sans-serif;
+    font-weight: 400; color: var(--muted); font-family: 'Inter', sans-serif; font-size: 12px;
   }
   .reset-link{
     text-transform: none; letter-spacing: 0; color: var(--accent); font-family: 'IBM Plex Mono', monospace;
     font-size: 11px; cursor: pointer; margin-left: 4px;
   }
   .reset-link:hover{ text-decoration: underline; }
-
   .legend{ display: flex; flex-wrap: wrap; gap: 12px; margin: 10px 0 0; }
   .legend-item{ display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
   .legend-swatch{ width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-
   @media (max-width: 560px){
-    .stat-value{ font-size: 18px; }
+    .stat-value{font-size: 18px;}
     #txTable thead th:nth-child(3), #txTable tbody td:nth-child(3),
-    #txTable thead th:nth-child(5), #txTable tbody td:nth-child(5) { display: none; }
-    .footer-sync{ flex-direction: column; align-items: flex-start; }
+    #txTable thead th:nth-child(5), #txTable tbody td:nth-child(5){display: none;}
   }
 </style>
 </head>
 <body>
 
-<div class="sheet">
-  <div class="eyebrow">
-    <div class="brand">
-      <h1>Accounting</h1>
-      <span class="sub">/ Spending Dashboard</span>
-    </div>
-    <div class="status">
-      <span class="dot" id="statusDot"></span>
-      <span id="statusText">loading…</span>
-    </div>
-  </div>
-
-  <div class="tool-links">
-    <a href="index.html" class="tool-link tool-link-primary">+ Neue Buchung</a>
-    <a href="editor.html" class="tool-link">Raw Editor</a>
+<header class="topbar">
+  <div class="brand">Accounting <span>Collector</span></div>
+  <nav class="tabs">
+    <a href="index.html">Buchung</a>
+    <a href="editor.html">Editor</a>
+    <a href="spending.html" class="active">Spending</a>
+  </nav>
+</header>
+<main class="">
+  <div class="page-head">
+    <h1>Spending</h1>
+    <div class="status"><span class="dot stale" id="statusDot"></span><span id="statusText">loading…</span></div>
   </div>
 
   <div class="meta-header">
@@ -286,17 +197,11 @@
     <tbody id="txBody"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
   </table>
 
-  <div class="footer">
-    <div class="footer-meta">
-      <div class="footer-title">Spending Overview</div>
-      <div class="footer-sub">Auswertung von processed-accounting-entries.csv · Beträge in CHF (AmtCHF)</div>
-    </div>
-    <div class="footer-sync">
-      <span>Daten: processed-accounting-entries.csv · Munotstadt/AccountingDataCollector</span>
-      <span id="lastSynced">—</span>
-    </div>
+  <div class="foot">
+    <div>Auswertung von processed-accounting-entries.csv · Beträge in CHF (AmtCHF)</div>
+    <div class="foot-row"><span>Daten: processed-accounting-entries.csv · Munotstadt/AccountingDataCollector</span><span id="lastSynced">—</span></div>
   </div>
-</div>
+</main>
 
 <script>
 const DATA_URL = "https://raw.githubusercontent.com/Munotstadt/AccountingDataCollector/main/processed-accounting-entries.csv";
