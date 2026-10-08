@@ -25,6 +25,10 @@
     padding: 10px 8px; border-bottom: 1px solid var(--line); background: var(--panel);
     position: sticky; top: 0;
   }
+  th[data-sort]{ cursor:pointer; user-select:none; white-space:nowrap; }
+  th[data-sort]:hover{ color: var(--accent); }
+  th[data-sort].sorted::after{ content:' ▲'; font-size:9px; }
+  th[data-sort].sorted.desc::after{ content:' ▼'; }
   tbody td{ padding: 4px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
   tbody tr:hover{ background: rgba(0,0,0,0.015); }
   tbody tr.dirty{ background: rgba(227, 6, 19, 0.04); }
@@ -101,18 +105,18 @@
     <table id="editorTable">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Timestamp</th>
-          <th>Date</th>
-          <th>Currency</th>
-          <th class="num">Amt LC</th>
-          <th>Debit</th>
-          <th>Credit</th>
-          <th>Comment</th>
-          <th>Party</th>
-          <th>Location</th>
-          <th>Ledger</th>
-          <th>Flags</th>
+          <th data-sort="#">#</th>
+          <th data-sort="Timestamp">Timestamp</th>
+          <th data-sort="Date">Date</th>
+          <th data-sort="Currency">Currency</th>
+          <th class="num" data-sort="AmtLC">Amt LC</th>
+          <th data-sort="DebitAccount">Debit</th>
+          <th data-sort="CreditAccount">Credit</th>
+          <th data-sort="Comment">Comment</th>
+          <th data-sort="Party">Party</th>
+          <th data-sort="Location">Location</th>
+          <th data-sort="Ledger">Ledger</th>
+          <th data-sort="Flags">Flags</th>
           <th></th>
         </tr>
       </thead>
@@ -328,7 +332,7 @@ function buildRow(fields, index){
     updateSaveAllVisibility();
   }
 
-  const entry = { original, current, tr, rowSaveBtn, rowDeleteBtn, markDirty };
+  const entry = { index, original, current, tr, rowSaveBtn, rowDeleteBtn, markDirty };
   return entry;
 }
 
@@ -341,10 +345,59 @@ function updateSaveAllVisibility(){
   document.getElementById('saveAllBtn').style.display = anyDirty ? 'inline-block' : 'none';
 }
 
+// Sortierung: Standard = # (Transaktions-Nr. = Position in der Datei) absteigend.
+let sortKey = '#', sortDir = 'desc';
+
+function sortValue(entry, key){
+  if (key === '#') return entry.index;
+  const v = entry.current[key] ?? '';
+  if (key === 'AmtLC'){ const n = parseFloat(v); return isNaN(n) ? -Infinity : n; }
+  if (key === 'Date' || key === 'Timestamp'){
+    const m = String(v).match(/(\d{2})\.(\d{2})\.(\d{4})(?:\s+(\d{2}):(\d{2}):(\d{2}))?/);
+    return m ? Number(m[3]+m[2]+m[1]+(m[4]||'00')+(m[5]||'00')+(m[6]||'00')) : 0;
+  }
+  return String(v).toLowerCase();
+}
+
+function sortedRows(){
+  const dir = sortDir === 'asc' ? 1 : -1;
+  return rowsData.slice().sort((a, b) => {
+    const x = sortValue(a, sortKey), y = sortValue(b, sortKey);
+    let c = (typeof x === 'number' && typeof y === 'number') ? x - y : String(x).localeCompare(String(y), 'de', { numeric: true });
+    if (c === 0) c = a.index - b.index;
+    return c * dir;
+  });
+}
+
+function updateSortHeaders(){
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    const on = th.dataset.sort === sortKey;
+    th.classList.toggle('sorted', on);
+    th.classList.toggle('desc', on && sortDir === 'desc');
+  });
+}
+
+document.querySelectorAll('th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    if (sortKey === k) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+    else { sortKey = k; sortDir = (k === '#' || k === 'AmtLC' || k === 'Date' || k === 'Timestamp') ? 'desc' : 'asc'; }
+    resortTable();
+  });
+});
+
+// Ordnet nur die vorhandenen <tr> neu an (Eingaben/Dirty-Status bleiben erhalten).
+function resortTable(){
+  const tbody = document.getElementById('tableBody');
+  sortedRows().forEach(entry => tbody.appendChild(entry.tr));
+  updateSortHeaders();
+}
+
 function renderTable(){
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
-  rowsData.forEach(entry => tbody.appendChild(entry.tr));
+  sortedRows().forEach(entry => tbody.appendChild(entry.tr));
+  updateSortHeaders();
   document.getElementById('countLabel').textContent = `${rowsData.length} Einträge`;
   document.getElementById('saveAllBtn').style.display = 'none';
 }
