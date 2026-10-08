@@ -456,3 +456,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 07.10.2026 19:39:13;07.10.2026;CHF;55.6;1;55.6;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Volg;La Punt;VP;;device-9b19bf3f;104.28.135.81;e-feae348b00;07.10.2026 17:39:23;8c323a8c7239999e
 07.10.2026 20:41:46;07.10.2026;CHF;7.94;1;7.94;Auto Laden PG;CC TCS PG;9.785 kWh / 00:13:07 / Shell Veia Padnal 1, 7460 Savognin / Volt;Zürich Versicherung;;PG;;device-ca0a008c;172.225.27.65;e-dd76f003bc;07.10.2026 18:41:58;88a3c39a2e644c5a
 07.10.2026 20:43:03;07.10.2026;CHF;12.19;1;12.19;Auto Laden PG;CC TCS PG;32.036 kWh / 00:19:12 / Amag Industriestrasse 16, 7304 Maienfeld / Volt;Zürich Versicherung;;PG;;device-ca0a008c;172.225.27.65;e-7a33c6634a;07.10.2026 18:43:15;a02730891abe1c69
+08.10.2026 07:56:29;08.10.2026;CHF;8.7;1;8.7;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Volg;La Punt;PG;;device-9b19bf3f;172.225.27.65;e-fddd162c19;08.10.2026 05:56:39;83630521fb9e75b4
