@@ -472,3 +472,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 09.10.2026 17:41:46;09.10.2026;CHF;90;1;90.0;Restaurants PG;CC TCS PG;#LL3;Hotel Morteratsch;Pontresina;PG;;device-ca0a008c;104.28.54.92;e-eeb068ddcd;09.10.2026 15:41:58;15200fa172fe6b5b
 09.10.2026 17:42:24;09.10.2026;CHF;20;1;20.0;Sport & Hobbies & Leisure PG;CC TCS PG;Seilpark für SE;Go Vertical;Pontresina;PG;;device-ca0a008c;104.28.54.92;e-dae42337bf;09.10.2026 15:42:33;70285784e8a4fd8d
 09.10.2026 17:42:44;09.10.2026;CHF;36.65;1;36.65;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Coop;Pontresina;VP;;device-ca0a008c;104.28.54.92;e-c571f2a155;09.10.2026 15:42:55;9982b495a51fa603
+09.10.2026 17:43:39;09.10.2026;CHF;4.9;1;4.9;Auto Parken PG;RB PK Plus PG;Parking;Parkingpay;Pontresina-Morteratsch;PG;;device-ca0a008c;104.28.54.92;e-c681184af4;09.10.2026 15:43:49;549c8783199ee5db
