@@ -470,3 +470,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 09.10.2026 07:37:15;08.10.2026;CHF;1.5;1;1.5;Auto Parken PG;RB PK Plus PG;Parking;Parkingpay;St. Moritz;PG;TWINT;device-ca0a008c;104.28.135.80;e-4060c78c3c;09.10.2026 07:43:47;a5882ba3ce87a9c0
 09.10.2026 07:37:37;08.10.2026;CHF;3.8;1;3.8;Auto Parken PG;RB PK Plus PG;Parking;Parkingpay;St. Moritz;PG;TWINT;device-ca0a008c;104.28.135.80;e-d128fe5a3f;09.10.2026 05:37:45;16a8edd3e58f0cf4
 09.10.2026 17:41:46;09.10.2026;CHF;90;1;90.0;Restaurants PG;CC TCS PG;#LL3;Hotel Morteratsch;Pontresina;PG;;device-ca0a008c;104.28.54.92;e-eeb068ddcd;09.10.2026 15:41:58;15200fa172fe6b5b
+09.10.2026 17:42:24;09.10.2026;CHF;20;1;20.0;Sport & Hobbies & Leisure PG;CC TCS PG;Seilpark für SE;Go Vertical;Pontresina;PG;;device-ca0a008c;104.28.54.92;e-dae42337bf;09.10.2026 15:42:33;70285784e8a4fd8d
