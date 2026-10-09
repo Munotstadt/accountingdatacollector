@@ -474,3 +474,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 09.10.2026 17:42:44;09.10.2026;CHF;36.65;1;36.65;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Coop;Pontresina;VP;;device-ca0a008c;104.28.54.92;e-c571f2a155;09.10.2026 15:42:55;9982b495a51fa603
 09.10.2026 17:43:39;09.10.2026;CHF;4.9;1;4.9;Auto Parken PG;RB PK Plus PG;Parking;Parkingpay;Pontresina-Morteratsch;PG;;device-ca0a008c;104.28.54.92;e-c681184af4;09.10.2026 15:43:49;549c8783199ee5db
 09.10.2026 17:44:55;09.10.2026;CHF;3.8;1;3.8;Auto Parken PG;RB PK Plus PG;Parking;Parkingpay;Pontresina;PG;;device-ca0a008c;104.28.54.92;e-ff02d7031f;09.10.2026 15:45:05;805b6deb60892565
+09.10.2026 17:45:26;09.10.2026;CHF;0.5;1;0.5;Auto Parken PG;RB PK Plus VP;Parking;Parkingpay;Pontresina;VP;;device-ca0a008c;104.28.54.92;e-a034358fa4;09.10.2026 15:45:36;9c3687d297aa620e
