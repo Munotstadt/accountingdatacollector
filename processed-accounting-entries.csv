@@ -490,3 +490,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 12.10.2026 09:11:00;12.10.2026;CHF;8.8;1;8.8;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Grond;La Punt;PG;;device-9b19bf3f;172.225.188.251;e-4fb92b95a8;12.10.2026 07:11:10;9795eebac6c12376
 12.10.2026 20:40:40;12.10.2026;CHF;27.4;1;27.4;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Volg;La Punt;PG;;device-ca0a008c;104.28.135.80;e-69ec609ed3;12.10.2026 18:40:50;441b3331e4719a16
 12.10.2026 20:41:06;12.10.2026;CHF;1;1;1.0;Life PG;CC TCS PG;Snack;Berghotel Muottas Muragl;Samedan;PG;;device-ca0a008c;104.28.135.80;e-3f2cf43041;12.10.2026 18:41:16;3ad7ba4aa173c89f
+12.10.2026 20:41:34;12.10.2026;CHF;10.9;1;10.9;Life PG;CC TCS PG;Drinks & Kaffee;Berghotel Muottas Muragl;Samedan;PG;;device-ca0a008c;104.28.135.80;e-b50c9a983f;12.10.2026 18:41:43;683691bfd2bf89b0
