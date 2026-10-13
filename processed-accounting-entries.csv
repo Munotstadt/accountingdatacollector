@@ -497,3 +497,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 13.10.2026 19:57:13;13.10.2026;CHF;24.3;1;24.3;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Migros;Samedan;VP;;device-ca0a008c;104.28.135.80;e-253f566d59;13.10.2026 17:57:23;cf2336c1302282c8
 13.10.2026 19:57:37;13.10.2026;CHF;67;1;67.0;Sport & Hobbies & Leisure PG;CC TCS PG;Seilpark;Go Vertical;Pontresina;PG;;device-ca0a008c;104.28.135.80;e-9d6b932c2c;13.10.2026 17:57:49;2f189be20405d9dd
 13.10.2026 19:58:08;13.10.2026;CHF;100;1;100.0;Restaurants (Family) PG;CC TCS PG;#LL3;Riccardo‘s;Pontresina;PG;;device-ca0a008c;104.28.135.80;e-3d48a7db19;13.10.2026 17:58:19;2b575ceb675dfafa
+13.10.2026 19:58:29;13.10.2026;CHF;5.5;1;5.5;Life PG;CC TCS PG;Drinks & Kaffee | Snack;Ovaverva;St. Moritz;PG;;device-ca0a008c;104.28.135.80;e-5ace3aaf1e;13.10.2026 17:58:40;92a3076088b67517
