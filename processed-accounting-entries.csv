@@ -517,3 +517,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 16.10.2026 16:15:44;16.10.2026;CHF;9.5;1;9.5;Auto Parken PG;CC TCS PG;Parking;Parkingpay;Pontresina;PG;;device-9b19bf3f;172.225.27.66;e-44ed233212;16.10.2026 14:15:56;d3110ae2c641814e
 16.10.2026 17:54:58;16.10.2026;CHF;4.55;1;4.55;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Coop;Pontresina;VP;;device-ca0a008c;172.225.188.250;e-5d637fb1c3;16.10.2026 15:55:07;ccd3e213f347cf8d
 16.10.2026 17:55:18;16.10.2026;CHF;39;1;39.0;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Bin di Puntraschigna;Pontresina;VP;;device-ca0a008c;172.225.188.250;e-d546ff1ee6;16.10.2026 15:55:28;05cfee29680d1823
+16.10.2026 17:55:37;16.10.2026;CHF;40;1;40.0;Sport & Hobbies & Leisure PG;CC TCS PG;Seilpark;Go Vertical;Pontresina;PG;;device-ca0a008c;172.225.188.250;e-5084d87f42;16.10.2026 15:55:47;f5495d58ed5961cb
