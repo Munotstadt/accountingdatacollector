@@ -515,3 +515,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 16.10.2026 09:23:44;16.10.2026;CHF;23.9;1;23.9;Glothes SE;CC TCS PG;GETU Kleidli;Decathlon;;PG;;device-9b19bf3f;172.225.27.68;e-5b1ac889ea;16.10.2026 07:23:54;495b3b40e30820ab
 16.10.2026 09:24:15;16.10.2026;CHF;48.7;1;48.7;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Grond;La Punt;PG;;device-9b19bf3f;172.225.27.68;e-cbac3ad800;16.10.2026 07:24:24;63aa92ba27d68372
 16.10.2026 16:15:44;16.10.2026;CHF;9.5;1;9.5;Auto Parken PG;CC TCS PG;Parking;Parkingpay;Pontresina;PG;;device-9b19bf3f;172.225.27.66;e-44ed233212;16.10.2026 14:15:56;d3110ae2c641814e
+16.10.2026 17:54:58;16.10.2026;CHF;4.55;1;4.55;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Coop;Pontresina;VP;;device-ca0a008c;172.225.188.250;e-5d637fb1c3;16.10.2026 15:55:07;ccd3e213f347cf8d
