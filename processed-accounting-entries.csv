@@ -518,3 +518,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 16.10.2026 17:54:58;16.10.2026;CHF;4.55;1;4.55;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Coop;Pontresina;VP;;device-ca0a008c;172.225.188.250;e-5d637fb1c3;16.10.2026 15:55:07;ccd3e213f347cf8d
 16.10.2026 17:55:18;16.10.2026;CHF;39;1;39.0;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Bin di Puntraschigna;Pontresina;VP;;device-ca0a008c;172.225.188.250;e-d546ff1ee6;16.10.2026 15:55:28;05cfee29680d1823
 16.10.2026 17:55:37;16.10.2026;CHF;40;1;40.0;Sport & Hobbies & Leisure PG;CC TCS PG;Seilpark;Go Vertical;Pontresina;PG;;device-ca0a008c;172.225.188.250;e-5084d87f42;16.10.2026 15:55:47;f5495d58ed5961cb
+16.10.2026 17:55:57;16.10.2026;CHF;120;1;120.0;Restaurants (Family) PG;CC TCS PG;#LL3;Hotel Roseggletscher;Pontresina;PG;;device-ca0a008c;172.225.188.250;e-017da73367;16.10.2026 15:56:07;9f4880e7af329ad5
