@@ -521,3 +521,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 16.10.2026 17:55:57;16.10.2026;CHF;120;1;120.0;Restaurants (Family) PG;CC TCS PG;#LL3;Hotel Roseggletscher;Pontresina;PG;;device-ca0a008c;172.225.188.250;e-017da73367;16.10.2026 15:56:07;9f4880e7af329ad5
 17.10.2026 07:35:30;17.10.2026;CHF;128;1;128.0;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Grond;La Punt;PG;;device-9b19bf3f;104.28.54.92;e-33c29eea88;17.10.2026 05:35:41;6dcc2f4c8bb7cae3
 17.10.2026 17:57:56;17.10.2026;CHF;12.95;1;12.95;Life PG;CC TCS PG;Einkauf Lebensmittel | Drinks & Kaffee | Snack;AGROLA;Thusis;PG;;device-c58588e5;178.38.204.182;e-fffa72cd9f;17.10.2026 15:57:53;f8944ad03107f072
+17.10.2026 17:58:21;17.10.2026;CHF;1;1;1.0;Life VP;CC TCS VP;WC;various;Wädenswil;VP;;device-c58588e5;178.38.204.182;e-ec1173bf47;17.10.2026 15:58:16;8d381f67222fe129
