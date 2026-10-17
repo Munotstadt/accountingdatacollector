@@ -525,3 +525,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 17.10.2026 17:58:36;17.10.2026;CHF;249.6;1;249.6;Groceries VP;CC TCS VP;Einkauf Lebensmittel;Coop;Dielsdorf;VP;;device-c58588e5;178.38.204.182;e-6314682e49;17.10.2026 15:58:32;9163117132ffd42a
 17.10.2026 17:59:12;17.10.2026;CHF;78.35;1;78.35;Living Haushalt PG;CC TCS PG;Gestell & Schrauben;Jumbo;Bachenbülach;PG;;device-c58588e5;178.38.204.182;e-3d080ad9e8;17.10.2026 15:59:07;fa0b7c05b4a307fe
 17.10.2026 18:03:40;17.10.2026;CHF;9;1;9.0;Living Haushalt PG;RB PK Plus PG;Kürbis;Kürbisverkauf;Thusis;PG;;device-c58588e5;178.38.204.182;e-634c13935c;17.10.2026 16:03:35;6e58d22ca378b1aa
+17.10.2026 18:07:09;17.10.2026;CHF;6.43;1;6.43;Auto Laden PG;CC TCS PG;15.583 kWh / 00:19:07 / AGROLA, Thusis / Volt;Zürich Versicherung;;PG;;device-c58588e5;178.38.204.182;e-230f038c41;17.10.2026 16:07:06;4e6eef5519390453
