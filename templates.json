@@ -18,6 +18,25 @@
       "ledger": "PG",
       "flags": [],
       "flagsOther": ""
+    },
+    {
+      "id": "tpl-676d4537c1",
+      "name": "SBB – Niederhasli-Winterthur-Niederhasli",
+      "withAmount": true,
+      "amount": "10.3",
+      "currency": "CHF",
+      "debit": "Mobility Expenses PG",
+      "credit": "Gutschein SBB PG",
+      "comment": [
+        "Niederhasli-Winterthur-Niederhasli"
+      ],
+      "party": [
+        "SBB"
+      ],
+      "location": [],
+      "ledger": "PG",
+      "flags": [],
+      "flagsOther": ""
     }
   ]
 }
