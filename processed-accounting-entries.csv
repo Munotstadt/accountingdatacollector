@@ -528,3 +528,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 17.10.2026 18:07:09;17.10.2026;CHF;6.43;1;6.43;Auto Laden PG;CC TCS PG;15.583 kWh / 00:19:07 / AGROLA, Thusis / Volt;Zürich Versicherung;;PG;;device-c58588e5;178.38.204.182;e-230f038c41;17.10.2026 16:07:06;4e6eef5519390453
 17.10.2026 21:31:29;17.10.2026;EUR;574;0.9255;531.2;Vacation & Leisure PG;SQ WS EUR PG (#315);Anzahlung;Union Lido;;PG;;device-c58588e5;178.38.204.182;e-abb3f4cc57;17.10.2026 19:31:24;9faf4325c50afe9b
 19.10.2026 12:18:09;19.10.2026;CHF;20;1;20.0;Restaurants PG;CC TCS PG;#LL1;MantaBar;Winterthur;PG;;device-9b19bf3f;104.28.54.92;e-a2e88a388f;19.10.2026 10:18:18;eb817ac9acd42b9a
+19.10.2026 12:21:06;19.10.2026;CHF;10.3;1;10.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-9b19bf3f;104.28.54.92;e-d5bdd36d7b;19.10.2026 10:21:14;0c42adfcb8ae39c2
