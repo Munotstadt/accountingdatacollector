@@ -37,6 +37,28 @@
       "ledger": "PG",
       "flags": [],
       "flagsOther": ""
+    },
+    {
+      "id": "tpl-6b397f86ad",
+      "name": "PwC Lunch mit",
+      "withAmount": false,
+      "amount": "",
+      "currency": "CHF",
+      "debit": "Receivables PG",
+      "credit": "CC TCS PG",
+      "comment": [
+        "PwC Lunch mit",
+        "Kader Winterthur"
+      ],
+      "party": [
+        "Perla"
+      ],
+      "location": [
+        "Winterthur"
+      ],
+      "ledger": "PG",
+      "flags": [],
+      "flagsOther": ""
     }
   ]
 }
