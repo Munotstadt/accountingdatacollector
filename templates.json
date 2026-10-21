@@ -59,6 +59,27 @@
       "ledger": "PG",
       "flags": [],
       "flagsOther": ""
+    },
+    {
+      "id": "tpl-4c3615df01",
+      "name": "PwC – #LL1",
+      "withAmount": true,
+      "amount": "15.8",
+      "currency": "CHF",
+      "debit": "Restaurants PG",
+      "credit": "CC TCS PG",
+      "comment": [
+        "#LL1"
+      ],
+      "party": [
+        "PwC"
+      ],
+      "location": [
+        "Zürich"
+      ],
+      "ledger": "PG",
+      "flags": [],
+      "flagsOther": ""
     }
   ]
 }
