@@ -80,6 +80,25 @@
       "ledger": "PG",
       "flags": [],
       "flagsOther": ""
+    },
+    {
+      "id": "tpl-742df61481",
+      "name": "Cloudflare – Abo",
+      "withAmount": true,
+      "amount": "5",
+      "currency": "USD",
+      "debit": "IT: Software & Apps PG",
+      "credit": "SQ WS USD PG (#315)",
+      "comment": [
+        "Abo"
+      ],
+      "party": [
+        "Cloudflare"
+      ],
+      "location": [],
+      "ledger": "PG",
+      "flags": [],
+      "flagsOther": ""
     }
   ]
 }
