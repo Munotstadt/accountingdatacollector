@@ -541,3 +541,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 25.10.2026 10:12:04;25.10.2026;USD;5;0.8241;4.1;IT: Software & Apps PG;SQ WS USD PG (#315);Abo;Cloudflare;;PG;;device-c58588e5;178.38.204.182;e-ac4932d3ef;25.10.2026 09:12:15;d3bd44ee19b3e30b
 25.10.2026 12:04:51;25.10.2026;CHF;54.46;1;54.46;Restaurants (Family) PG;CC TCS PG;#LL3;dieci.ch;;PG;;device-c58588e5;178.38.204.182;e-ffc996c5a1;25.10.2026 11:05:01;6bce0289b2585560
 26.10.2026 09:55:07;26.10.2026;CHF;1.8;1;1.8;Life PG;CC TCS PG;Snack;avec;Zürich;PG;;device-9b19bf3f;104.28.54.92;e-6ab89ffc36;26.10.2026 08:55:17;af7d578771f5985c
+26.10.2026 16:11:51;26.10.2026;CHF;36;1;36.0;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-St. Gallen-Niederhasli;SBB;;PG;;device-c58588e5;178.38.204.182;e-3feba62f03;26.10.2026 15:12:01;5aa6d8ed04e51736
