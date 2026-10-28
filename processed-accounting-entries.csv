@@ -545,3 +545,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 27.10.2026 12:04:05;27.10.2026;CHF;20.5;1;20.5;Restaurants PG;CC TCS PG;#LL1;KAIMUG;Zürich;PG;;device-9b19bf3f;104.28.135.80;e-963cbcd4bd;27.10.2026 11:04:17;fc7bc854e651a5b4
 28.10.2026 06:17:24;28.10.2026;CHF;11.5;1;11.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich, Uetliberg-Niederhasli;SBB;;PG;;device-9b19bf3f;104.28.54.92;e-ddcfb60233;28.10.2026 05:17:34;1dec568b3733d026
 28.10.2026 06:55:40;28.10.2026;CHF;10.3;1;10.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-9b19bf3f;140.248.36.38;e-72ce628ce0;28.10.2026 05:55:51;e0d33884993c5f7f
+28.10.2026 14:57:56;28.10.2026;CHF;83;1;83.0;Receivables;CC TCS PG;PwC Lunch mit | Daniel Benz;Fredi‘s;Winterthur;PG;;device-ca0a008c;172.225.188.254;e-37d180e71c;28.10.2026 13:58:11;1b60afdf122d5952
