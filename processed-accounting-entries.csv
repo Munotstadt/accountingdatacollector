@@ -551,3 +551,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 30.10.2026 13:06:29;30.10.2026;CHF;10.3;1;10.3;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Niederhasli;SBB;;PG;;device-9b19bf3f;104.28.54.92;e-856b80cb60;30.10.2026 12:06:39;02eaa29df0b5b783
 30.10.2026 13:06:49;30.10.2026;CHF;20;1;20.0;Restaurants PG;CC TCS PG;#LL1;Manta Bar;Winterthur;PG;;device-9b19bf3f;104.28.54.92;e-a9c835f784;30.10.2026 12:07:00;e2c38e6d301219f6
 30.10.2026 21:37:28;29.10.2026;CHF;1.7;1;1.7;Life PG;CC TCS PG;Snack;Migros;Zürich;PG;;device-c58588e5;178.38.204.182;e-42cc749940;30.10.2026 20:37:38;bcf84dfef10d9450
+31.10.2026 06:50:32;10.10.2026;EUR;5;0.9295;4.6;Life PG;Cash EUR;Snack;;;PG;;device-c58588e5;178.38.204.182;e-8261bddbd9;31.10.2026 05:50:42;7002fd027da55cb6
