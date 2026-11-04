@@ -558,4 +558,5 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 02.11.2026 21:24:52;02.11.2026;CHF;2.6;1;2.6;Life PG;CC TCS PG;Snack;Presse & Books;Zürich;PG;;device-9b19bf3f;104.28.54.92;e-19394830f9;02.11.2026 20:25:02;5c4c2d544acb75a4
 02.11.2026 22:08:08;02.11.2026;CHF;57.51;1;57.51;Admin & Transfer PG;CC TCS PG;PwC Taxi Köln;Taxi- und Rolltime24;DE-Köln;PG;;device-9b19bf3f;104.28.54.92;e-0b057ff29b;02.11.2026 21:08:19;e5a3ea2ebafaf7ad
 04.11.2026 07:59:30;03.11.2026;EUR;7;0.9162;6.4;Life PG;SQ WS EUR PG (#315);Drinks & Kaffee;Best Western;DE-Köln;PG;;device-ca0a008c;104.28.54.92;e-0f202f748e;04.11.2026 06:59:40;9227ff86cf86c72f
-04.11.2026 08:00:45;04.11.2026;USD;21.62;0.8194;17.7;IT: Software & Apps PG;SQ WS USD PG (#315);AI Claude;Anthropic;;PG;;device-ca0a008c;104.28.54.92;e-c966109a5e;04.11.2026 07:00:54;a3da8008b5d45c3d
+04.11.2026 08:00:45;04.11.2026;USD;21.62;0.8155;17.6;IT: Software & Apps PG;SQ WS USD PG (#315);AI Claude;Anthropic;;PG;;device-ca0a008c;104.28.54.92;e-c966109a5e;04.11.2026 17:24:50;a3da8008b5d45c3d
+04.11.2026 18:24:39;04.11.2026;EUR;4.2;0.9183;3.9;Life PG;SQ WS EUR PG (#315);Drinks & Kaffee;Autogrill;DE-Köln;PG;;device-9b19bf3f;104.28.42.100;e-d64a59baef;04.11.2026 17:24:50;88ac613dc153934f
