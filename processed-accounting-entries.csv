@@ -572,3 +572,4 @@ Timestamp;Date;Currency;AmtLC;AmtCry;AmtCHF;DebitAccount;CreditAccount;Comment;P
 10.11.2026 20:34:52;10.11.2026;CHF;2.2;1;2.2;Life PG;CC TCS PG;Snack;Coop;Winterthur;PG;;device-c58588e5;178.38.204.182;e-e6f657321e;10.11.2026 19:35:02;6045c86691574809
 10.11.2026 20:35:05;10.11.2026;CHF;26.8;1;26.8;Groceries PG;CC TCS PG;Einkauf Lebensmittel;Migros;Niederhasli;PG;;device-c58588e5;178.38.204.182;e-9eb8ff1e84;10.11.2026 19:35:16;34d9f2338d4d084b
 10.11.2026 20:35:45;10.11.2026;CHF;13.6;1;13.6;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Winterthur-Zürich-Niederhasli (oder umgekehrt);SBB;;PG;;device-c58588e5;178.38.204.182;e-05f041ae2a;10.11.2026 19:35:56;6f60c1e7cce6ff9a
+11.11.2026 09:09:23;11.11.2026;CHF;8.5;1;8.5;Mobility Expenses PG;Gutschein SBB PG;Niederhasli-Zürich-Niederhasli;SBB;;PG;;device-ca0a008c;172.225.188.251;e-b8a985aa52;11.11.2026 08:09:34;0f3df392a61f2a77
